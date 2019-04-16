@@ -4,21 +4,22 @@ import entities.Customer;
 import entities.CustomerState;
 import entities.Manager;
 import entities.ManagerState;
-import entities.Mechanic;
 import entities.MechanicState;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 import repository.Piece;
+import repository.RepairShop;
 
 /**
  *
  * @author andre and joao
  */
 public class Lounge implements ICustomerL, IManagerL, IMechanicL {
-
-    private int customerGetRepCar;
+	
     private final Queue<Integer> replacementQueue = new LinkedList<>();
+	private final HashMap<Integer, Integer> customersWithRepCar = new HashMap<>();
     private final Queue<Integer> customersQueue = new LinkedList<>();
     private final Queue<Piece> piecesQueue = new LinkedList<>();
     private int nextCustomer = 0;
@@ -28,8 +29,10 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     private final boolean enoughWork = false;
     private final Queue<Integer> customersToCallQueue = new LinkedList<>();
     private final Queue<Integer> carsRepaired = new LinkedList<>();
-    private final boolean[] flagPartMissing;
+    
     private boolean readyToReceive;
+	private RepairShop repairShop;
+    private boolean[] requiresReplacementCar;
 
     private static HashMap<Integer, String> order = new HashMap<Integer, String>();
 
@@ -37,8 +40,12 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
 	 *
 	 * @param nTypePieces
 	 */
-	public Lounge(int nTypePieces) {
-        flagPartMissing = new boolean[nTypePieces];
+	public Lounge(int nCustomers, int nTypePieces, RepairShop repairShop) {
+        requiresReplacementCar = new boolean[nCustomers];
+        
+        Arrays.fill(requiresReplacementCar, false);
+        
+		this.repairShop = repairShop;
     }
 
     /**
@@ -46,15 +53,17 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * customer now has to wait in a queue to be attended by the manager.
      *
      * @param id customer's id
+	 * @param state
      */
     @Override
-    public synchronized void queueIn(int id) {
+    public synchronized void queueIn(int id, CustomerState state) {
         customersQueue.add(id);
+		repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar, id, state);
         notifyAll();
         while (nextCustomer != id && !managerAvailable) {
             try {
                 wait();
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
 
             }
         }
@@ -63,14 +72,18 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     /**
      * Customer's method. When the customer is talking to the manager he says if
      * he requires a replacement car or not.
+	 * @param carRepaired
+	 * @param requiresCar
+	 * @param idCustomer
      */
     @Override
-    public synchronized void talkWithManager() {
-        if (((Customer) Thread.currentThread()).carRepaired) {
+    public synchronized void talkWithManager(boolean carRepaired, boolean requiresCar, int idCustomer) {
+        if (carRepaired) {
             order.put(nextCustomer, "pay");
         } else {
-            if (((Customer) Thread.currentThread()).requiresCar) {
+            if (requiresCar) {
                 order.put(nextCustomer, "car");
+                requiresReplacementCar[idCustomer] = true;
             } else {
                 order.put(nextCustomer, "nocar");
             }
@@ -91,40 +104,65 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized String talkWithCustomer(boolean availableCar) {
-        nextCustomer = customersQueue.poll();
+       // nextCustomer = customersQueue.poll();
         managerAvailable = true;
         notifyAll();
         managerAvailable = false;
         while (!(order.containsKey(nextCustomer)) && !ordered) {
             try {
                 wait();
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
 
             }
         }
         String s = order.get(nextCustomer);
         order.remove(nextCustomer);
-        nextCustomer = 0;
+        //nextCustomer = 0;
         return s;
 
     }
-
+	
+	@Override
+	public synchronized void addToReplacementQueue(int idCustomer){
+		replacementQueue.add(idCustomer);
+		repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
+	}
     /**
      * Manager's method. Manager gives to the customer the replacement car's
      * key.
      *
+	 * @param replacementCarId
      */
     @Override
-    public synchronized void handCarKey() {
-        while (replacementQueue.isEmpty()) {
+    public synchronized void handCarKey(int replacementCarId, int idCustomer) {
+		while (replacementQueue.isEmpty()) {
             try {
                 wait();
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
 
             }
         }
-        customerGetRepCar = replacementQueue.poll();
+		customersWithRepCar.put(idCustomer, replacementCarId);
+		System.out.println(customersWithRepCar.toString());
+		replacementQueue.remove(new Integer(idCustomer));
+        requiresReplacementCar[idCustomer] = false;
+		repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
+		
         notifyAll();
+    }
+	
+	@Override
+    public synchronized int getCarReplacementId(int id) {
+        while (!customersWithRepCar.containsKey(id)) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+
+            }
+        }
+		int n = customersWithRepCar.get(id);
+		customersWithRepCar.remove(id);
+		return n;
     }
 
     /**
@@ -166,40 +204,57 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
 	 * Manager's method. Manager chooses the customer with the highest
 	 * priority.
 	 * 
+     * @param state
 	 * @return an Integer indicating the next customer's id to attend
 	 */
 	@Override
-    public synchronized int currentCustomer() {
+    public synchronized int currentCustomer(ManagerState state) {
+        repairShop.updateFromLounge(state);
+        int next;
         if (customersQueue.isEmpty()) {
-            return replacementQueue.peek();
+            nextCustomer = replacementQueue.poll();
         } else {
-            return customersQueue.peek();
+            nextCustomer = customersQueue.poll();
         }
+        //MANDAR PARA LOG
+        return nextCustomer;
     }
 
 	/**
 	 * Customer's method. The customer waits for a replacement car's key and 
 	 * goes get one if it is available. Eventually, if the customer's car is 
 	 * repaired while waiting, he goes to the normal queue.
+	 * 
+	 * @param id
+     * @param state
+	 * @return 
 	 */
 	@Override
-    public synchronized void collectKey() {
-        ((Customer) Thread.currentThread()).setCustomerState(CustomerState.WAITING_FOR_REPLACE_CAR);
-		replacementQueue.add(((Customer) Thread.currentThread()).getCustomerId());
-        notify();
-        while (customerGetRepCar != ((Customer) Thread.currentThread()).getCustomerId() && !carsRepaired.contains(((Customer) Thread.currentThread()).getCustomerId())) {
+    public synchronized boolean collectKey(int id, CustomerState state) {
+        //((Customer) Thread.currentThread()).setCustomerState(CustomerState.WAITING_FOR_REPLACE_CAR);
+		replacementQueue.add(id);
+		//repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
+        repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar, id, state);
+        notifyAll();
+        while (!customersWithRepCar.containsKey(id) && !carsRepaired.contains(id)) { //&& !carsRepaired.contains(id)
             try {
                 wait();
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
 
             }
         }
-        if (carsRepaired.contains(((Customer) Thread.currentThread()).getCustomerId())) {
-            carsRepaired.remove(((Customer) Thread.currentThread()).getCustomerId());
-            replacementQueue.remove(((Customer) Thread.currentThread()).getCustomerId());
-            ((Customer) Thread.currentThread()).setCustomerState(CustomerState.RECEPTION);
-            ((Customer) Thread.currentThread()).carRepaired = true;
+		
+        if (carsRepaired.contains(id)) {
+            carsRepaired.remove(id);
+			replacementQueue.remove(id);
+            requiresReplacementCar[id] = false;
+            //((Customer) Thread.currentThread()).setCustomerState(CustomerState.RECEPTION);
+            //((Customer) Thread.currentThread()).carRepaired = true;
+			repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
+            return true;
         }
+		else
+            return false;
     }
 
 	/**
@@ -210,7 +265,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         while (customersQueue.isEmpty() && customersToCallQueue.isEmpty() && piecesQueue.isEmpty()) {
             try {
                 wait();
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
 
             }
         }
@@ -218,35 +273,47 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
 
 	/**
 	 * Manager's method. Manager changes state to check what to do next.
+	 * @param state
 	 */
 	@Override
-    public synchronized void checkWhatToDo() {
-        ((Manager) Thread.currentThread()).setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
+    public synchronized void checkWhatToDo(ManagerState state) {
+        repairShop.updateFromLounge(state); //MANDAR PARA LOG
+        //((Manager) Thread.currentThread()).setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
     }
 
 	/**
 	 * Manager's method. Manager goes into the queue of customers to call and
 	 * retrieves the head of the queue.
 	 * 
+	 * @param state
 	 * @return an Integer indicating the customer's id
 	 */
 	@Override
-    public synchronized int getIdToCall() {
-        return customersToCallQueue.poll();
+    public synchronized int getIdToCall(ManagerState state) {
+        repairShop.updateFromLounge(state); //MANDAR PARA LOG
+        int next = customersToCallQueue.poll();
+        return next;
     }
 
 	/**
 	 * Manager's method. When there is work to do, the manager chooses the task
 	 * with the highest priority and changes state, accordingly.
+	 * @return 
 	 */
 	@Override
-    public synchronized void appraiseSit() {
+    public synchronized int appraiseSit() {
         if (!piecesQueue.isEmpty()) {
-            ((Manager) Thread.currentThread()).setManagerState(ManagerState.GETTING_NEW_PARTS);
+            return 1;
+            //((Manager) Thread.currentThread()).setManagerState(ManagerState.GETTING_NEW_PARTS);
         } else if (!customersToCallQueue.isEmpty()) {
-            ((Manager) Thread.currentThread()).setManagerState(ManagerState.ALERTING_CUSTOMER);
+            return 2;
+            //((Manager) Thread.currentThread()).setManagerState(ManagerState.ALERTING_CUSTOMER);
         } else if (!customersQueue.isEmpty()) {
-            ((Manager) Thread.currentThread()).setManagerState(ManagerState.ATTENDING_CUSTOMER);
+            return 3;
+            //((Manager) Thread.currentThread()).setManagerState(ManagerState.ATTENDING_CUSTOMER);
+        }
+        else {
+            return 0;
         }
     }
 
@@ -257,12 +324,16 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      *
      * @param piece piece that needs to be re stocked
 	 * @param customerId customer that needs to be called because his car is ready to be picked up
+	 * @param idMechanic
+	 * @param state
      */
     @Override
-    public synchronized void alertManager(Piece piece, int customerId) {
-        ((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.WAITING_FOR_WORK);
+    public synchronized void alertManager(Piece piece, int customerId, int idMechanic, MechanicState state) {
+        repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar, idMechanic, state);
+        //((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.WAITING_FOR_WORK);
         if (piece == null) {
             customersToCallQueue.add(customerId);
+            //System.err.println("CustomersToCall:"+customersToCallQueue);
             notifyAll();
         } else {
             piecesQueue.add(piece);
@@ -277,16 +348,19 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * @return a piece that needs to be re stocked in the repair area
      */
     @Override
-    public synchronized Piece getPieceToReStock() {
-        return piecesQueue.poll();
+    public synchronized Piece getPieceToReStock(ManagerState state) {
+        Piece p = piecesQueue.poll();
+		repairShop.updateFromLounge(state);//MANDAR PARA LOG
+        return p;
     }
 
     /**
      * Manager's method. Manager changes state to go replenish stock.
      */
     @Override
-    public synchronized void goReplenishStock() {
-        ((Manager) Thread.currentThread()).setManagerState(ManagerState.REPLENISH_STOCK);
+    public synchronized void goReplenishStock(ManagerState state) {
+        //((Manager) Thread.currentThread()).setManagerState(ManagerState.REPLENISH_STOCK);
+        repairShop.updateFromLounge(state);//MANDAR PARA LOG
     }
 
     /**
@@ -311,8 +385,9 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     public synchronized boolean alertCustomer(int id) {
         if (replacementQueue.contains(id)) {
             carsRepaired.add(id);
-            notifyAll();
             customersToCallQueue.remove(id);
+			notifyAll();
+			repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
             return true;
         } else {
             return false;
@@ -354,8 +429,8 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * @return an array of booleans that is false if the manager was alerted
 	 * that that piece is missing
 	 * 
-     */
+     *//*
     public boolean[] getFlagPartMissing() {
         return flagPartMissing;
-    }
+    }*/
 }

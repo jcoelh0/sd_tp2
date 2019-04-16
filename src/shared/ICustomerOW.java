@@ -5,19 +5,17 @@
  */
 package shared;
 
+import entities.CustomerState;
+
 /**
  *
  * @author andre
  */
 public interface ICustomerOW {
+    public boolean decideOnRepair(int id, CustomerState state);
+    public void goToRepairShop(int idCustomer, CustomerState state);
+    public boolean backToWorkByBus(boolean carRepaired, int id, CustomerState state);
+    public void goToReception(int idCustomer, CustomerState state);
 
-    public void decideOnRepair();
-
-    public void goToRepairShop();
-
-    public void backToWorkByBus();
-
-    public void backToWorkByCar();
-
-    public void goToReception();
+	public boolean backToWorkByCar(boolean b, int replacementCar, int id, CustomerState state);
 }

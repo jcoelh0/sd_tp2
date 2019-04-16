@@ -11,13 +11,16 @@ import java.util.List;
 import java.util.Queue;
 import repository.EnumPiece;
 import repository.Piece;
+import repository.RepairShop;
 
 /**
  *
  * @author andre and joao
  */
 public class RepairArea implements IMechanicRA, IManagerRA {
-
+	
+	private RepairShop repairShop;
+	
     private final Queue<Integer> carsToRepair = new LinkedList<>();
     private final HashMap<Integer, Piece> carsWaitingForPieces = new HashMap<>();
     private final Queue<Integer> readyToRepair = new LinkedList<>();
@@ -28,7 +31,9 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     private boolean workMechanic = false;
     private int nRequestsManager = 0;
     private boolean enoughWork = false;
-
+	private final boolean[] flagPartMissing;
+	
+	
     static final int nPieces = (int) (Math.random() * 13) + 3; //between 3 and 15 Math.random() * ((max - min) + 1)) + min; //0;
 
     private static final HashMap<EnumPiece, Integer> stock = new HashMap<>();
@@ -38,17 +43,22 @@ public class RepairArea implements IMechanicRA, IManagerRA {
 	 * to stock.
 	 * @param nTypePieces
 	 */
-	public RepairArea(int nTypePieces) {
-
+	public RepairArea(int nTypePieces, RepairShop repairShop) {
+		this.repairShop = repairShop;
+		flagPartMissing = new boolean[nTypePieces];
+		
         for (int i = 0; i < nTypePieces; i++) {
             stock.put(EnumPiece.values()[i], 0);
+			flagPartMissing[i] = true;
         }
 
         //adds random pieces to stock
         for (int i = 0; i < nPieces; i++) {
             Piece pec = new Piece();
             stock.put(pec.getTypePiece(), stock.get(pec.getTypePiece()) + 1);
+			flagPartMissing[pec.getIdTypePiece()] = false;
         }
+		//repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
 
     }
 
@@ -68,10 +78,12 @@ public class RepairArea implements IMechanicRA, IManagerRA {
 
     private void removePieceFromStock(Piece p) {
         stock.put(p.getTypePiece(), stock.get(p.getTypePiece()) - 1);
+		repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
     }
 
     private void addPieceToStock(Piece p) {
         stock.put(p.getTypePiece(), stock.get(p.getTypePiece()) + 1);
+		repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
     }
 
     /**
@@ -81,9 +93,10 @@ public class RepairArea implements IMechanicRA, IManagerRA {
 	 * @return a boolean representing if mechanic has more work or can go home
      */
     @Override
-    public synchronized boolean readThePaper() {
-        ((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.WAITING_FOR_WORK);
-        int id = ((Mechanic) Thread.currentThread()).getMechanicId();
+    public synchronized boolean readThePaper(int idMechanic, MechanicState state) {
+        //((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.WAITING_FOR_WORK);
+        repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock, idMechanic, state);
+        int id = idMechanic;
         mechanicsQueue.add(id);
         while (readyToRepair.isEmpty() && carsToRepair.isEmpty() && !enoughWork) {
             try {
@@ -96,6 +109,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
             return true;
         }
         mechanicsQueue.poll();
+        
         return false;
     }
 
@@ -107,10 +121,10 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      */
     @Override
     public synchronized int startRepairProcedure() {
-        ((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.FIXING_CAR);
+        //((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.FIXING_CAR);
         if (readyToRepair.isEmpty() && carsToRepair.isEmpty()) {
-            ((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.WAITING_FOR_WORK);
-            return 0;
+            //((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.WAITING_FOR_WORK);
+            return -1;
         } else if (!readyToRepair.isEmpty()) {
             return readyToRepair.poll();
         } else {
@@ -127,14 +141,17 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      * @param piece the piece that car needs to be repaired
      */
     @Override
-    public synchronized void fixIt(int id, Piece piece) {
-        repaired.add(id);
+    public synchronized int fixIt(int id, Piece piece) {
         if (stock.get(piece.getTypePiece()) == 0) {
-            ((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.WAITING_FOR_WORK);
-            return;
+            //((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.WAITING_FOR_WORK);
+            return 0;
         }
+        repaired.add(id);
+        
         removePieceFromStock(piece);
         piecesToBeRepaired.remove(id, piece);
+		repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
+        return 1;
     }
 
     /**
@@ -144,8 +161,9 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      */
     @Override
     public synchronized void getRequiredPart(int id) {
-        ((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.CHECKING_STOCK);
+        //((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.CHECKING_STOCK);
         piecesToBeRepaired.put(id, new Piece());
+		repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
     }
 
     /**
@@ -156,7 +174,8 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      * @return returns true if the piece is available and false otherwise
      */
     @Override
-    public synchronized boolean partAvailable(Piece part) {
+    public synchronized boolean partAvailable(Piece part, int idMechanic, MechanicState state) {
+        repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock, idMechanic, state);
         return pieceInStock(part);
     }
 
@@ -171,7 +190,9 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      */
     @Override
     public synchronized void letManagerKnow(Piece piece, int idCustomerNeedsPiece) {
-        ((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.ALERTING_MANAGER);
+        //((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.ALERTING_MANAGER);
+		flagPartMissing[piece.getIdTypePiece()]=true;
+		repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
         carsWaitingForPieces.put(idCustomerNeedsPiece, piece);
         carsToRepair.remove(idCustomerNeedsPiece);
     }
@@ -183,7 +204,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      */
     @Override
     public synchronized void resumeRepairProcedure() {
-        ((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.FIXING_CAR);
+        //((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.FIXING_CAR);
     }
 
     /**
@@ -193,7 +214,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      */
     @Override
     public synchronized void repairConcluded() {
-        ((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.ALERTING_MANAGER);
+        //((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.ALERTING_MANAGER);
     }
 
     /**
@@ -201,7 +222,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      */
     @Override
     public synchronized void getNextTask() {
-        ((Manager) Thread.currentThread()).setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
+        //((Manager) Thread.currentThread()).setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
     }
 
     /**
@@ -209,10 +230,11 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      * registers it for further use by the mechanics.
      *
      * @param idCustomer the id of the car that the mechanic needs to repair
+     * @param state
      */
     @Override
-    public synchronized void registerService(int idCustomer) {
-        ((Manager) Thread.currentThread()).setManagerState(ManagerState.POSTING_JOB);
+    public synchronized void registerService(int idCustomer, ManagerState state) {
+        //((Manager) Thread.currentThread()).setManagerState(ManagerState.POSTING_JOB);
         if (!alreadyAdded.contains(idCustomer)) {
             carsToRepair.add(idCustomer);
         }
@@ -221,6 +243,8 @@ public class RepairArea implements IMechanicRA, IManagerRA {
             notify();
         }
         nRequestsManager++;
+        //MANDAR PARA LOG
+		repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock, state);
     }
 
     /**
@@ -246,6 +270,8 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         for (int i = 0; i < quant; i++) {
 			addPieceToStock(part);
         }
+		flagPartMissing[part.getIdTypePiece()]=false;
+		repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
         return n;
     }
 
@@ -277,30 +303,6 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      */
     public int getRequestsManagerSize() {
         return nRequestsManager;
-    }
-
-    /**
-     * Method used for log. Returns the number of vehicles waiting for each
-     * piece.
-     *
-     * @param nTypePieces the number of different types of pieces
-     * @return an Array with the number of vehicles waiting for each piece
-     */
-    public int[] getNumberVehiclesWaitingForParts(int nTypePieces) {
-        int[] nVehiclesWaitingForParts = new int[nTypePieces];
-
-        for (int i = 0; i < nTypePieces; i++) {
-            nVehiclesWaitingForParts[i] = 0;
-        }
-        
-		for (int j = 0; j < nTypePieces; j++) {
-			for (Piece value : piecesToBeRepaired.values()) {
-				if (value.getIdTypePiece() == j) {
-					nVehiclesWaitingForParts[j]++;
-				}
-			}
-		}
-        return nVehiclesWaitingForParts;
     }
 
     /**

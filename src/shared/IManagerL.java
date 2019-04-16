@@ -1,6 +1,7 @@
 package shared;
 
 import repository.Piece;
+import entities.ManagerState;
 
 /**
  *
@@ -10,13 +11,13 @@ public interface IManagerL {
 
     public String talkWithCustomer(boolean availableCar);
 
-    public void handCarKey();
+    public void handCarKey(int replacementCarId, int idCustomer);
+	public  void addToReplacementQueue(int idCustomer);
+    public int currentCustomer(ManagerState state);
 
-    public int currentCustomer();
+    public void checkWhatToDo(ManagerState state);
 
-    public void checkWhatToDo();
-
-    public int getIdToCall();
+    public int getIdToCall(ManagerState state);
 
     public boolean enoughWork();
 
@@ -26,9 +27,9 @@ public interface IManagerL {
 
     public void receivePayment();
 
-    public void appraiseSit();
+    public int appraiseSit();
 
-    public Piece getPieceToReStock();
+    public Piece getPieceToReStock(ManagerState state);
 
-    public void goReplenishStock();
+    public void goReplenishStock(ManagerState state);
 }

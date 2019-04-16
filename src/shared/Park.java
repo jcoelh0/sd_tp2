@@ -1,12 +1,13 @@
 package shared;
 
-import entities.Customer;
 import entities.CustomerState;
+import entities.MechanicState;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import repository.RepairShop;
 
 /**
  *
@@ -15,20 +16,26 @@ import java.util.Queue;
 public class Park implements ICustomerP, IMechanicP, IManagerP {
 
     private int parkingSlots = 50;
-
+	private RepairShop repairShop;
+	
     private final List<Integer> carsParked = new ArrayList<>();
     private final Queue<Integer> replacementCars = new LinkedList<>();
     private final HashMap<Integer, Integer> reserve = new HashMap<>();
+	private final List<Integer> toReserve = new ArrayList<>();
+	private int findCarId;
 
     /**
      * Park Constructor. Initializes the replacement cars in the park.
      *
      * @param nReplacementCars the number of replacement cars
+	 * @param repairShop
      */
-    public Park(int nReplacementCars) {
+    public Park(int nReplacementCars, RepairShop repairShop) {
+		this.repairShop = repairShop;
         for (int i = 1; i < nReplacementCars + 1; i++) {
             replacementCars.add(i);
         }
+		//repairShop.updateFromPark(carsParked, replacementCars);
     }
 
     /**
@@ -36,12 +43,14 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      * the park.
      *
      * @param id the id of the car
+	 * @param state
      */
     @Override
-    public synchronized void parkCar(int id) {
-        ((Customer) Thread.currentThread()).setCustomerState(CustomerState.RECEPTION);
+    public synchronized void parkCar(int id, CustomerState state) {
+        //((Customer) Thread.currentThread()).setCustomerState(CustomerState.RECEPTION);
         carsParked.add(id);
         parkingSlots--;
+		repairShop.updateFromPark(carsParked, replacementCars, id, state);
     }
 
     /**
@@ -53,35 +62,46 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
     public synchronized void collectCar(int id) {
         carsParked.remove(new Integer(id));
         parkingSlots++;
+		repairShop.updateFromPark(carsParked, replacementCars);
     }
 
     /**
      * Customer's method. Customer goes into the park and finds the replacement
      * car that has been associated to him.
      *
+	 * @param id
+	 * @param state
      * @return an Integer representing the replacement car id
      */
     @Override
-    public synchronized int findCar() {
-        ((Customer) Thread.currentThread()).setCustomerState(CustomerState.PARK);
-        if (reserve.containsKey(((Customer) Thread.currentThread()).getCustomerId())) {
-            int n = reserve.get(((Customer) Thread.currentThread()).getCustomerId());
-            reserve.remove(((Customer) Thread.currentThread()).getCustomerId());
-            replacementCars.remove(n);
-            notifyAll();
-            return n;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Customer's method. Customer goes back into his normal life, either with a
-     * replacement car or with his own car.
-     */
-    @Override
-    public synchronized void backToWorkByCar() {
-        ((Customer) Thread.currentThread()).setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR);
+    public synchronized void findCar(int id, CustomerState state, int replacementCarId) {
+        /*//((Customer) Thread.currentThread()).setCustomerState(CustomerState.PARK);
+		//notifyAll();
+		System.err.println(reserve.toString());
+		findCarId = id;
+		//notifyAll();
+		System.out.println("findCar():"+id);
+        while (!reserve.containsKey(id) ) {
+			try {
+				System.err.println(id + "DEALOCK MUITO PROVAVEL EM findCar()"); // é QUASE sempre o id= 0 WTFFFFWWTFWTFWTF
+				wait();
+				System.err.println(id + "DEALOCK DEFINITIVAMENTE EM findCar()"); // é QUASE sempre o id= 0 WTFFFFWWTFWTFWTF
+			} catch (InterruptedException ex) {
+				
+			}
+		}
+		
+        int n = reserve.get(id);
+        reserve.remove(id);
+        notifyAll();
+		replacementCars.remove(n);
+		repairShop.updateFromPark(carsParked, replacementCars, id, state);
+        
+        return n;
+		*/
+		//System.out.println("findCar():"+id);
+        replacementCars.remove(replacementCarId);
+		repairShop.updateFromPark(carsParked, replacementCars, id, state);
     }
 
     /**
@@ -91,21 +111,27 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      * @param id the car's id that is going to be checked in the repair area
      */
     @Override
-    public synchronized void getVehicle(int id) {
-        carsParked.remove(new Integer(id));
+    public synchronized void getVehicle(int idCar, int idMechanic, MechanicState state) {
+        carsParked.remove(new Integer(idCar));
         parkingSlots++;
+		repairShop.updateFromPark(carsParked, replacementCars, idMechanic, state);
     }
 
     /**
      * Customer's method. After being alerted that his own car is ready, the
      * customer goes into the park and parks his replacement car.
      *
+	 * @param idCar
+	 * @param idCustomer
+	 * @param state
      * @param id the replacement car's id
      */
     @Override
-    public synchronized void returnReplacementCar(int id) {
-        ((Customer) Thread.currentThread()).setCustomerState(CustomerState.RECEPTION);
-        replacementCars.add(id);
+    public synchronized void returnReplacementCar(int idCar, int idCustomer, CustomerState state) {
+        //((Customer) Thread.currentThread()).setCustomerState(CustomerState.RECEPTION);
+        replacementCars.add(idCar);
+		//System.out.println("");
+		repairShop.updateFromPark(carsParked, replacementCars, idCustomer, state);
     }
 
     /**
@@ -118,6 +144,7 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
     public synchronized void returnVehicle(int id) {
         carsParked.add(id);
         parkingSlots--;
+		repairShop.updateFromPark(carsParked, replacementCars);
     }
 
     /**
@@ -133,25 +160,35 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      * Manager's method. Manager checks if there is any replacement car
      * available in the park.
      *
+	 * @param idCustomer
      * @return a boolean representing if a replacement car is available
      */
     @Override
-    public synchronized boolean replacementCarAvailable() {
-        if (replacementCars.isEmpty()) {
-            return false;
-        } else {
-            return true;
-        }
+    public synchronized boolean replacementCarAvailable(int idCustomer) {
+		/*return ((replacementCars.size()== 0 && reserve.size()==3) ||
+			(replacementCars.size()== 1 && reserve.size()==2) ||
+			(replacementCars.size()== 2 && reserve.size()==1) ||
+			(replacementCars.size()== 3 && reserve.size()==0));*/
+		return !replacementCars.isEmpty();
     }
 
     /**
      * Manager's method. Reserves a replacement car for a customer.
      *
      * @param id customer's id
+	 * @return 
      */
     @Override
-    public synchronized void reserveCar(int id) {
-        reserve.put(id, replacementCars.peek());
+    public synchronized int reserveCar(int id) {
+		//System.out.println("reserveCar:"+id);
+		//System.out.println("findCarId:"+findCarId);
+        try {
+			return replacementCars.poll();
+		} catch (Exception e) {
+			return -1;
+		}
+		//reserve.put(id, replacementCars.peek());
+		//notifyAll();
     }
 
     /**
@@ -162,31 +199,15 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      */
     @Override
     public synchronized void waitForCustomer(int id) {
-        while (reserve.containsKey(id)) {
+		/*notifyAll();	
+		while (reserve.containsKey(id)) {
             try {
                 wait();
+				
             } catch (Exception e) {
 
             }
-        }
-    }
-
-    /**
-     * Method used for log. Retrieves the number of customer cars parked.
-     *
-     * @return an Integer that represents the number of customer cars parked
-     */
-    public int getCarsParkedSize() {
-        return carsParked.size();
-    }
-
-    /**
-     * Method used for log. Retrieves the number of replacement cars available
-     *
-     * @return an Integer that represents the number of replacement cars
-     * available
-     */
-    public int getReplacementCarsSize() {
-        return replacementCars.size();
+        }*/
+		//notifyAll();
     }
 }

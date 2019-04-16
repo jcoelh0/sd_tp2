@@ -5,17 +5,17 @@
  */
 package shared;
 
+import entities.CustomerState;
+
 /**
  *
  * @author andre
  */
 public interface ICustomerL {
+	public void queueIn(int id, CustomerState state);
+	public void talkWithManager(boolean carRepaired, boolean requiresCar, int idCustomer);
+	public boolean collectKey(int id, CustomerState state);
+	public void payForTheService();
 
-    public void queueIn(int id);
-
-    public void talkWithManager();
-
-    public void collectKey();
-
-    public void payForTheService();
+	public int getCarReplacementId(int id);
 }
