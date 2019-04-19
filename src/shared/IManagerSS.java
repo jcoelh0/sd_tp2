@@ -8,5 +8,10 @@ import repository.Piece;
  */
 public interface IManagerSS {
 
-    public int goToSupplier(Piece partNeeded);
+	/**
+	 *
+	 * @param partNeeded
+	 * @return
+	 */
+	public int goToSupplier(Piece partNeeded);
 }

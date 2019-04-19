@@ -9,7 +9,10 @@ import entities.CustomerState;
 import entities.ManagerState;
 import entities.MechanicState;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import repository.EnumPiece;
+import repository.Piece;
 
 /**
  *
@@ -17,262 +20,244 @@ import java.util.LinkedList;
  */
 public class Message {
 
-	private static final long serialVersionUID = 1001L;
-	private boolean message_b;
-	private double message_d;
-	private int message_i;
+	private static final long serialVersionUID = 19042019L;
+	private boolean message_b1;
+	private boolean message_b2;
+	private Piece message_p1;
+	private int message_i1;
 	private int message_i2;
-	private int message_i3;
-	private int message_i4;
-	private Integer message_integer;
+	private String message_s1;
 	private MessageType type;
 	private ManagerState managerState;
 	private MechanicState mechanicState;
 	private CustomerState customerState;
-	private HashMap<?, ?> map = null;
-	//private Bet bet;
-	private LinkedList<Integer> linked;
-
-	/**
-	 * Constructor of Message.
-	 *
-	 * @param type
-	 * @param message
-	 */
-	public Message(MessageType type, int message) {
-		this.message_i = message;
-		this.type = type;
-	}
-
-	/**
-	 * Constructor of Message.
-	 *
-	 * @param type
-	 * @param message
-	 */
-	public Message(MessageType type, Integer message) {
-		this.message_integer = message;
-		this.type = type;
-	}
-
-	/**
-	 * Constructor of Message.
-	 *
-	 * @param type
-	 * @param message
-	 * @param message2
-	 */
-	public Message(MessageType type, int message, int message2) {
-		this.message_i = message;
-		this.message_i2 = message2;
-		this.type = type;
-	}
-
-	/**
-	 * Constructor of Message.
-	 *
-	 * @param type
-	 * @param message
-	 * @param message2
-	 */
-	public Message(MessageType type, int message, boolean message2) {
-		this.message_i = message;
-		this.message_b = message2;
-		this.type = type;
-	}
-
-	/**
-	 * Constructor of Message.
-	 *
-	 * @param type
-	 * @param message
-	 * @param message2
-	 * @param message3
-	 */
-	public Message(MessageType type, int message, int message2, int message3) {
-		this.message_i = message;
-		this.message_i2 = message2;
-		this.message_i3 = message3;
-		this.type = type;
-	}
-
-	/**
-	 * Constructor of Message.
-	 *
-	 * @param type
-	 * @param message
-	 * @param message2
-	 * @param message3
-	 * @param message4
-	 */
-	public Message(MessageType type, int message, int message2, int message3, int message4) {
-		this.message_i = message;
-		this.message_i2 = message2;
-		this.message_i3 = message3;
-		this.message_i4 = message4;
-		this.type = type;
-	}
-
-	/**
-	 * Constructor of Message.
-	 *
-	 * @param type
-	 * @param message
-	 */
-	public Message(MessageType type, boolean message) {
-		this.message_b = message;
-		this.type = type;
-	}
-
-	/**
-	 * Constructor of Message.
-	 *
-	 * @param type
-	 */
-	public Message(MessageType type) {
-		this.type = type;
-	}
-
-	/**
-	 * Constructor of Message.
-	 *
-	 * @param type
-	 * @param message
-	 * @param raceNumber
-	 */
-	public Message(MessageType type, int message, CustomerState customerState, int raceNumber) {
-		this.type = type;
-		this.message_i = message;
-		this.customerState = customerState;
-		this.message_i2 = raceNumber;
-	}
-
-	/**
-	 * Constructor of Message.
-	 *
-	 * @param type
-	 * @param message
-	 * @param spectatorsState
-	 * @param raceNumber
-	 */
-	public Message(MessageType type, int message, MechanicState spectatorsState, int raceNumber) {
-		this.type = type;
-		this.message_i = message;
-		this.message_i2 = raceNumber;
-	}
-
-	/**
-	 * Constructor of Message.
-	 *
-	 * @param type
-	 * @param brokerState
-	 * @param raceNumber
-	 */
-	public Message(MessageType type, ManagerState brokerState, int raceNumber) {
-		this.type = type;
-		this.message_i = raceNumber;
-	}
-
-	/**
-	 * Construct of Message.
-	 *
-	 * @param type
-	 * @param map
-	 */
-	public Message(MessageType type, HashMap<?, ?> map) {
-		this(type);
-		this.map = map;
-	}
-
+	private HashMap<?, ?> map1;
+	private Queue<Integer> message_q1, message_q2, message_q3;
+	private boolean[] message_arrayBool;
+	private HashMap<?, ?> map2;
+	private String[] message_arrayStr;
+	private List<Integer> message_l1;
+	private int[] message_arrayInt;
+	
 	/**
 	 * Constructor of Message.
 	 *
 	 * @param mt
-	 * @param raceNumber
-	 * @param spectatorId
-	 * @param bet
+	 * @param message
 	 */
-	public Message(MessageType mt, int raceNumber, int spectatorId, Object CHANGE) {
-		this.type = mt;
-		this.message_i = raceNumber;
-		this.message_i2 = spectatorId;
+	public Message(MessageType mt, int message) {
+		message_i1 = message;
+		type = mt;
 	}
 
 	/**
-	 * Constructor of Message.
 	 *
-	 * @param messageType
-	 * @param bet
+	 * @param mt
+	 * @param carRepaired
+	 * @param requiresCar
+	 * @param idCustomer
 	 */
-	public Message(MessageType messageType, Object CHANGE) {
-		this.type = messageType;
+	public Message(MessageType mt, boolean carRepaired, boolean requiresCar, int idCustomer) {
+		type = mt;
+		message_b1 = carRepaired;
+		message_b2 = requiresCar;
+		message_i1 = idCustomer;
 	}
 
 	/**
-	 * Constructor of Message.
 	 *
-	 * @param messageType
-	 * @param linked
+	 * @param mt
+	 * @param id
+	 * @param state
 	 */
-	public Message(MessageType messageType, LinkedList<Integer> linked) {
-		this.type = messageType;
-		this.linked = linked;
+	public Message(MessageType mt, int id, CustomerState state) {
+		type = mt;
+		message_i1 = id;
+		customerState = state;
 	}
 
 	/**
-	 * Constructor of Message.
 	 *
-	 * @param messageType
-	 * @param response_double
+	 * @param mt
+	 * @param piece
+	 * @param idCar
+	 * @param idMechanic
+	 * @param state
 	 */
-	public Message(MessageType messageType, double response_double) {
-		this.type = messageType;
-		this.message_d = response_double;
+	public Message(MessageType mt, Piece piece, int idCar, int idMechanic, MechanicState state) {
+		type = mt;
+		message_p1 = piece;
+		message_i1 = idCar;
+		message_i2 = idMechanic;
+		mechanicState = state;
 	}
 
+	public Message(MessageType mt, Queue<Integer> replacementQueue, Queue<Integer> customersQueue, Queue<Integer> carsRepaired, boolean[] requiresReplacementCar, int idCustomer, CustomerState state) {
+		type = mt;
+		message_q1 = replacementQueue;
+		message_q2 = customersQueue;
+		message_q3 = carsRepaired;
+		message_arrayBool = requiresReplacementCar;
+		message_i1 = idCustomer;
+		customerState = state;
+	}
+
+	public Message(MessageType mt, Queue<Integer> replacementQueue, Queue<Integer> customersQueue, Queue<Integer> carsRepaired, boolean[] requiresReplacementCar) {
+		type = mt;
+		message_q1 = replacementQueue;
+		message_q2 = customersQueue;
+		message_q3 = carsRepaired;
+		message_arrayBool = requiresReplacementCar;
+	}
+
+	public Message(MessageType mt, int nRequestsManager, HashMap<Integer, Piece> piecesToBeRepaired, boolean[] flagPartMissing, HashMap<EnumPiece, Integer> stock, int idMechanic, MechanicState state) {
+		type = mt;
+		message_i1 = nRequestsManager;
+		map1 = piecesToBeRepaired;
+		message_arrayBool = flagPartMissing;
+		map2 = stock;
+		message_i2 = idMechanic;
+		mechanicState = state;
+	}
+
+	public Message(MessageType mt, int nRequestsManager, HashMap<Integer, Piece> piecesToBeRepaired, boolean[] flagPartMissing, HashMap<EnumPiece, Integer> stock, ManagerState state) {
+		type = mt;
+		message_i1 = nRequestsManager;
+		map1 = piecesToBeRepaired;
+		message_arrayBool = flagPartMissing;
+		map2 = stock;
+		managerState = state;
+	}
+
+	public Message(MessageType mt, int nRequestsManager, HashMap<Integer, Piece> piecesToBeRepaired, boolean[] flagPartMissing, HashMap<EnumPiece, Integer> stock) {
+		type = mt;
+		message_i1 = nRequestsManager;
+		map1 = piecesToBeRepaired;
+		message_arrayBool = flagPartMissing;
+		map2 = stock;
+	}
+
+	public Message(MessageType mt, String[] vehicleDriven, int idCustomer, CustomerState state) {
+		type = mt;
+		message_arrayStr = vehicleDriven;
+		message_i1 = idCustomer;
+		customerState = state;
+	}
+
+	public Message(MessageType mt, List<Integer> carsParked, Queue<Integer> replacementCars, int idMechanic, MechanicState state) {
+		type = mt;
+		message_l1 = carsParked;
+		message_q1 = replacementCars;
+		message_i1 = idMechanic;
+		mechanicState = state;
+	}
+
+	public Message(MessageType mt, List<Integer> carsParked, Queue<Integer> replacementCars, int idCustomer, CustomerState state) {
+		type = mt;
+		message_l1 = carsParked;
+		message_q1 = replacementCars;
+		message_i1 = idCustomer;
+		customerState = state;
+	}
+
+	public Message(MessageType mt, List<Integer> carsParked, Queue<Integer> replacementCars) {
+		type = mt;
+		message_l1 = carsParked;
+		message_q1 = replacementCars;
+	}
+
+	public Message(MessageType mt, Queue<Integer> replacementQueue, Queue<Integer> customersQueue, Queue<Integer> carsRepaired, boolean[] requiresReplacementCar, int idMechanic, MechanicState state) {
+		type = mt;
+		message_q1 = replacementQueue;
+		message_q2 = customersQueue;
+		message_q3 = carsRepaired;
+		message_arrayBool = requiresReplacementCar;
+		message_i1 = idMechanic;
+		mechanicState = state;
+	}
+
+	public Message(MessageType mt, String response_str) {
+		type = mt;
+		message_s1 = response_str;
+	}
+
+	public Message(MessageType mt, boolean response_bool) {
+		type = mt;
+		message_b1 = response_bool;
+	}
+
+	public Message(MessageType mt, Piece response_piece) {
+		type = mt;
+		message_p1 = response_piece;
+		
+	}
+
+	public Message(MessageType messageType) {
+		type = messageType;
+	}
+
+	public Message(MessageType mt, int replacementCarId, int idCustomer) {
+		type = mt;
+		message_i1 = replacementCarId;
+		message_i2 = idCustomer;		
+	}
+
+	public Message(MessageType mt, ManagerState state) {
+		type = mt;
+		managerState = state;
+	}
+
+	public Message(MessageType mt, String[] vehicleDriven) {
+		type = mt;
+		message_arrayStr = vehicleDriven;
+	}
+
+	public Message(MessageType mt, int[] piecesBought) {
+		type = mt;
+		message_arrayInt = piecesBought;
+	}
+
+	public Message(MessageType mt, HashMap<?, ?> map) {
+		type = mt;
+		map1 = map;
+	}
+	
+	
+	
+	/**
+	 * Return Message Hosts Map.
+	 *
+	 * @return
+	 */
+	public HashMap<?,?> getHostsMap() {
+		return map1;
+	}
+	
+	/**
+	 * Return Message Ports Map.
+	 *
+	 * @return
+	 */
+	public HashMap<?,?> getPortsMap() {
+		return map1;
+	}
+	
 	/**
 	 * Return Message Type.
 	 *
 	 * @return
 	 */
 	public MessageType getType() {
-		return this.type;
+		return type;
 	}
-
-	/**
-	 * Return HashMap message.
-	 *
-	 * @return
-	 */
-	public Object getStrIntMap() {
-		return (HashMap<String, Integer>) this.map;
-	}
-
-	/**
-	 * Return HashMap message.
-	 *
-	 * @return
-	 */
-	public Object getStrStrMap() {
-		return (Object) this.map;
-	}
-
+	
 	/**
 	 * Return Integer message.
 	 *
 	 * @return
 	 */
-	public Integer getInteger() {
-		return this.message_integer;
-	}
-
-	/**
-	 * Return Integer message.
-	 *
-	 * @return
-	 */
-	public int getInteger1() {
-		return this.message_i;
+	public Integer getInteger1() {
+		return message_i1;
 	}
 
 	/**
@@ -281,87 +266,103 @@ public class Message {
 	 * @return
 	 */
 	public int getInteger2() {
-		return this.message_i2;
+		return message_i2;
 	}
 
 	/**
-	 * Return Integer message.
 	 *
 	 * @return
 	 */
-	public int getInteger3() {
-		return this.message_i3;
+	public String getString() {
+		return message_s1;
 	}
 
 	/**
-	 * Return Integer message.
 	 *
 	 * @return
 	 */
-	public int getInteger4() {
-		return this.message_i4;
+	public Piece getPiece() {
+		return message_p1;
 	}
-
+	
 	/**
 	 * Return Boolean message.
 	 *
 	 * @return
 	 */
-	public boolean getBoolean() {
-		return this.message_b;
+	public boolean getBoolean1() {
+		return message_b1;
+	}
+	/**
+	 * Return Boolean message.
+	 *
+	 * @return
+	 */
+	public boolean getBoolean2() {
+		return message_b2;
 	}
 	
 	/**
-	 * Return Bet message.
+	 * Return ManagerState message.
 	 *
 	 * @return
 	 */
-	/*public Object getBet() {
-		return this.bet;
+	public ManagerState getManagerState() {
+		return managerState;
+	}
+	
+	/**
+	 * Return CustomerState message.
+	 *
+	 * @return
+	 */
+	public CustomerState getCustomerState() {
+		return customerState;
+	}
+	
+	/**
+	 * Return MechanicState message.
+	 *
+	 * @return
+	 */
+	public MechanicState getMechanicState() {
+		return mechanicState;
 	}
 
-	/**
-	 * Return LinkedList message.
-	 *
-	 * @return
-	 */
-	public Object getLinkedList() {
-		return this.linked;
+	public Piece getMessage_p1() {
+		return message_p1;
 	}
 
-	/**
-	 * Return double message.
-	 *
-	 * @return
-	 */
-	public double getDouble() {
-		return this.message_d;
+	public Queue<Integer> getMessage_q1() {
+		return message_q1;
 	}
 
-	/**
-	 * Return SpectatorsState message.
-	 *
-	 * @return
-	 */
-	/*public Object getSpectatorState() {
-		return this.spectatorsState;
+	public Queue<Integer> getMessage_q2() {
+		return message_q2;
 	}
 
-	/**
-	 * Return HorseJockeyState message.
-	 *
-	 * @return
-	 */
-	/*public Object getHorseJockeyState() {
-		return this.horseJockeyState;
+	public Queue<Integer> getMessage_q3() {
+		return message_q3;
 	}
 
-	/**
-	 * Return BrokerState message.
-	 *
-	 * @return
-	 */
-	/*public Object getBrokerState() {
-		return this.brokerState;
-	}*/
+	public boolean[] getMessage_arrayBool() {
+		return message_arrayBool;
+	}
+
+	public HashMap<?, ?> getMap2() {
+		return map2;
+	}
+
+	public String[] getMessage_arrayStr() {
+		return message_arrayStr;
+	}
+
+	public List<Integer> getMessage_l1() {
+		return message_l1;
+	}
+
+	public int[] getMessage_arrayInt() {
+		return message_arrayInt;
+	}
+
 }

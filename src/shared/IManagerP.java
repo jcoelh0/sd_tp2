@@ -11,9 +11,23 @@ package shared;
  */
 public interface IManagerP {
 
-    public boolean replacementCarAvailable(int idCustomer);
+	/**
+	 *
+	 * @param idCustomer
+	 * @return
+	 */
+	public boolean replacementCarAvailable(int idCustomer);
 
-    public int reserveCar(int id);
+	/**
+	 *
+	 * @param id
+	 * @return
+	 */
+	public int reserveCar(int id);
 
-    public void waitForCustomer(int id);
+	/**
+	 *
+	 * @param id
+	 */
+	public void waitForCustomer(int id);
 }

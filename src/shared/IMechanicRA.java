@@ -10,25 +10,74 @@ import repository.Piece;
  */
 public interface IMechanicRA {
 
-    public boolean readThePaper(int idMechanic, MechanicState state);
+	/**
+	 *
+	 * @param idMechanic
+	 * @param state
+	 * @return
+	 */
+	public boolean readThePaper(int idMechanic, MechanicState state);
 
-    public int startRepairProcedure();
+	/**
+	 *
+	 * @return
+	 */
+	public int startRepairProcedure();
 
-    public void getRequiredPart(int id);
+	/**
+	 *
+	 * @param id
+	 */
+	public void getRequiredPart(int id);
 
-    public void letManagerKnow(Piece piece, int idCarToFix);
+	/**
+	 *
+	 * @param piece
+	 * @param idCarToFix
+	 */
+	public void letManagerKnow(Piece piece, int idCarToFix);
 
-    public boolean partAvailable(Piece requiredPart, int idMechanic, MechanicState state);
+	/**
+	 *
+	 * @param requiredPart
+	 * @param idMechanic
+	 * @param state
+	 * @return
+	 */
+	public boolean partAvailable(Piece requiredPart, int idMechanic, MechanicState state);
 
-    public int fixIt(int id, Piece p);
+	/**
+	 *
+	 * @param id
+	 * @param p
+	 * @return
+	 */
+	public int fixIt(int id, Piece p);
 
-    public void getNextTask();
+	/**
+	 *
+	 */
+	public void getNextTask();
 
-    public void resumeRepairProcedure();
+	/**
+	 *
+	 */
+	public void resumeRepairProcedure();
 
-    public void repairConcluded();
+	/**
+	 *
+	 */
+	public void repairConcluded();
 
-    public HashMap getPiecesToBeRepaired();
+	/**
+	 *
+	 * @return
+	 */
+	public HashMap getPiecesToBeRepaired();
 
-    public HashMap getPieces();
+	/**
+	 *
+	 * @return
+	 */
+	public HashMap getPieces();
 }

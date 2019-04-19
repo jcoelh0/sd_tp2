@@ -9,9 +9,23 @@ import repository.Piece;
  */
 public interface IManagerRA {
 
-    public void registerService(int idCustomer, ManagerState state);
+	/**
+	 *
+	 * @param idCustomer
+	 * @param state
+	 */
+	public void registerService(int idCustomer, ManagerState state);
 
-    public int storePart(Piece part, int quant);
+	/**
+	 *
+	 * @param part
+	 * @param quant
+	 * @return
+	 */
+	public int storePart(Piece part, int quant);
 
-    public void enoughWork();
+	/**
+	 *
+	 */
+	public void enoughWork();
 }

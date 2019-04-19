@@ -71,7 +71,7 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      *
 	 * @param id
 	 * @param state
-     * @return an Integer representing the replacement car id
+	 * @param replacementCarId
      */
     @Override
     public synchronized void findCar(int id, CustomerState state, int replacementCarId) {
@@ -108,7 +108,9 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      * Mechanic's method. Mechanic goes into the park and gets the vehicle to
      * repair.
      *
-     * @param id the car's id that is going to be checked in the repair area
+	 * @param idCar
+	 * @param idMechanic
+	 * @param state
      */
     @Override
     public synchronized void getVehicle(int idCar, int idMechanic, MechanicState state) {
@@ -123,7 +125,6 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      *
 	 * @param idCar
 	 * @param idCustomer
-	 * @param state
      * @param id the replacement car's id
      */
     @Override

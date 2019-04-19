@@ -12,10 +12,34 @@ import entities.CustomerState;
  * @author andre
  */
 public interface ICustomerP {
+
+	/**
+	 *
+	 * @param id
+	 * @param state
+	 */
 	public void parkCar(int id, CustomerState state);
-    public void collectCar(int id);
+
+	/**
+	 *
+	 * @param id
+	 */
+	public void collectCar(int id);
     //public  findCar(int id, CustomerState state);
+
+	/**
+	 *
+	 * @param replacementCar
+	 * @param id
+	 * @param state
+	 */
     public void returnReplacementCar(int replacementCar, int id, CustomerState state);
 
+	/**
+	 *
+	 * @param id
+	 * @param state
+	 * @param replacementCar
+	 */
 	public void findCar(int id, CustomerState state, int replacementCar);
 }

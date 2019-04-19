@@ -12,10 +12,39 @@ import entities.CustomerState;
  * @author andre
  */
 public interface ICustomerL {
+
+	/**
+	 *
+	 * @param id
+	 * @param state
+	 */
 	public void queueIn(int id, CustomerState state);
+
+	/**
+	 *
+	 * @param carRepaired
+	 * @param requiresCar
+	 * @param idCustomer
+	 */
 	public void talkWithManager(boolean carRepaired, boolean requiresCar, int idCustomer);
+
+	/**
+	 *
+	 * @param id
+	 * @param state
+	 * @return
+	 */
 	public boolean collectKey(int id, CustomerState state);
+
+	/**
+	 *
+	 */
 	public void payForTheService();
 
+	/**
+	 *
+	 * @param id
+	 * @return
+	 */
 	public int getCarReplacementId(int id);
 }

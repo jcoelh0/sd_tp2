@@ -14,7 +14,10 @@ public class SettingsProxy {
 	private final String SERVER_HOST;
     private final int SERVER_PORT;
     
-    public SettingsProxy(){
+	/**
+	 *
+	 */
+	public SettingsProxy(){
         String json_path = "hosts.json";
         
         if(Settings.DEBUG){
@@ -41,7 +44,7 @@ public class SettingsProxy {
     public HashMap<String, String> SERVER_HOSTS() {
         MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
         MessageWrapper wp = communicate(new Message(mt));
-        return (HashMap<String, String>) wp.getMessage().getStrStrMap();
+        return (HashMap<String, String>) wp.getMessage().getHostsMap();
     }
     
     /**
@@ -51,7 +54,7 @@ public class SettingsProxy {
     public HashMap<String, Integer> SERVER_PORTS() {
         MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
         MessageWrapper wp = communicate(new Message(mt));
-        return (HashMap<String, Integer>) wp.getMessage().getStrIntMap();
+        return (HashMap<String, Integer>) wp.getMessage().getPortsMap();
     }
     
     /**

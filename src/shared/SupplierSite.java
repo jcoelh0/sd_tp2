@@ -20,6 +20,7 @@ public class SupplierSite implements IManagerSS {
      * by the manager over time.
      *
      * @param nTypePieces number of type of pieces
+	 * @param repairShop
      */
     public SupplierSite(int nTypePieces, RepairShop repairShop) {
         this.repairShop = repairShop;

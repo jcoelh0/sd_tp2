@@ -19,6 +19,12 @@ import java.util.logging.Logger;
  */
 public class SettingsRun {
 
+	/**
+	 *
+	 * @param args
+	 * @throws SocketException
+	 * @throws IOException
+	 */
 	public static void main(String[] args) throws SocketException, IOException {
 		String json_path = "hosts.json";
 

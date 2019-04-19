@@ -16,7 +16,7 @@ import java.util.Queue;
  * @author andre e joao
  */
 public class RepairShop {
-	private int count=0;
+	private int count = 0;
 
     private int nMechanics;
     private int nCustomers;
@@ -51,6 +51,7 @@ public class RepairShop {
 	/**
 	 * RepairShop's constructor. This is where everything is initialized and
 	 * the log start.
+	 * @param nTypePieces
 	 * @param nMechanics number of mechanics
 	 * @param nCustomers number of customers
 	 * @param fileName log file name
@@ -91,6 +92,13 @@ public class RepairShop {
 		
     }
 	
+	/**
+	 *
+	 * @param replacementQueue
+	 * @param customersQueue
+	 * @param carsRepaired
+	 * @param requiresReplacementCar
+	 */
 	public synchronized void updateFromLounge(Queue<Integer> replacementQueue, Queue<Integer> customersQueue, Queue<Integer> carsRepaired, boolean[] requiresReplacementCar){
 		this.replacementQueue = replacementQueue;
 		this.customersQueue = customersQueue;
@@ -99,52 +107,114 @@ public class RepairShop {
 		reportStatus();
 	}
 	
+	/**
+	 *
+	 * @param replacementQueue
+	 * @param customersQueue
+	 * @param carsRepaired
+	 * @param requiresReplacementCar
+	 * @param idCustomer
+	 * @param state
+	 */
 	public synchronized void updateFromLounge(Queue<Integer> replacementQueue, Queue<Integer> customersQueue, Queue<Integer> carsRepaired, boolean[] requiresReplacementCar, int idCustomer, CustomerState state){
 		customersStates[idCustomer] = state;
 		updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
 	}
 	
+	/**
+	 *
+	 * @param state
+	 */
 	public synchronized void updateFromLounge(ManagerState state){
 		managerState = state;
 		updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
 	}
 	
-    public synchronized void updateFromLounge(Queue<Integer> replacementQueue, Queue<Integer> customersQueue, Queue<Integer> carsRepaired, boolean[] requiresReplacementCar, int idMechanic, MechanicState state){
+	/**
+	 *
+	 * @param replacementQueue
+	 * @param customersQueue
+	 * @param carsRepaired
+	 * @param requiresReplacementCar
+	 * @param idMechanic
+	 * @param state
+	 */
+	public synchronized void updateFromLounge(Queue<Integer> replacementQueue, Queue<Integer> customersQueue, Queue<Integer> carsRepaired, boolean[] requiresReplacementCar, int idMechanic, MechanicState state){
 		mechanicsStates[idMechanic] = state;
 		updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
 	}
     
+	/**
+	 *
+	 * @param carsParked
+	 * @param replacementCars
+	 */
 	public synchronized void updateFromPark(List<Integer> carsParked, Queue<Integer> replacementCars){
 		this.carsParked = carsParked;
 		this.replacementCars = replacementCars;
 		reportStatus();
 	}
 	
+	/**
+	 *
+	 * @param carsParked
+	 * @param replacementCars
+	 * @param idCustomer
+	 * @param state
+	 */
 	public synchronized void updateFromPark(List<Integer> carsParked, Queue<Integer> replacementCars, int idCustomer, CustomerState state){
 		customersStates[idCustomer] = state;
 		updateFromPark(carsParked, replacementCars);
 	}
     
-    public synchronized void updateFromPark(List<Integer> carsParked, Queue<Integer> replacementCars, int idMechanic, MechanicState state){
+	/**
+	 *
+	 * @param carsParked
+	 * @param replacementCars
+	 * @param idMechanic
+	 * @param state
+	 */
+	public synchronized void updateFromPark(List<Integer> carsParked, Queue<Integer> replacementCars, int idMechanic, MechanicState state){
 		mechanicsStates[idMechanic] = state;
 		updateFromPark(carsParked, replacementCars);
 	}
 	
+	/**
+	 *
+	 * @param vehicleDriven
+	 */
 	public synchronized void updateFromOutsideWorld(String[] vehicleDriven){
 		this.vehicleDriven = vehicleDriven;
 		reportStatus();
 	}
 	
+	/**
+	 *
+	 * @param vehicleDriven
+	 * @param idCustomer
+	 * @param state
+	 */
 	public synchronized void updateFromOutsideWorld(String[] vehicleDriven, int idCustomer, CustomerState state){
 		customersStates[idCustomer] = state;
 		updateFromOutsideWorld(vehicleDriven);
 	}
 	
+	/**
+	 *
+	 * @param piecesBought
+	 */
 	public synchronized void updateFromSupplierSite(int[] piecesBought){
 		this.piecesBought = piecesBought;
 		reportStatus();
 	}
 	
+	/**
+	 *
+	 * @param nRequestsManager
+	 * @param piecesToBeRepaired
+	 * @param flagPartMissing
+	 * @param stock
+	 */
 	public synchronized void updateFromRepairArea(int nRequestsManager, HashMap<Integer, Piece> piecesToBeRepaired, boolean[] flagPartMissing, HashMap<EnumPiece, Integer> stock){
 		this.nRequestsManager = nRequestsManager;
 		this.piecesToBeRepaired = piecesToBeRepaired;
@@ -153,11 +223,28 @@ public class RepairShop {
 		reportStatus();
 	}
 	
+	/**
+	 *
+	 * @param nRequestsManager
+	 * @param piecesToBeRepaired
+	 * @param flagPartMissing
+	 * @param stock
+	 * @param state
+	 */
 	public synchronized void updateFromRepairArea(int nRequestsManager, HashMap<Integer, Piece> piecesToBeRepaired, boolean[] flagPartMissing, HashMap<EnumPiece, Integer> stock, ManagerState state){
 		managerState = state;
 		updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
 	}
 	
+	/**
+	 *
+	 * @param nRequestsManager
+	 * @param piecesToBeRepaired
+	 * @param flagPartMissing
+	 * @param stock
+	 * @param idMechanic
+	 * @param state
+	 */
 	public synchronized void updateFromRepairArea(int nRequestsManager, HashMap<Integer, Piece> piecesToBeRepaired, boolean[] flagPartMissing, HashMap<EnumPiece, Integer> stock, int idMechanic, MechanicState state){
 		mechanicsStates[idMechanic] = state;
 		updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
@@ -181,7 +268,10 @@ public class RepairShop {
         return nVehiclesWaitingForParts;
     }
 	
-    public void reportInitialStatus() {
+	/**
+	 *
+	 */
+	public void reportInitialStatus() {
         TextFile log = new TextFile(); // instanciaÃ§Ã£o de uma variÃ¡vel de tipo ficheiro de texto
 
         //fileName = "repairShop.log";

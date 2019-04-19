@@ -42,6 +42,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
 	 * RepairArea's constructor. Initializes the stock and adds random pieces 
 	 * to stock.
 	 * @param nTypePieces
+	 * @param repairShop
 	 */
 	public RepairArea(int nTypePieces, RepairShop repairShop) {
 		this.repairShop = repairShop;
@@ -90,6 +91,8 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      * Mechanic's method. Reads the paper while there is no work. When a he is
      * alerted by the manager, he starts to work.
      *
+	 * @param idMechanic
+	 * @param state
 	 * @return a boolean representing if mechanic has more work or can go home
      */
     @Override
@@ -139,6 +142,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      *
      * @param id the id of the car that is going to get repaired
      * @param piece the piece that car needs to be repaired
+	 * @return 
      */
     @Override
     public synchronized int fixIt(int id, Piece piece) {
@@ -171,6 +175,8 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      * required piece is available in stock.
      *
      * @param part a piece
+	 * @param idMechanic
+	 * @param state
      * @return returns true if the piece is available and false otherwise
      */
     @Override

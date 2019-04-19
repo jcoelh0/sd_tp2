@@ -6,5 +6,10 @@ package shared;
  */
 public interface IManagerOW {
 
-    public boolean phoneCustomer(int id);
+	/**
+	 *
+	 * @param id
+	 * @return
+	 */
+	public boolean phoneCustomer(int id);
 }

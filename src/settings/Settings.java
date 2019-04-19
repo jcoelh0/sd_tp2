@@ -19,9 +19,16 @@ public class Settings {
 	 * Map of Server ports
 	 */
 	protected HashMap<String, Integer> SERVER_PORTS;
+
+	/**
+	 *
+	 */
 	protected HashMap<String, String> SERVER_HOSTS;
 
-	protected static boolean DEBUG = false;
+	/**
+	 *
+	 */
+	public static boolean DEBUG = false;
 
 	/**
 	 * Number of customers.

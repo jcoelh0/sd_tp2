@@ -1,8 +1,6 @@
 package shared;
 
-import entities.Customer;
 import entities.CustomerState;
-import entities.Manager;
 import entities.ManagerState;
 import entities.MechanicState;
 import java.util.Arrays;
@@ -11,6 +9,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import repository.Piece;
 import repository.RepairShop;
+import repository.RepairShopProxy;
 
 /**
  *
@@ -33,12 +32,15 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     private boolean readyToReceive;
 	private RepairShop repairShop;
     private boolean[] requiresReplacementCar;
+	private RepairShopProxy repairShopProxy;
 
     private static HashMap<Integer, String> order = new HashMap<Integer, String>();
 
 	/**
 	 *
+	 * @param nCustomers
 	 * @param nTypePieces
+	 * @param repairShop
 	 */
 	public Lounge(int nCustomers, int nTypePieces, RepairShop repairShop) {
         requiresReplacementCar = new boolean[nCustomers];
@@ -47,7 +49,14 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         
 		this.repairShop = repairShop;
     }
-
+	
+	public Lounge(int nCustomers, int nTypePieces, RepairShopProxy repairShop) {
+        requiresReplacementCar = new boolean[nCustomers];
+        
+        Arrays.fill(requiresReplacementCar, false);
+        
+		repairShopProxy = repairShop;
+    }
     /**
      * Customer's method. After parking the car in need of a repair, the
      * customer now has to wait in a queue to be attended by the manager.
@@ -122,6 +131,10 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
 
     }
 	
+	/**
+	 *
+	 * @param idCustomer
+	 */
 	@Override
 	public synchronized void addToReplacementQueue(int idCustomer){
 		replacementQueue.add(idCustomer);
@@ -132,6 +145,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * key.
      *
 	 * @param replacementCarId
+	 * @param idCustomer
      */
     @Override
     public synchronized void handCarKey(int replacementCarId, int idCustomer) {
@@ -151,6 +165,11 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         notifyAll();
     }
 	
+	/**
+	 *
+	 * @param id
+	 * @return
+	 */
 	@Override
     public synchronized int getCarReplacementId(int id) {
         while (!customersWithRepCar.containsKey(id)) {
@@ -345,6 +364,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * Manager's method. The manager retrieves the piece that needs to be re
 	 * stocked in the repair area.
 	 * 
+	 * @param state
      * @return a piece that needs to be re stocked in the repair area
      */
     @Override
@@ -356,6 +376,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
 
     /**
      * Manager's method. Manager changes state to go replenish stock.
+	 * @param state
      */
     @Override
     public synchronized void goReplenishStock(ManagerState state) {

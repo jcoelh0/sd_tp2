@@ -12,10 +12,45 @@ import entities.CustomerState;
  * @author andre
  */
 public interface ICustomerOW {
-    public boolean decideOnRepair(int id, CustomerState state);
-    public void goToRepairShop(int idCustomer, CustomerState state);
-    public boolean backToWorkByBus(boolean carRepaired, int id, CustomerState state);
-    public void goToReception(int idCustomer, CustomerState state);
 
+	/**
+	 *
+	 * @param id
+	 * @param state
+	 * @return
+	 */
+	public boolean decideOnRepair(int id, CustomerState state);
+
+	/**
+	 *
+	 * @param idCustomer
+	 * @param state
+	 */
+	public void goToRepairShop(int idCustomer, CustomerState state);
+
+	/**
+	 *
+	 * @param carRepaired
+	 * @param id
+	 * @param state
+	 * @return
+	 */
+	public boolean backToWorkByBus(boolean carRepaired, int id, CustomerState state);
+
+	/**
+	 *
+	 * @param idCustomer
+	 * @param state
+	 */
+	public void goToReception(int idCustomer, CustomerState state);
+
+	/**
+	 *
+	 * @param b
+	 * @param replacementCar
+	 * @param id
+	 * @param state
+	 * @return
+	 */
 	public boolean backToWorkByCar(boolean b, int replacementCar, int id, CustomerState state);
 }

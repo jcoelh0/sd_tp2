@@ -9,27 +9,85 @@ import entities.ManagerState;
  */
 public interface IManagerL {
 
-    public String talkWithCustomer(boolean availableCar);
+	/**
+	 *
+	 * @param availableCar
+	 * @return
+	 */
+	public String talkWithCustomer(boolean availableCar);
 
-    public void handCarKey(int replacementCarId, int idCustomer);
+	/**
+	 *
+	 * @param replacementCarId
+	 * @param idCustomer
+	 */
+	public void handCarKey(int replacementCarId, int idCustomer);
+
+	/**
+	 *
+	 * @param idCustomer
+	 */
 	public  void addToReplacementQueue(int idCustomer);
-    public int currentCustomer(ManagerState state);
 
-    public void checkWhatToDo(ManagerState state);
+	/**
+	 *
+	 * @param state
+	 * @return
+	 */
+	public int currentCustomer(ManagerState state);
 
-    public int getIdToCall(ManagerState state);
+	/**
+	 *
+	 * @param state
+	 */
+	public void checkWhatToDo(ManagerState state);
 
-    public boolean enoughWork();
+	/**
+	 *
+	 * @param state
+	 * @return
+	 */
+	public int getIdToCall(ManagerState state);
 
-    public boolean alertCustomer(int id);
+	/**
+	 *
+	 * @return
+	 */
+	public boolean enoughWork();
 
-    public void getNextTask();
+	/**
+	 *
+	 * @param id
+	 * @return
+	 */
+	public boolean alertCustomer(int id);
 
-    public void receivePayment();
+	/**
+	 *
+	 */
+	public void getNextTask();
 
-    public int appraiseSit();
+	/**
+	 *
+	 */
+	public void receivePayment();
 
-    public Piece getPieceToReStock(ManagerState state);
+	/**
+	 *
+	 * @return
+	 */
+	public int appraiseSit();
 
-    public void goReplenishStock(ManagerState state);
+	/**
+	 *
+	 * @param state
+	 * @return
+	 */
+	public Piece getPieceToReStock(ManagerState state);
+
+	/**
+	 *
+	 * @param state
+	 */
+	public void goReplenishStock(ManagerState state);
 }

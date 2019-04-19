@@ -19,6 +19,11 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
     private final List<Integer> waitingForCar;
     private final String[] vehicleDriven;
 	
+	/**
+	 *
+	 * @param nCustomers
+	 * @param repairShop
+	 */
 	public OutsideWorld(int nCustomers, RepairShop repairShop){
         this.waitingForCar = new ArrayList<>();
         this.repairedCars = new ArrayList<>();

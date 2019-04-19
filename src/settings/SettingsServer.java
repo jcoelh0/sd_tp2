@@ -33,8 +33,7 @@ public class SettingsServer extends Settings implements ServerInterface {
     * Process and reply all the messages
 	 * @param inMessage
 	 * @param scon
-	 * @return 
-     * @throws communication.message.MessageException
+	 * @return
      * @throws java.net.SocketException
     */
     @Override
