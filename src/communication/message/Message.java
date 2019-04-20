@@ -32,6 +32,8 @@ public class Message {
 	private MechanicState mechanicState;
 	private CustomerState customerState;
 	private HashMap<?, ?> map1;
+	private HashMap<Integer, Piece> mapIntegerPiece;
+	private HashMap<EnumPiece, Integer> mapEnumPieceInteger;
 	private Queue<Integer> message_q1, message_q2, message_q3;
 	private boolean[] message_arrayBool;
 	private HashMap<?, ?> map2;
@@ -387,5 +389,12 @@ public class Message {
 	public int[] getMessage_arrayInt() {
 		return message_arrayInt;
 	}
-
+	
+	public HashMap<Integer, Piece> getHashMapIntPiece() {
+		return mapIntegerPiece;
+	}
+	
+	public HashMap<EnumPiece, Integer> getHashMapEnumPieceInt() {
+		return mapEnumPieceInteger;
+	}
 }

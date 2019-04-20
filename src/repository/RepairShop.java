@@ -92,6 +92,10 @@ public class RepairShop {
 		
     }
 	
+	public RepairShop(){
+		
+	}
+	
 	/**
 	 *
 	 * @param replacementQueue
@@ -100,7 +104,7 @@ public class RepairShop {
 	 * @param requiresReplacementCar
 	 */
 	public synchronized void updateFromLounge(Queue<Integer> replacementQueue, Queue<Integer> customersQueue, Queue<Integer> carsRepaired, boolean[] requiresReplacementCar){
-		this.replacementQueue = replacementQueue;
+		this.replacementQueue = replacementQueue;//1
 		this.customersQueue = customersQueue;
 		this.carsRepaired = carsRepaired;
         this.requiresReplacementCar = requiresReplacementCar;
@@ -117,7 +121,7 @@ public class RepairShop {
 	 * @param state
 	 */
 	public synchronized void updateFromLounge(Queue<Integer> replacementQueue, Queue<Integer> customersQueue, Queue<Integer> carsRepaired, boolean[] requiresReplacementCar, int idCustomer, CustomerState state){
-		customersStates[idCustomer] = state;
+		customersStates[idCustomer] = state;//2
 		updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
 	}
 	
@@ -126,7 +130,7 @@ public class RepairShop {
 	 * @param state
 	 */
 	public synchronized void updateFromLounge(ManagerState state){
-		managerState = state;
+		managerState = state;//3
 		updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
 	}
 	
@@ -140,7 +144,7 @@ public class RepairShop {
 	 * @param state
 	 */
 	public synchronized void updateFromLounge(Queue<Integer> replacementQueue, Queue<Integer> customersQueue, Queue<Integer> carsRepaired, boolean[] requiresReplacementCar, int idMechanic, MechanicState state){
-		mechanicsStates[idMechanic] = state;
+		mechanicsStates[idMechanic] = state;//4
 		updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
 	}
     
@@ -149,7 +153,7 @@ public class RepairShop {
 	 * @param carsParked
 	 * @param replacementCars
 	 */
-	public synchronized void updateFromPark(List<Integer> carsParked, Queue<Integer> replacementCars){
+	public synchronized void updateFromPark(List<Integer> carsParked, Queue<Integer> replacementCars){//1
 		this.carsParked = carsParked;
 		this.replacementCars = replacementCars;
 		reportStatus();
@@ -163,7 +167,7 @@ public class RepairShop {
 	 * @param state
 	 */
 	public synchronized void updateFromPark(List<Integer> carsParked, Queue<Integer> replacementCars, int idCustomer, CustomerState state){
-		customersStates[idCustomer] = state;
+		customersStates[idCustomer] = state;//2
 		updateFromPark(carsParked, replacementCars);
 	}
     
@@ -175,7 +179,7 @@ public class RepairShop {
 	 * @param state
 	 */
 	public synchronized void updateFromPark(List<Integer> carsParked, Queue<Integer> replacementCars, int idMechanic, MechanicState state){
-		mechanicsStates[idMechanic] = state;
+		mechanicsStates[idMechanic] = state;//3
 		updateFromPark(carsParked, replacementCars);
 	}
 	
@@ -184,7 +188,7 @@ public class RepairShop {
 	 * @param vehicleDriven
 	 */
 	public synchronized void updateFromOutsideWorld(String[] vehicleDriven){
-		this.vehicleDriven = vehicleDriven;
+		this.vehicleDriven = vehicleDriven;//1
 		reportStatus();
 	}
 	
@@ -194,7 +198,7 @@ public class RepairShop {
 	 * @param idCustomer
 	 * @param state
 	 */
-	public synchronized void updateFromOutsideWorld(String[] vehicleDriven, int idCustomer, CustomerState state){
+	public synchronized void updateFromOutsideWorld(String[] vehicleDriven, int idCustomer, CustomerState state){//2
 		customersStates[idCustomer] = state;
 		updateFromOutsideWorld(vehicleDriven);
 	}
@@ -216,7 +220,7 @@ public class RepairShop {
 	 * @param stock
 	 */
 	public synchronized void updateFromRepairArea(int nRequestsManager, HashMap<Integer, Piece> piecesToBeRepaired, boolean[] flagPartMissing, HashMap<EnumPiece, Integer> stock){
-		this.nRequestsManager = nRequestsManager;
+		this.nRequestsManager = nRequestsManager;//1
 		this.piecesToBeRepaired = piecesToBeRepaired;
 		this.flagPartMissing = flagPartMissing;
 		this.stock = stock;
@@ -232,7 +236,7 @@ public class RepairShop {
 	 * @param state
 	 */
 	public synchronized void updateFromRepairArea(int nRequestsManager, HashMap<Integer, Piece> piecesToBeRepaired, boolean[] flagPartMissing, HashMap<EnumPiece, Integer> stock, ManagerState state){
-		managerState = state;
+		managerState = state;//2
 		updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
 	}
 	
@@ -246,7 +250,7 @@ public class RepairShop {
 	 * @param state
 	 */
 	public synchronized void updateFromRepairArea(int nRequestsManager, HashMap<Integer, Piece> piecesToBeRepaired, boolean[] flagPartMissing, HashMap<EnumPiece, Integer> stock, int idMechanic, MechanicState state){
-		mechanicsStates[idMechanic] = state;
+		mechanicsStates[idMechanic] = state;//3
 		updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
 	}
 	

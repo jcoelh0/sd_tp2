@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package repository;
 
 import communication.message.Message;
@@ -34,7 +29,7 @@ public class RepairShopProxy extends ClientProxy {
 	 * @param requiresReplacementCar
 	 */
 	public void updateFromLounge(Queue<Integer> replacementQueue, Queue<Integer> customersQueue, Queue<Integer> carsRepaired, boolean[] requiresReplacementCar){
-		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
+		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName()+"1");
         communicate(new Message(mt, replacementQueue, customersQueue, carsRepaired, requiresReplacementCar));
 	}
 	
@@ -48,7 +43,7 @@ public class RepairShopProxy extends ClientProxy {
 	 * @param state
 	 */
 	public void updateFromLounge(Queue<Integer> replacementQueue, Queue<Integer> customersQueue, Queue<Integer> carsRepaired, boolean[] requiresReplacementCar, int idCustomer, CustomerState state){
-		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
+		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName()+"2");
         communicate(new Message(mt, replacementQueue, customersQueue, carsRepaired, requiresReplacementCar, idCustomer, state));
 	}
 	
@@ -57,7 +52,7 @@ public class RepairShopProxy extends ClientProxy {
 	 * @param state
 	 */
 	public void updateFromLounge(ManagerState state){
-		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
+		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName()+"3");
         communicate(new Message(mt, state));
 	}
 	
@@ -71,7 +66,7 @@ public class RepairShopProxy extends ClientProxy {
 	 * @param state
 	 */
 	public void updateFromLounge(Queue<Integer> replacementQueue, Queue<Integer> customersQueue, Queue<Integer> carsRepaired, boolean[] requiresReplacementCar, int idMechanic, MechanicState state){
-		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
+		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName()+"4");
         communicate(new Message(mt, replacementQueue, customersQueue, carsRepaired, requiresReplacementCar, idMechanic, state));
 	}
     
@@ -81,7 +76,7 @@ public class RepairShopProxy extends ClientProxy {
 	 * @param replacementCars
 	 */
 	public void updateFromPark(List<Integer> carsParked, Queue<Integer> replacementCars){
-		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
+		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName()+"1");
         communicate(new Message(mt, carsParked, replacementCars));
 	}
 	
@@ -93,7 +88,7 @@ public class RepairShopProxy extends ClientProxy {
 	 * @param state
 	 */
 	public void updateFromPark(List<Integer> carsParked, Queue<Integer> replacementCars, int idCustomer, CustomerState state){
-		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
+		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName()+"2");
         communicate(new Message(mt, carsParked, replacementCars, idCustomer, state));
 	}
     
@@ -105,7 +100,7 @@ public class RepairShopProxy extends ClientProxy {
 	 * @param state
 	 */
 	public void updateFromPark(List<Integer> carsParked, Queue<Integer> replacementCars, int idMechanic, MechanicState state){
-		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
+		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName()+"3");
         communicate(new Message(mt, carsParked, replacementCars, idMechanic, state));
 	}
 	
@@ -114,7 +109,7 @@ public class RepairShopProxy extends ClientProxy {
 	 * @param vehicleDriven
 	 */
 	public void updateFromOutsideWorld(String[] vehicleDriven){
-		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
+		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName()+"1");
         communicate(new Message(mt, vehicleDriven));
 	}
 	
@@ -125,7 +120,7 @@ public class RepairShopProxy extends ClientProxy {
 	 * @param state
 	 */
 	public void updateFromOutsideWorld(String[] vehicleDriven, int idCustomer, CustomerState state){
-		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
+		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName()+"2");
         communicate(new Message(mt, vehicleDriven, idCustomer, state));
 	}
 	
@@ -146,7 +141,7 @@ public class RepairShopProxy extends ClientProxy {
 	 * @param stock
 	 */
 	public synchronized void updateFromRepairArea(int nRequestsManager, HashMap<Integer, Piece> piecesToBeRepaired, boolean[] flagPartMissing, HashMap<EnumPiece, Integer> stock){
-		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
+		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName()+"1");
         communicate(new Message(mt, nRequestsManager, piecesToBeRepaired, flagPartMissing, stock));
 	}
 	
@@ -159,7 +154,7 @@ public class RepairShopProxy extends ClientProxy {
 	 * @param state
 	 */
 	public void updateFromRepairArea(int nRequestsManager, HashMap<Integer, Piece> piecesToBeRepaired, boolean[] flagPartMissing, HashMap<EnumPiece, Integer> stock, ManagerState state){
-		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
+		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName()+"2");
         communicate(new Message(mt, nRequestsManager, piecesToBeRepaired, flagPartMissing, stock, state));
 	}
 	
@@ -173,7 +168,7 @@ public class RepairShopProxy extends ClientProxy {
 	 * @param state
 	 */
 	public void updateFromRepairArea(int nRequestsManager, HashMap<Integer, Piece> piecesToBeRepaired, boolean[] flagPartMissing, HashMap<EnumPiece, Integer> stock, int idMechanic, MechanicState state){
-		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
+		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName()+"3");
         communicate(new Message(mt, nRequestsManager, piecesToBeRepaired, flagPartMissing, stock, idMechanic, state));
 	}
 	

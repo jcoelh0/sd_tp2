@@ -30,8 +30,7 @@ public enum MessageType {
 	ACK, TERMINATE, SERVER_PORTS, SERVER_HOSTS,
     /* Vars */
 	N_CUSTOMERS, N_MECHANICS, N_MANAGERS, N_REPLACEMENT_CARS, N_TYPE_PIECES,
-    /* Log messages */
-	setSpectatorAmount, setBrokerState, setHorseJockeyState, setSpectatorState,
+    
     /* RepairShop messages */
-	updateFromLounge, updateFromPark, updateFromOutsideWorld, updateFromSupplierSite, updateFromRepairArea, reportInitialStatus
+	updateFromLounge1, updateFromLounge2, updateFromLounge3, updateFromLounge4, updateFromPark1, updateFromPark2, updateFromPark3, updateFromOutsideWorld1, updateFromOutsideWorld2, updateFromSupplierSite, updateFromRepairArea1, updateFromRepairArea2, updateFromRepairArea3, reportInitialStatus
 }
