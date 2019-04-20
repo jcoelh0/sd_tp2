@@ -44,7 +44,8 @@ public class SettingsProxy {
     public HashMap<String, String> SERVER_HOSTS() {
         MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
         MessageWrapper wp = communicate(new Message(mt));
-        return (HashMap<String, String>) wp.getMessage().getHostsMap();
+        return (HashMap<String, String>) wp.getMessage().getMap1();
+		//poderá estar um erro aqui com o getMap1
     }
     
     /**
@@ -54,7 +55,8 @@ public class SettingsProxy {
     public HashMap<String, Integer> SERVER_PORTS() {
         MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
         MessageWrapper wp = communicate(new Message(mt));
-        return (HashMap<String, Integer>) wp.getMessage().getPortsMap();
+        return (HashMap<String, Integer>) wp.getMessage().getMap1();
+		//poderá estar um erro aqui com o getMap1
     }
     
     /**

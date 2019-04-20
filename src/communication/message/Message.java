@@ -237,6 +237,22 @@ public class Message {
 	public Message(MessageType mt, int idMechanic, MechanicState state) {
 		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
 	}
+
+	public Message(MessageType mt, int idCustomer, ManagerState state) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	public Message(MessageType mt, Piece piece, int idCarToFix) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	public Message(MessageType mt, Piece requiredPart, int idMechanic, MechanicState state) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	public Message(MessageType mt, int id, Piece p) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
 	
 	
 	
@@ -245,16 +261,7 @@ public class Message {
 	 *
 	 * @return
 	 */
-	public HashMap<?,?> getHostsMap() {
-		return map1;
-	}
-	
-	/**
-	 * Return Message Ports Map.
-	 *
-	 * @return
-	 */
-	public HashMap<?,?> getPortsMap() {
+	public HashMap<?,?> getMap1() {
 		return map1;
 	}
 	

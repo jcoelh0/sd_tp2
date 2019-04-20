@@ -6,11 +6,15 @@ package communication.message;
  */
 public enum MessageType {
 	/* Manager messages */
-	talkWithCustomer, handCarKey, getIdToCall, addToReplacementQueue, currentCustomer, checkWhatToDo, enoughWork, alertCustomer, receivePayment, appraiseSit, getPieceToReStock, goReplenishStock, getNextTask,
+	talkWithCustomer, handCarKey, getIdToCall, addToReplacementQueue, currentCustomer, checkWhatToDo, alertCustomer, receivePayment, appraiseSit, getPieceToReStock, goReplenishStock, getNextTask,
 	//outsideWorld
 	phoneCustomer,
 	//park
 	replacementCarAvailable, reserveCar, waitForCustomer,
+	//ss
+	goToSupplier,
+	//repairArea
+	registerService, storePart, enoughWork,
 	
     /* Mechanic messages */
     readThePaper, startRepairProcedure, getRequiredPart, letManagerKnow, partAvailable, fixIt, resumeRepairProcedure, repairConcluded, getPiecesToBeRepaired, getPieces, getVehicle, returnVehicle, alertManager,
