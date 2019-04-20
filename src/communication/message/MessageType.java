@@ -7,10 +7,20 @@ package communication.message;
 public enum MessageType {
 	/* Manager messages */
 	talkWithCustomer, handCarKey, getIdToCall, addToReplacementQueue, currentCustomer, checkWhatToDo, enoughWork, alertCustomer, receivePayment, appraiseSit, getPieceToReStock, goReplenishStock, getNextTask,
+	//outsideWorld
+	phoneCustomer,
+	//park
+	replacementCarAvailable, reserveCar, waitForCustomer,
+	
     /* Mechanic messages */
     readThePaper, startRepairProcedure, getRequiredPart, letManagerKnow, partAvailable, fixIt, resumeRepairProcedure, repairConcluded, getPiecesToBeRepaired, getPieces, getVehicle, returnVehicle, alertManager,
+	
 	/* Customer messages */
 	talkWithManager, collectKey, payForTheService, getCarReplacementId, queueIn,
+	//outsideWorld
+	decideOnRepair,goToRepairShop, backToWorkByBus, backToWorkByCar, goToReception,
+	//park
+	parkCar, collectCar, returnReplacementCar, findCar,
 	
     /* To compile */
 	ACK, TERMINATE, SERVER_PORTS, SERVER_HOSTS,

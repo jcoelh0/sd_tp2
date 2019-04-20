@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import repository.RepairShop;
+import repository.RepairShopProxy;
 
 /**
  *
@@ -17,6 +18,7 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
 
     private int parkingSlots = 50;
 	private RepairShop repairShop;
+	private RepairShopProxy repairShopProxy;
 	
     private final List<Integer> carsParked = new ArrayList<>();
     private final Queue<Integer> replacementCars = new LinkedList<>();
@@ -32,6 +34,14 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      */
     public Park(int nReplacementCars, RepairShop repairShop) {
 		this.repairShop = repairShop;
+        for (int i = 1; i < nReplacementCars + 1; i++) {
+            replacementCars.add(i);
+        }
+		//repairShop.updateFromPark(carsParked, replacementCars);
+    }
+	
+	public Park(int nReplacementCars, RepairShopProxy repairShop) {
+		repairShopProxy = repairShop;
         for (int i = 1; i < nReplacementCars + 1; i++) {
             replacementCars.add(i);
         }

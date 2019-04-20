@@ -221,6 +221,22 @@ public class Message {
 		type = mt;
 		map1 = map;
 	}
+
+	public Message(MessageType mt, boolean carRepaired, int id, CustomerState state) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	public Message(MessageType mt, boolean b, int replacementCar, int id, CustomerState state) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	public Message(MessageType mt, int replacementCar, int id, CustomerState state) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	public Message(MessageType mt, int idMechanic, MechanicState state) {
+		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+	}
 	
 	
 	

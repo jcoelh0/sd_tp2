@@ -14,7 +14,7 @@ import repository.RepairShopProxy;
  * @author andre and joao
  */
 public class LoungeServer extends Lounge implements ServerInterface {
-
+	
 	private boolean serverEnded;
 	private final String name;
 	private int response_int;

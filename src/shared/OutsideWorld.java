@@ -8,13 +8,15 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import repository.RepairShop;
+import repository.RepairShopProxy;
 
 /**
  *
  * @author andre and joao
  */
 public class OutsideWorld implements ICustomerOW, IManagerOW {
-	private final RepairShop repairShop;
+	private RepairShop repairShop;
+	private RepairShopProxy repairShopProxy;
     private final List<Integer> repairedCars;
     private final List<Integer> waitingForCar;
     private final String[] vehicleDriven;
@@ -29,6 +31,18 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
         this.repairedCars = new ArrayList<>();
         vehicleDriven = new String[nCustomers];
 		this.repairShop = repairShop;
+		
+		for (int i = 0; i < nCustomers; i++) {
+			if(i<10) vehicleDriven[i] = "0"+Integer.toString(i);
+			else vehicleDriven[i] = Integer.toString(i);
+		}
+	}
+	
+	public OutsideWorld(int nCustomers, RepairShopProxy repairShop) {
+		this.waitingForCar = new ArrayList<>();
+        this.repairedCars = new ArrayList<>();
+        vehicleDriven = new String[nCustomers];
+		repairShopProxy = repairShop;
 		
 		for (int i = 0; i < nCustomers; i++) {
 			if(i<10) vehicleDriven[i] = "0"+Integer.toString(i);
