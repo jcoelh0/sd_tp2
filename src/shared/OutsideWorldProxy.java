@@ -20,6 +20,10 @@ public class OutsideWorldProxy extends ClientProxy implements ICustomerOW, IMana
 	public OutsideWorldProxy(String proxyName) {
 		super(proxyName);
 	}
+	
+	public OutsideWorldProxy() {
+		super("Outside World");
+	}
 
 	@Override
 	public boolean decideOnRepair(int id, CustomerState state) {

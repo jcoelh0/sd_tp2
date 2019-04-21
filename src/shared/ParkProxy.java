@@ -21,7 +21,10 @@ public class ParkProxy extends ClientProxy implements ICustomerP, IMechanicP, IM
 	public ParkProxy(String proxyName) {
 		super(proxyName);
 	}
-
+	
+	public ParkProxy() {
+		super("Park");
+	}
 	@Override
 	public void parkCar(int id, CustomerState state) {
 		MessageType mt = MessageType.valueOf(new Object(){}.getClass().getEnclosingMethod().getName());
