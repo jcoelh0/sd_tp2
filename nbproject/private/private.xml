@@ -2,17 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/jcoel/Desktop/sd_tp2/src/communication/server/Proxy.java</file>
-            <file>file:/C:/Users/jcoel/Desktop/sd_tp2/src/settings/SettingsProxy.java</file>
-            <file>file:/C:/Users/jcoel/Desktop/sd_tp2/src/communication/server/ServerInterface.java</file>
-            <file>file:/C:/Users/jcoel/Desktop/sd_tp2/src/communication/server/ClientProxy.java</file>
-            <file>file:/C:/Users/jcoel/Desktop/sd_tp2/src/settings/Settings.java</file>
-            <file>file:/C:/Users/jcoel/Desktop/sd_tp2/src/communication/message/MessageWrapper.java</file>
-            <file>file:/C:/Users/jcoel/Desktop/sd_tp2/src/communication/ServerChannel.java</file>
-            <file>file:/C:/Users/jcoel/Desktop/sd_tp2/src/settings/SettingsRun.java</file>
-            <file>file:/C:/Users/jcoel/Desktop/sd_tp2/src/communication/message/MessageType.java</file>
-            <file>file:/C:/Users/jcoel/Desktop/sd_tp2/src/main/Main.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

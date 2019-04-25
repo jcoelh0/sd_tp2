@@ -9,6 +9,9 @@ import entities.Manager.Interfaces.IManagerP;
 import entities.Manager.Interfaces.IManagerRA;
 import entities.Manager.Interfaces.IManagerSS;
 
+import static communication.ChannelPorts.*;
+import communication.ChannelClient;
+
 /**
  *
  * @author Andre e Joao
@@ -17,11 +20,11 @@ public class Manager extends Thread {
 
 	private ManagerState state;
 
-	private final IManagerL lounge;
-	private final IManagerRA repairArea;
-	private final IManagerSS supplierSite;
-	private final IManagerOW outsideWorld;
-	private final IManagerP park;
+	// private final IManagerL lounge;
+	// private final IManagerRA repairArea;
+	// private final IManagerSS supplierSite;
+	// private final IManagerOW outsideWorld;
+	// private final IManagerP park;
 	private boolean customerWaiting = false;
 	private int quant;
 	Piece partNeeded;
@@ -31,6 +34,12 @@ public class Manager extends Thread {
 	private boolean availableReplacementCar = false;
 	private int idCustomer = 0;
 	private int idToCall = 0;
+
+	private ChannelClient cc_outsideworld;
+	private ChannelClient cc_park;
+	private ChannelClient cc_lounge;
+	private ChannelClient cc_repairarea;
+	private ChannelClient cc_suppliersite;
 
 	/**
 	 * Manager's constructor.
@@ -42,13 +51,27 @@ public class Manager extends Thread {
 	 * @param park
 	 * @param nCustomers
 	 */
-	public Manager(IManagerL lounge, IManagerRA repairArea, IManagerSS supplierSite, IManagerOW outsideWorld, IManagerP park, int nCustomers) {
-		this.lounge = lounge;
-		this.repairArea = repairArea;
-		this.supplierSite = supplierSite;
-		this.outsideWorld = outsideWorld;
-		this.park = park;
+	// public Manager(IManagerL lounge, IManagerRA repairArea, IManagerSS supplierSite, IManagerOW outsideWorld, IManagerP park, int nCustomers) {
+	// 	this.lounge = lounge;
+	// 	this.repairArea = repairArea;
+	// 	this.supplierSite = supplierSite;
+	// 	this.outsideWorld = outsideWorld;
+	// 	this.park = park;
+	// 	this.nCustomers = nCustomers;
+	// 	this.cc_outsideworld = new ChannelClient(NAME_OUTSIDE_WORLD, PORT_OUTSIDE_WORLD);
+	// 	this.cc_park = new ChannelClient(NAME_PARK, PORT_PARK);
+	// 	this.cc_lounge = new ChannelClient(NAME_LOUNGE, PORT_LOUNGE);
+	// 	this.cc_repairarea = new ChannelClient(NAME_REPAIR_AREA, PORT_REPAIR_AREA);
+	// 	this.cc_suppliersite = new ChannelClient(NAME_SUPPLIER_SITE, PORT_SUPPLIER_SITE);
+	// }
+
+	public Manager(int nCustomers) {
 		this.nCustomers = nCustomers;
+	 	this.cc_outsideworld = new ChannelClient(NAME_OUTSIDE_WORLD, PORT_OUTSIDE_WORLD);
+	 	this.cc_park = new ChannelClient(NAME_PARK, PORT_PARK);
+	 	this.cc_lounge = new ChannelClient(NAME_LOUNGE, PORT_LOUNGE);
+	 	this.cc_repairarea = new ChannelClient(NAME_REPAIR_AREA, PORT_REPAIR_AREA);
+	 	this.cc_suppliersite = new ChannelClient(NAME_SUPPLIER_SITE, PORT_SUPPLIER_SITE);
 	}
 
 	@Override

@@ -6,6 +6,8 @@ import repository.Piece;
 import entities.Mechanic.Interfaces.IMechanicL;
 import entities.Mechanic.Interfaces.IMechanicP;
 import entities.Mechanic.Interfaces.IMechanicRA;
+import static communication.ChannelPorts.*;
+import communication.ChannelClient;
 
 /**
  *
@@ -14,10 +16,14 @@ import entities.Mechanic.Interfaces.IMechanicRA;
 public class Mechanic extends Thread {
 
 	private MechanicState state;
-	private final IMechanicP park;
-	private final IMechanicRA repairArea;
-	private final IMechanicL lounge;
+	// private final IMechanicP park;
+	// private final IMechanicRA repairArea;
+	// private final IMechanicL lounge;
 	private final int id;
+
+	private ChannelClient cc_repairarea;
+	private ChannelClient cc_lounge;
+	private ChannelClient cc_park;
 
 	/**
 	 * Mechanic's constructor.
@@ -27,11 +33,21 @@ public class Mechanic extends Thread {
 	 * @param lounge
 	 * @param id
 	 */
-	public Mechanic(IMechanicP park, IMechanicRA repairArea, IMechanicL lounge, int id) {
-		this.park = park;
-		this.repairArea = repairArea;
-		this.lounge = lounge;
-		this.id = id;
+	// public Mechanic(IMechanicP park, IMechanicRA repairArea, IMechanicL lounge, int id) {
+	// 	this.park = park;
+	// 	this.repairArea = repairArea;
+	// 	this.lounge = lounge;
+	// 	this.id = id;
+	// 	this.cc_repairarea = new ChannelClient(NAME_REPAIR_AREA, PORT_REPAIR_AREA);
+	// 	this.cc_park = new ChannelClient(NAME_PARK, PORT_PARK);
+	// 	this.cc_lounge = new ChannelClient(NAME_LOUNGE, PORT_LOUNGE);
+	// }
+
+	public Mechanic(int i) {
+		this.id = i;
+		this.cc_repairarea = new ChannelClient(NAME_REPAIR_AREA, PORT_REPAIR_AREA);
+		this.cc_park = new ChannelClient(NAME_PARK, PORT_PARK);
+		this.cc_lounge = new ChannelClient(NAME_LOUNGE, PORT_LOUNGE);
 	}
 
 	HashMap<Integer, Piece> piecesToBeRepaired;

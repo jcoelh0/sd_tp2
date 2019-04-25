@@ -2,9 +2,14 @@ package entities.Customer;
 
 import entities.Customer.States.CustomerState;
 import repository.RepairShop;
+
+import java.nio.channels.Channel;
+
+import communication.ChannelClient;
 import entities.Customer.Interfaces.ICustomerL;
 import entities.Customer.Interfaces.ICustomerOW;
 import entities.Customer.Interfaces.ICustomerP;
+import static communication.ChannelPorts.*;
 
 /**
  *
@@ -16,9 +21,9 @@ public class Customer extends Thread {
 
 	private final int id;
 
-	private final ICustomerOW outsideWorld;
-	private final ICustomerP park;
-	private final ICustomerL lounge;
+	//private final ICustomerOW outsideWorld;
+	//private final ICustomerP park;
+	//private final ICustomerL lounge;
 
 	/**
 	 * A boolean that represents if a customer requires a replacement car.
@@ -32,19 +37,34 @@ public class Customer extends Thread {
 	private boolean haveReplacementCar = false;
 	private int replacementCar;
 
-	/**
-	 * Customer's constructor.
-	 *
-	 * @param outsideWorld
-	 * @param park
-	 * @param lounge
-	 * @param id
-	 */
-	public Customer(ICustomerOW outsideWorld, ICustomerP park, ICustomerL lounge, int id) {
-		this.outsideWorld = outsideWorld;
-		this.park = park;
-		this.lounge = lounge;
-		this.id = id;
+	private ChannelClient cc_outside_world;
+	private ChannelClient cc_park;
+	private ChannelClient cc_lounge;
+
+
+	// /**
+	//  * Customer's constructor.
+	//  *
+	//  * @param outsideWorld
+	//  * @param park
+	//  * @param lounge
+	//  * @param id
+	//  */
+	// public Customer(ICustomerOW outsideWorld, ICustomerP park, ICustomerL lounge, int id) {
+	// 	this.outsideWorld = outsideWorld;
+	// 	this.park = park;
+	// 	this.lounge = lounge;
+	// 	this.id = id;
+	// 	this.cc_outside_world = new ChannelClient(NAME_OUTSIDE_WORLD, PORT_OUTSIDE_WORLD);
+	// 	this.cc_park = new ChannelClient(NAME_PARK, PORT_PARK);
+	// 	this.cc_lounge = new ChannelClient(NAME_LOUNGE, PORT_LOUNGE);
+	// }
+
+	public Customer(int i) {
+		this.id = i;
+		this.cc_outside_world = new ChannelClient(NAME_OUTSIDE_WORLD, PORT_OUTSIDE_WORLD);
+		this.cc_park = new ChannelClient(NAME_PARK, PORT_PARK);
+		this.cc_lounge = new ChannelClient(NAME_LOUNGE, PORT_LOUNGE);
 	}
 
 	@Override
