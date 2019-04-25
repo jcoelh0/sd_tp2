@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.ArrayList;
 import settings.SettingsProxy;
 import shared.IMechanicL;
 import shared.IMechanicP;
@@ -16,28 +17,33 @@ import shared.SupplierSiteProxy;
  */
 public class MechanicRun {
 
-	private static LoungeProxy lounge = new LoungeProxy();
-	private static OutsideWorldProxy outsideWorld = new OutsideWorldProxy();
-	private static RepairAreaProxy repairArea = new RepairAreaProxy();
-	private static ParkProxy park = new ParkProxy();
-	private static SupplierSiteProxy supplierSite = new SupplierSiteProxy();
-	private static int id = 0;
-	private static Mechanic mechanic;
+    private static LoungeProxy lounge = new LoungeProxy();
+    private static OutsideWorldProxy outsideWorld = new OutsideWorldProxy();
+    private static RepairAreaProxy repairArea = new RepairAreaProxy();
+    private static ParkProxy park = new ParkProxy();
+    private static SupplierSiteProxy supplierSite = new SupplierSiteProxy();
+    private static int id = 0;
+    //private static Mechanic mechanic;
 
-	public static void main(String[] args) {
-		SettingsProxy settingsProxy = new SettingsProxy();
+    public static void main(String[] args) {
+        SettingsProxy settingsProxy = new SettingsProxy();
 
-		mechanic = new Mechanic((IMechanicP) park, (IMechanicRA) repairArea, (IMechanicL) lounge, id++);
-
-		mechanic.start();
-
-		try {
-			System.out.println("Mechanic started!\n");
-			mechanic.join();
-			System.err.println("Mechanic Died");
-		} catch (InterruptedException ex) {
-			// do something in the future
-		}
-		
-	}
+        ArrayList<Mechanic> mechanics = new ArrayList<>(settingsProxy.N_MECHANICS());
+        
+        for(int i = 0; i < settingsProxy.N_MECHANICS(); i++) {
+            mechanics.add(new Mechanic((IMechanicP) park, (IMechanicRA) repairArea, (IMechanicL) lounge, i+1));
+            //id = i+1;
+        }
+        
+        for(Mechanic mechanic : mechanics) {
+            mechanic.start();
+        }
+        
+        for(Mechanic mechanic : mechanics) {
+            try {
+                mechanic.join();
+                System.err.printf("Mechanic %d died!\n", mechanic.getMechanicId());
+            } catch(InterruptedException e) {}
+        }
+    }
 }

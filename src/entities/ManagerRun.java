@@ -13,29 +13,30 @@ import shared.SupplierSiteProxy;
  */
 public class ManagerRun {
 
-	private static LoungeProxy lounge = new LoungeProxy();
-	private static OutsideWorldProxy outsideWorld = new OutsideWorldProxy();
-	private static RepairAreaProxy repairArea = new RepairAreaProxy();
-	private static SupplierSiteProxy supplierSite = new SupplierSiteProxy();
-	private static ParkProxy park = new ParkProxy();
-	private static Manager manager;
-	private static int nCustomers;
-	public static void main(String[] args) {
-		
-		SettingsProxy settingsProxy = new SettingsProxy();
-		nCustomers = settingsProxy.N_CUSTOMERS();
+    private static LoungeProxy lounge = new LoungeProxy();
+    private static OutsideWorldProxy outsideWorld = new OutsideWorldProxy();
+    private static RepairAreaProxy repairArea = new RepairAreaProxy();
+    private static SupplierSiteProxy supplierSite = new SupplierSiteProxy();
+    private static ParkProxy park = new ParkProxy();
+    private static Manager manager;
+    private static int nCustomers;
 
-		manager = new Manager(lounge, repairArea, supplierSite, outsideWorld, park, nCustomers);
+    public static void main(String[] args) {
 
-		manager.start();
+        SettingsProxy settingsProxy = new SettingsProxy();
+        nCustomers = settingsProxy.N_CUSTOMERS();
 
-		try {
-			System.out.println("Manager started!\n");
-			manager.join();
-			System.err.println("Manager Died");
-		} catch (InterruptedException ex) {
-			// do something in the future
-		}
+        manager = new Manager((shared.IManagerL) lounge, (shared.IManagerRA) repairArea, (shared.IManagerSS) supplierSite, (shared.IManagerOW) outsideWorld, (shared.IManagerP) park, nCustomers);
 
-	}
+        manager.start();
+
+        try {
+            System.out.println("Manager started!\n");
+            manager.join();
+            System.err.println("Manager Died");
+        } catch (InterruptedException ex) {
+            // do something in the future
+        }
+
+    }
 }

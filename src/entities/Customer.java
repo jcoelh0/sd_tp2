@@ -173,7 +173,7 @@ public class Customer extends Thread {
 	 *
 	 * @return customer's id
 	 */
-	private int getCustomerId() {
+	public int getCustomerId() {
 		return this.id;
 	}
 

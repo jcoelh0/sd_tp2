@@ -62,6 +62,11 @@ public class Settings {
 	 *
 	 * @param jsonfilepath
 	 */
+        
+        public Settings() {
+            
+        }
+        
 	public Settings(String jsonfilepath) {
 		
 		JSONTokener tokener = new JSONTokener(jsonfilepath);
