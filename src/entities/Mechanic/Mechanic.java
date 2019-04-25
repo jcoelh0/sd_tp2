@@ -16,39 +16,11 @@ import communication.ChannelClient;
 public class Mechanic extends Thread {
 
 	private MechanicState state;
-	// private final IMechanicP park;
-	// private final IMechanicRA repairArea;
-	// private final IMechanicL lounge;
 	private final int id;
 
 	private ChannelClient cc_repairarea;
 	private ChannelClient cc_lounge;
 	private ChannelClient cc_park;
-
-	/**
-	 * Mechanic's constructor.
-	 *
-	 * @param park
-	 * @param repairArea
-	 * @param lounge
-	 * @param id
-	 */
-	// public Mechanic(IMechanicP park, IMechanicRA repairArea, IMechanicL lounge, int id) {
-	// 	this.park = park;
-	// 	this.repairArea = repairArea;
-	// 	this.lounge = lounge;
-	// 	this.id = id;
-	// 	this.cc_repairarea = new ChannelClient(NAME_REPAIR_AREA, PORT_REPAIR_AREA);
-	// 	this.cc_park = new ChannelClient(NAME_PARK, PORT_PARK);
-	// 	this.cc_lounge = new ChannelClient(NAME_LOUNGE, PORT_LOUNGE);
-	// }
-
-	public Mechanic(int i) {
-		this.id = i;
-		this.cc_repairarea = new ChannelClient(NAME_REPAIR_AREA, PORT_REPAIR_AREA);
-		this.cc_park = new ChannelClient(NAME_PARK, PORT_PARK);
-		this.cc_lounge = new ChannelClient(NAME_LOUNGE, PORT_LOUNGE);
-	}
 
 	HashMap<Integer, Piece> piecesToBeRepaired;
 	private boolean noMoreWork = false;
@@ -57,6 +29,126 @@ public class Mechanic extends Thread {
 	Piece pieceManagerReStock;
 	int idCarToFix = 0;
 
+	public Mechanic(int i) {
+		this.id = i;
+		this.cc_repairarea = new ChannelClient(NAME_REPAIR_AREA, PORT_REPAIR_AREA);
+		this.cc_park = new ChannelClient(NAME_PARK, PORT_PARK);
+		this.cc_lounge = new ChannelClient(NAME_LOUNGE, PORT_LOUNGE);
+	}
+
+	private void openChannel(ChannelClient cc, String name) {
+		while(!cc.open()) {
+			System.out.println(name + " not open.");
+			try {
+				Thread.sleep(1000);
+			}
+			catch(Exception ex) {
+
+			}
+		}
+	}
+
+	private boolean readThePaper() {
+		RepairAreaMessage response;
+		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.READ_THE_PAPER), this.id);
+		response = (RepairAreaMessage) cc_repairarea.readObject();
+		cc_repairarea.close();
+		return response.getBoolean();
+	}
+
+	private int startRepairProcedure() {
+		RepairAreaMessage response;
+		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.START_REPAIR_PROCEDURE), this.id);
+		response = (RepairAreaMessage) cc_repairarea.readObject();
+		cc_repairarea.close();
+		return response.getCarId();
+	}
+
+	private void getVehicle(int car) {
+		ParkMessage response;
+		openChannel(cc_park, "Mechanic " + this.id + " : Park");
+		cc_park.writeObject(new ParkMessage(ParkMessage.GET_VEHICLE), this.id, car);
+		response = (ParkMessage) cc_park.readObject();
+		cc_park.close();
+	}
+
+	private HashMap<Integer,Piece> getPiecesToBeRepaired() {
+		RepairAreaMessage response;
+		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.GET_PIECES_TO_BE_REPAIRED), this.id);
+		response = (RepairAreaMessage) cc_repairarea.readObject();
+		cc_repairarea.close();
+		return response.getPieces();
+	}
+
+	private void getRequiredPart(int car) {
+		RepairAreaMessage response;
+		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.GET_REQUIRED_PART), this.id, car);
+		response = (RepairAreaMessage) cc_repairarea.readObject();
+		cc_repairarea.close();
+	}
+
+	private int fixIt(int car, Piece piece) {
+		RepairAreaMessage response;
+		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.FIX_IT), this.id, car, piece);
+		response = (RepairAreaMessage) cc_repairarea.readObject();
+		cc_repairarea.close();
+		return response.getInt();
+	}
+
+	private void returnVehicle(int car) {
+		ParkMessage response;
+		openChannel(cc_park, "Mechanic " + this.id + " : Park");
+		cc_park.writeObject(new ParkMessage(ParkMessage.RETURN_VEHICLE), this.id, car);
+		response = (ParkMessage) cc_park.readObject();
+		cc_park.close();
+	}
+
+	private void repairConcluded() {
+		RepairAreaMessage response;
+		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.REPAIR_CONCLUDED), this.id);
+		response = (RepairAreaMessage) cc_repairarea.readObject();
+		cc_repairarea.close();
+	}
+
+	private void alertManager(Piece piece, int cust_id) {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Mechanic " + this.id + " : Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.ALERT_MANAGER), this.id, piece, cust_id);
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+	}
+
+	private boolean partAvailable(Piece piece) {
+		RepairAreaMessage response;
+		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.PART_AVAILABLE), this.id, piece);
+		response = (RepairAreaMessage) cc_repairarea.readObject();
+		cc_repairarea.close();
+		return response.getBoolean();
+	}
+
+	private void letManagerKnow(Piece piece, int car_id) {
+		RepairAreaMessage response;
+		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.LET_MANAGER_KNOW), this.id, piece, car_id);
+		response = (RepairAreaMessage) cc_repairarea.readObject();
+		cc_repairarea.close();
+	}
+
+	private void resumeRepairProcedure() {
+		RepairAreaMessage response;
+		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.RESUME_REPAIR_PROCEDURE), this.id);
+		response = (RepairAreaMessage) cc_repairarea.readObject();
+		cc_repairarea.close();
+	}
+
 	@Override
 	public void run() {
 		this.setMechanicState(MechanicState.WAITING_FOR_WORK);
@@ -64,63 +156,56 @@ public class Mechanic extends Thread {
 		while (!noMoreWork) {
 			switch (this.state) {
 				case WAITING_FOR_WORK:
-					enoughWork = repairArea.readThePaper(id, state);
+					enoughWork = readThePaper();
 					if (enoughWork) {
 						noMoreWork = true;
 						break;
 					}
 
-					idCarToFix = repairArea.startRepairProcedure();
+					idCarToFix = startRepairProcedure();
 					if (idCarToFix == -1) {
 						setMechanicState(MechanicState.WAITING_FOR_WORK);
 					} else {
 						setMechanicState(MechanicState.FIXING_CAR);
 					}
 					break;
+
 				case FIXING_CAR:
-
-					park.getVehicle(idCarToFix, id, state);
-
-					piecesToBeRepaired = repairArea.getPiecesToBeRepaired();
+					getVehicle(idCarToFix);
+					piecesToBeRepaired = getPiecesToBeRepaired();
 					if (!piecesToBeRepaired.containsKey(idCarToFix)) {
-						repairArea.getRequiredPart(idCarToFix);
+						getRequiredPart(idCarToFix);
 						setMechanicState(MechanicState.CHECKING_STOCK);
 						break;
 					}
-
-					int fix = repairArea.fixIt(idCarToFix, piecesToBeRepaired.get(idCarToFix));
-
+					int fix = fixIt(idCarToFix, piecesToBeRepaired.get(idCarToFix));
 					if (fix == 0) {
-						//System.err.println("PEIDOLASPEIDOLASPEIDOLAS");
 						setMechanicState(MechanicState.CHECKING_STOCK);
-						break; //nao sei se este break é o melhor
+						break;
 					}
-
-					park.returnVehicle(idCarToFix);
-
-					repairArea.repairConcluded(); //NAO FAZ NADA
+					returnVehicle(idCarToFix);
+					repairConcluded();
 					setMechanicState(MechanicState.ALERTING_MANAGER);
-
 					repairConcluded = true;
 					break;
 
 				case ALERTING_MANAGER:
 					if (!repairConcluded) {
-						lounge.alertManager(piecesToBeRepaired.get(idCarToFix), idCarToFix, this.id, this.state);
+						alertManager(piecesToBeRepaired.get(idCarToFix), idCarToFix);
 					} else {
-						lounge.alertManager(null, idCarToFix, this.id, this.state);
+						alertManager(null, idCarToFix);
 					}
 					setMechanicState(MechanicState.WAITING_FOR_WORK);
 					repairConcluded = false;
 					break;
 
 				case CHECKING_STOCK:
-					if (!repairArea.partAvailable(piecesToBeRepaired.get(idCarToFix), this.id, this.state)) {
-						repairArea.letManagerKnow(piecesToBeRepaired.get(idCarToFix), idCarToFix);
+					if (!partAvailable(piecesToBeRepaired.get(idCarToFix))) {
+						letManagerKnow(piecesToBeRepaired.get(idCarToFix), idCarToFix);
 						setMechanicState(MechanicState.ALERTING_MANAGER);
-						park.returnVehicle(idCarToFix);
+						returnVehicle(idCarToFix);
 					} else {
-						repairArea.resumeRepairProcedure();//NAO FAZ NADA
+						resumeRepairProcedure();//NAO FAZ NADA
 						setMechanicState(MechanicState.FIXING_CAR);
 					}
 					break;

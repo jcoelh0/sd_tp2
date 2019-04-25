@@ -19,12 +19,6 @@ import communication.ChannelClient;
 public class Manager extends Thread {
 
 	private ManagerState state;
-
-	// private final IManagerL lounge;
-	// private final IManagerRA repairArea;
-	// private final IManagerSS supplierSite;
-	// private final IManagerOW outsideWorld;
-	// private final IManagerP park;
 	private boolean customerWaiting = false;
 	private int quant;
 	Piece partNeeded;
@@ -41,30 +35,6 @@ public class Manager extends Thread {
 	private ChannelClient cc_repairarea;
 	private ChannelClient cc_suppliersite;
 
-	/**
-	 * Manager's constructor.
-	 *
-	 * @param lounge
-	 * @param repairArea
-	 * @param supplierSite
-	 * @param outsideWorld
-	 * @param park
-	 * @param nCustomers
-	 */
-	// public Manager(IManagerL lounge, IManagerRA repairArea, IManagerSS supplierSite, IManagerOW outsideWorld, IManagerP park, int nCustomers) {
-	// 	this.lounge = lounge;
-	// 	this.repairArea = repairArea;
-	// 	this.supplierSite = supplierSite;
-	// 	this.outsideWorld = outsideWorld;
-	// 	this.park = park;
-	// 	this.nCustomers = nCustomers;
-	// 	this.cc_outsideworld = new ChannelClient(NAME_OUTSIDE_WORLD, PORT_OUTSIDE_WORLD);
-	// 	this.cc_park = new ChannelClient(NAME_PARK, PORT_PARK);
-	// 	this.cc_lounge = new ChannelClient(NAME_LOUNGE, PORT_LOUNGE);
-	// 	this.cc_repairarea = new ChannelClient(NAME_REPAIR_AREA, PORT_REPAIR_AREA);
-	// 	this.cc_suppliersite = new ChannelClient(NAME_SUPPLIER_SITE, PORT_SUPPLIER_SITE);
-	// }
-
 	public Manager(int nCustomers) {
 		this.nCustomers = nCustomers;
 	 	this.cc_outsideworld = new ChannelClient(NAME_OUTSIDE_WORLD, PORT_OUTSIDE_WORLD);
@@ -74,6 +44,180 @@ public class Manager extends Thread {
 	 	this.cc_suppliersite = new ChannelClient(NAME_SUPPLIER_SITE, PORT_SUPPLIER_SITE);
 	}
 
+	private void openChannel(ChannelClient cc, String name) {
+		while(!cc.open()) {
+			System.out.println(name + " not open.");
+			try {
+				Thread.sleep(1000);
+			}
+			catch(Exception ex) {
+
+			}
+		}
+	}
+
+	private void checkWhatToDo() {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Manager : Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.CHECK_WHAT_TO_DO));
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+	}
+
+	private void enoughWork() {
+		RepairAreaMessage response;
+		openChannel(cc_repairarea, "Manager : RepairArea");
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.ENOUGH_WORK));
+		response = (RepairAreaMessage) cc_repairarea.readObject();
+		cc_repairarea.close();
+	}
+
+	private void getNextTask() {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Manager : Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.GET_NEXT_TASK));
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+	}
+
+	private int appraiseSit() {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Manager : Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.APPRAISE_SIT));
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+		return response.nextTask();
+	}
+
+	private int currentCustomer() {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Manager : Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.CURRENT_CUSTOMER));
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+		return response.currentCustomer();
+	}
+
+	private String talkWithCustomer() {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Manager : Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.TALK_WITH_CUSTOMER));
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+		//return string
+	}
+
+	private boolean replacementCarAvailable(int cust_id) {
+		ParkMessage response;
+		openChannel(cc_park, "Manager : Park");
+		cc_park.writeObject(new ParkMessage(ParkMessage.REPLACEMENT_CAR_AVAILABLE));
+		response = (ParkMessage) cc_park.readObject();
+		cc_park.close();
+		return response.getBoolean();
+	}
+
+	private int reserveCar(int cust_id) {
+		ParkMessage response;
+		openChannel(cc_park, "Manager : Park");
+		cc_park.writeObject(new ParkMessage(ParkMessage.RESERVE_CAR));
+		response = (ParkMessage) cc_park.readObject();
+		cc_park.close();
+		return response.getCarId();
+	}
+
+	private void handCarKey(int car_id, int cust_id) {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Manager : Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.HAND_CAR_KEY), car_id, cust_id);
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+	}
+
+	private void addToReplacementQueue(int cust_id) {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Manager : Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.ADD_TO_REPLACEMENT_QUEUE), cust_id);
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+	}
+
+	private void receivePayment() {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Manager : Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.RECEIVE_PAYMENT));
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+	}
+
+	private Piece getPieceToReStock() {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Manager : Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.GET_PIECE_TO_RESTOCK));
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+		// return piece
+	}
+
+	private void registerService(int cust_id) {
+		RepairAreaMessage response;
+		openChannel(cc_repairarea, "Manager : RepairArea");
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.REGISTER_SERVICE), cust_id);
+		response = (RepairAreaMessage) cc_repairarea.readObject();
+		cc_repairarea.close();
+	}
+
+	private int getIdToCall() {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Manager : Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.GET_ID_TO_CALL));
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+		return response.idToCall();
+	}
+
+	private boolean alertCustomer(int cust_id) {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Manager : Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.ALERT_CUSTOMER), cust_id);
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+		return response.getBoolean();
+	}
+
+	private void phoneCustomer(int cust_id) {
+		OutsideWorldMessage response;
+		openChannel(cc_outsideworld, "Manager : OutsideWorld");
+		cc_outsideworld.writeObject(new OutsideWorldMessage(OutsideWorldMessage.PHONE_CUSTOMER), cust_id);
+		response = (OutsideWorldMessage) cc_outsideworld.readObject();
+		cc_outsideworld.close();
+	}
+
+	private void goReplenishStock() {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Manager : Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.GO_REPLENISH_STOCK));
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+	}
+
+	private int goToSupplier(Piece partNeeded) {
+		SupplierSiteMessage response;
+		openChannel(cc_suppliersite, "Manager : SupplierSite");
+		cc_suppliersite.writeObject(new SupplierSiteMessage(SupplierSiteMessage.GO_TO_SUPPLIER), partNeeded);
+		response = (SupplierSiteMessage) cc_suppliersite.readObject();
+		cc_suppliersite.close();
+		return response.getQuant();
+	}
+
+	private int storePart(Piece partNeeded, int quant) {
+		RepairAreaMessage response;
+		openChannel(cc_repairarea, "Manager : RepairArea");
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.STORE_PART), partNeeded, quant);
+		response = (RepairAreaMessage) cc_repairarea.readObject();
+		cc_repairarea.close();
+		return response.getCustId();
+	}
+
 	@Override
 	public void run() {
 		this.setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
@@ -81,14 +225,14 @@ public class Manager extends Thread {
 		while (!noMoreTasks) {
 			switch (this.state) {
 				case CHECKING_WHAT_TO_DO:
-					lounge.checkWhatToDo(state);
+					checkWhatToDo();
 					if (leftCustomers == nCustomers) {
-						repairArea.enoughWork();
+						enoughWork();
 						noMoreTasks = true;
 						break;
 					}
-					lounge.getNextTask();
-					nextTask = lounge.appraiseSit();
+					getNextTask();
+					nextTask = appraiseSit();
 					switch (nextTask) {
 						case 1:
 							this.setManagerState(ManagerState.GETTING_NEW_PARTS);
@@ -106,76 +250,52 @@ public class Manager extends Thread {
 					break;
 
 				case ATTENDING_CUSTOMER:
-					idCustomer = lounge.currentCustomer(state);
-					//System.err.println("lol"+idCustomer);
-
-					//System.err.println("lol"+idCustomer);
-					String action = lounge.talkWithCustomer(false); //boolean n faz nada
-					//System.err.println("lol"+idCustomer + " "+ action);
+					idCustomer = currentCustomer();
+					String action = talkWithCustomer();
 					if (action.equals("car")) {
-						availableReplacementCar = park.replacementCarAvailable(idCustomer);
+						availableReplacementCar = replacementCarAvailable(idCustomer);
 						if (availableReplacementCar) {
-							int replacementCarId = park.reserveCar(idCustomer);
-							//System.err.println("lol"+idCustomer);
-							//System.err.println(idCustomer+" added to list of rep cars");
-							lounge.handCarKey(replacementCarId, idCustomer);
-							//System.err.println("Chave dada ao " +idCustomer);
-							//park.waitForCustomer(idCustomer);
+							int replacementCarId = reserveCar(idCustomer);
+							handCarKey(replacementCarId, idCustomer);
 						} else {
-							//int replacementCarId=0;
-							lounge.addToReplacementQueue(idCustomer); //??????????? escusado
-							//lounge.handCarKey(-1, idCustomer);
-
+							addToReplacementQueue(idCustomer);
 							System.err.println(idCustomer+" not added to list of rep cars");
-							//setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
-							//break;
 						}
-
 						this.setManagerState(ManagerState.POSTING_JOB);
-						//repairArea.registerService(idCustomer);
 					} else if (action.equals("nocar")) {
 						this.setManagerState(ManagerState.POSTING_JOB);
-						//repairArea.registerService(idCustomer);
 					} else {
-						lounge.receivePayment();
+						receivePayment();
 						leftCustomers++;
 						this.setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
-						//lounge.checkWhatToDo();
 					}
 
 					break;
 
 				case GETTING_NEW_PARTS:
-					partNeeded = lounge.getPieceToReStock(state);
-					//lounge.goReplenishStock();
+					partNeeded = getPieceToReStock();
 					this.setManagerState(ManagerState.REPLENISH_STOCK);
 					break;
 
 				case POSTING_JOB:
-					repairArea.registerService(idCustomer, state);
+					registerService(idCustomer);
 					this.setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
-					//lounge.checkWhatToDo();
 					break;
 
 				case ALERTING_CUSTOMER:
-					idToCall = lounge.getIdToCall(state);
-					//System.err.println("Manger- vou alertar o "+idToCall);
-					customerWaiting = lounge.alertCustomer(idToCall);
+					idToCall = getIdToCall();
+					customerWaiting = alertCustomer(idToCall);
 					if (!customerWaiting) {
-						outsideWorld.phoneCustomer(idToCall);
+						phoneCustomer(idToCall);
 					}
 					this.setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
-					//lounge.checkWhatToDo();
 					break;
 
 				case REPLENISH_STOCK:
-					lounge.goReplenishStock(state);
-					quant = supplierSite.goToSupplier(partNeeded);
-					//int idToReFix = repairArea.storePart(partNeeded, quant);
-					idCustomer = repairArea.storePart(partNeeded, quant);
+					goReplenishStock();
+					quant = goToSupplier(partNeeded);
+					idCustomer = storePart(partNeeded, quant);
 					this.setManagerState(ManagerState.POSTING_JOB);
-					//repairArea.registerService(idToReFix);
-					//lounge.getNextTask();
 					break;
 			}
 		}
@@ -198,7 +318,8 @@ public class Manager extends Thread {
 	 *
 	 * @return manager's state
 	 */
-	public ManagerState getManagerState() {
+	private ManagerState getManagerState() {
 		return this.state;
 	}
+
 }

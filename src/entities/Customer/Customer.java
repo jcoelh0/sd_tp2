@@ -1,14 +1,7 @@
 package entities.Customer;
 
 import entities.Customer.States.CustomerState;
-import repository.RepairShop;
-
-import java.nio.channels.Channel;
-
 import communication.ChannelClient;
-import entities.Customer.Interfaces.ICustomerL;
-import entities.Customer.Interfaces.ICustomerOW;
-import entities.Customer.Interfaces.ICustomerP;
 import static communication.ChannelPorts.*;
 
 /**
@@ -20,10 +13,6 @@ public class Customer extends Thread {
 	private CustomerState state;
 
 	private final int id;
-
-	//private final ICustomerOW outsideWorld;
-	//private final ICustomerP park;
-	//private final ICustomerL lounge;
 
 	/**
 	 * A boolean that represents if a customer requires a replacement car.
@@ -41,30 +30,116 @@ public class Customer extends Thread {
 	private ChannelClient cc_park;
 	private ChannelClient cc_lounge;
 
-
-	// /**
-	//  * Customer's constructor.
-	//  *
-	//  * @param outsideWorld
-	//  * @param park
-	//  * @param lounge
-	//  * @param id
-	//  */
-	// public Customer(ICustomerOW outsideWorld, ICustomerP park, ICustomerL lounge, int id) {
-	// 	this.outsideWorld = outsideWorld;
-	// 	this.park = park;
-	// 	this.lounge = lounge;
-	// 	this.id = id;
-	// 	this.cc_outside_world = new ChannelClient(NAME_OUTSIDE_WORLD, PORT_OUTSIDE_WORLD);
-	// 	this.cc_park = new ChannelClient(NAME_PARK, PORT_PARK);
-	// 	this.cc_lounge = new ChannelClient(NAME_LOUNGE, PORT_LOUNGE);
-	// }
-
 	public Customer(int i) {
 		this.id = i;
 		this.cc_outside_world = new ChannelClient(NAME_OUTSIDE_WORLD, PORT_OUTSIDE_WORLD);
 		this.cc_park = new ChannelClient(NAME_PARK, PORT_PARK);
 		this.cc_lounge = new ChannelClient(NAME_LOUNGE, PORT_LOUNGE);
+	}
+
+	private void openChannel(ChannelClient cc, String name) {
+		while(!cc.open()) {
+			System.out.println(name + " not open.");
+			try {
+				Thread.sleep(1000);
+			}
+			catch(Exception ex) {
+
+			}
+		}
+	}
+
+	private boolean decideOnRepair() {
+		OutsideWorldMessage response;
+		openChannel(cc_outside_world, "Customer " + this.id + ": Outside World");
+		cc_outside_world.writeObject(new OutsideWorldMessage(OutsideWorldMessage.DECIDE_ON_REPAIR, this.id));
+		response = (OutsideWorldMesssage) cc_outside_world.readObject();
+		cc_outside_world.close();
+		return response.getBoolean();
+	}
+
+	private boolean backToWorkByCar(boolean carRepaired, int replacementCar) {
+		OutsideWorldMessage response;
+		openChannel(cc_outside_world, "Customer " + this.id + ": Outside World");
+		cc_outside_world.writeObject(new OutsideWorldMessage(OutsideWorldMessage.BACK_TO_WORK_BY_CAR, this.id, carRepaired, replacementCar));
+		response = (OutsideWorldMesssage) cc_outside_world.readObject();
+		cc_outside_world.close();
+		return response.getBoolean();
+	}
+
+	private void parkCar() {
+		ParkMessage response;
+		openChannel(cc_park, "Customer " + this.id + ": Park");
+		cc_park.writeObject(new ParkMessage(ParkMessage.PARK_CAR, this.id));
+		response = (ParkMessage) cc_park.readObject();
+		cc_park.close();
+	}
+
+	private void returnReplacementCar(int replacementCar) {
+		ParkMessage response;
+		openChannel(cc_park, "Customer " + this.id + ": Park");
+		cc_park.writeObject(new ParkMessage(ParkMessage.RETURN_REPLACEMENT_CAR, this.id, replacementCar));
+		response = (ParkMessage) cc_park.readObject();
+		cc_park.close();
+	}
+
+	private boolean collectKey() {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Customer " + this.id + ": Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.COLLECT_KEY, this.id));
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+		return response.getBoolean();
+	}
+
+	private int getCarReplacementId() {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Customer " + this.id + ": Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.GET_REPLACEMENT_CAR, this.id));
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+		return response.getReplacementCarId();
+	}
+
+	private void findCar(int replacementCar) {
+		ParkMessage response;
+		openChannel(cc_park, "Customer " + this.id + ": Park");
+		cc_park.writeObject(new ParkMessage(ParkMessage.FIND_CAR, this.id, replacementCar));
+		response = (ParkMessage) cc_park.readObject();
+		cc_park.close();
+	}
+
+	private void queueIn() {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Customer " + this.id + ": Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.QUEUE_IN, this.id));
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+	}
+
+	private void talkWithManager(boolean carRepaired, boolean requiresCar) {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Customer " + this.id + ": Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.TALK_WITH_MANAGER, this.id, carRepaired, requiresCar));
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+	}
+
+	private void payForTheService() {
+		LoungeMessage response;
+		openChannel(cc_lounge, "Customer " + this.id + ": Lounge");
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.PAY_FOR_THE_SERVICE, this.id));
+		response = (LoungeMessage) cc_lounge.readObject();
+		cc_lounge.close();
+	}
+
+	private boolean backToWorkByBus(boolean carRepaired) {
+		OutsideWorldMessage response;
+		openChannel(cc_outside_world, "Customer " + this.id + ": Outside World");
+		cc_outside_world.writeObject(new OutsideWorldMessage(OutsideWorldMessage.BACK_TO_WORK_BY_BUS, this.id, carRepaired));
+		response = (OutsideWorldMesssage) cc_outside_world.readObject();
+		cc_outside_world.close();
+		return response.getBoolean();
 	}
 
 	@Override
@@ -73,95 +148,63 @@ public class Customer extends Thread {
 		while (!this.happyCustomer) {
 			switch (this.state) {
 				case NORMAL_LIFE_WITH_CAR:
-					//todos entram aqui mas nem todos morrem
 					if (carRepaired) {
-						outsideWorld.backToWorkByCar(carRepaired, -1, id, state);
+						backToWorkByCar(carRepaired, -1);
 						happyCustomer = true;
 						break;
 					} else if (haveReplacementCar) {
 						requiresCar = false;
-						carRepaired = outsideWorld.backToWorkByCar(false, replacementCar, id, state); //log mete carro subst
-
-						//carRepaired = true;
+						carRepaired = backToWorkByCar(false, replacementCar);
 						setCustomerState(CustomerState.PARK);
 						break;
 					} else {
-						requiresCar = outsideWorld.decideOnRepair(id, state);
-						//requiresCar = false;
-						//requiresCar=true;
+						requiresCar = decideOnRepair();
 					}
-					//outsideWorld.goToRepairShop(this.id, this.state); // nao faz nada
 					setCustomerState(CustomerState.PARK);
 					break;
 
 				case PARK:
-					//.out.println(this.id + " PARK");
 					if (haveReplacementCar && carRepaired) {
 						haveReplacementCar = false;
-						park.returnReplacementCar(replacementCar, id, state);
-						outsideWorld.backToWorkByCar(false, -1, id, state);
-						//System.out.println(id+ " retornei carro "+replacementCar);
+						returnReplacementCar(replacementCar);
+						backToWorkByCar(false, -1);
 						setCustomerState(CustomerState.RECEPTION);
 						break;
 					}
-					park.parkCar(id, state);
-
+					parkCar();
 					setCustomerState(CustomerState.RECEPTION);
 					break;
 
 				case WAITING_FOR_REPLACE_CAR:
-					//System.out.println(id + " WAITING_FOR_REPLACE_CAR");
-
-					carRepaired = lounge.collectKey(id, state);
-					//System.err.println(id+" collected key");
+					carRepaired = collectKey();
 					if (carRepaired) {
-						//System.err.println("this");
-						outsideWorld.backToWorkByCar(carRepaired, -1, id, state);
+						backToWorkByCar(carRepaired, -1);
 						setCustomerState(CustomerState.RECEPTION);
 						break;
 					}
-					replacementCar = lounge.getCarReplacementId(id);
-					
-					park.findCar(id, state, replacementCar);
-
-					//System.out.println("replacementCar:"+replacementCar);
-					//outsideWorld.backToWorkByCar(false, replacementCar, id); //log mete carro subst
+					replacementCar = getCarReplacementId();
+					findCar(replacementCar);
 					haveReplacementCar = true;
-					//setCustomerState(CustomerState.PARK);
 					setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR);
 					break;
 
 				case RECEPTION:
-					//System.out.println(this.id + " RECEPTION");
-					lounge.queueIn(id, state);
-					lounge.talkWithManager(carRepaired, requiresCar, id);
+					queueIn();
+					talkWithManager(carRepaired, requiresCar);
 					if (!carRepaired) {
 						if (requiresCar) {
-							//haveReplacementCar = true;
 							setCustomerState(CustomerState.WAITING_FOR_REPLACE_CAR);
 						} else {
 							setCustomerState(CustomerState.NORMAL_LIFE_WITHOUT_CAR);
 						}
 					} else {
-						//System.err.println("Customer "+id+" ja vou com carro normal para a minha vida");
-
-						lounge.payForTheService();
-						//park.collectCar(this.id);
-						//log mete carro normal
-						//System.err.println("Customer "+id+" ja vou com carro normal para a minha vida");
-						//carRepaired = outsideWorld.backToWorkByCar(true, -1, this.id);
-						//this.happyCustomer = true;
+						payForTheService();
 						setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR);
 					}
 					break;
 
 				case NORMAL_LIFE_WITHOUT_CAR:
-					//System.out.println(this.id + " NORMAL_LIFE_WITHOUT_CAR");
-					//PROBLEMA AQUI, ELES NÃO VOLTAM TODOS DO OUTSIDE WORLD
-					carRepaired = outsideWorld.backToWorkByBus(carRepaired, id, state);
-					//outsideWorld.goToReception(this.id, this.state); //nao faz nada
-					//System.err.println(this.id+"checked");
-					//System.err.println(id + " carRpeaird:" + carRepaired);
+					carRepaired = backToWorkByBus(carRepaired);
 					setCustomerState(CustomerState.RECEPTION);
 					break;
 			}
