@@ -1,28 +1,32 @@
-package repository;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package shared.Park;
 
+import shared.Lounge.LoungeRun;
 import communication.ServerChannel;
 import communication.server.ServerProxy;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import repository.RepairShopProxy;
 import settings.SettingsProxy;
-import shared.Lounge.LoungeRun;
 
 /**
  *
  * @author andre and joao
  */
-public class RepairShopRun {
+public class ParkRun {
 	private static int SERVER_PORT;
-	private static int nCustomers, nMechanics, nTypePieces;
+	private static int nReplacementCars;
     
     public static void main(String[] args) throws SocketException {
 		SettingsProxy proxy = new SettingsProxy(); 
-        SERVER_PORT = proxy.SERVER_PORTS().get("RepairShop");
-        nCustomers = proxy.N_CUSTOMERS();
-		nTypePieces = proxy.N_TYPE_PIECES();
-		nMechanics = proxy.N_MECHANICS();
+        SERVER_PORT = proxy.SERVER_PORTS().get("Park");
+        nReplacementCars = proxy.N_REPLACEMENT_CARS();
 		
         // canais de comunicação
         ServerChannel serverChannel, clientChannel;
@@ -35,9 +39,11 @@ public class RepairShopRun {
         // criação do canal de escuta e sua associação
         serverChannel = new ServerChannel(SERVER_PORT);    
         serverChannel.start();
-       
-        RepairShopServer repairShopProxy = new RepairShopServer(nTypePieces, nMechanics, nCustomers, "repairShop.log");
-        System.out.println("RepairShop service has started!\nServer is listening.");
+        
+		RepairShopProxy repairShop = new RepairShopProxy();
+		
+        ParkServer parkServer = new ParkServer(nReplacementCars, repairShop);
+        System.out.println("Park service has started!\nServer is listening.");
 
         // processamento de pedidos 
         
@@ -47,7 +53,7 @@ public class RepairShopRun {
                 clientChannel = serverChannel.accept();
                 // lançamento do agente prestador do serviço
                 
-				cliProxy = new ServerProxy(serverChannel, clientChannel, repairShopProxy, "RepairShop");
+				cliProxy = new ServerProxy(serverChannel, clientChannel, parkServer, "Park");
                 cliProxy.start();
 				
             } catch (SocketTimeoutException ex) {

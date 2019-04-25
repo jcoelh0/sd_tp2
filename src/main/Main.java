@@ -1,26 +1,26 @@
 package main;
 
 
-import entities.Customer;
-import entities.Manager;
-import entities.Mechanic;
+import entities.Customer.Customer;
+import entities.Manager.Manager;
+import entities.Mechanic.Mechanic;
 import repository.RepairShop;
-import shared.ICustomerL;
-import shared.ICustomerOW;
-import shared.ICustomerP;
-import shared.IManagerL;
-import shared.IManagerOW;
-import shared.IManagerP;
-import shared.IManagerRA;
-import shared.IManagerSS;
-import shared.IMechanicL;
-import shared.IMechanicP;
-import shared.IMechanicRA;
-import shared.Lounge;
-import shared.OutsideWorld;
-import shared.Park;
-import shared.RepairArea;
-import shared.SupplierSite;
+import entities.Customer.Interfaces.ICustomerL;
+import entities.Customer.Interfaces.ICustomerOW;
+import entities.Customer.Interfaces.ICustomerP;
+import entities.Manager.Interfaces.IManagerL;
+import entities.Manager.Interfaces.IManagerOW;
+import entities.Manager.Interfaces.IManagerP;
+import entities.Manager.Interfaces.IManagerRA;
+import entities.Manager.Interfaces.IManagerSS;
+import entities.Mechanic.Interfaces.IMechanicL;
+import entities.Mechanic.Interfaces.IMechanicP;
+import entities.Mechanic.Interfaces.IMechanicRA;
+import shared.Lounge.Lounge;
+import shared.OutsideWorld.OutsideWorld;
+import shared.Park.Park;
+import shared.RepairArea.RepairArea;
+import shared.SupplierSite.SupplierSite;
 
 /**
  *

@@ -1,28 +1,28 @@
-package repository;
+package shared.OutsideWorld;
 
+import shared.Lounge.LoungeRun;
 import communication.ServerChannel;
 import communication.server.ServerProxy;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import repository.RepairShopProxy;
 import settings.SettingsProxy;
-import shared.Lounge.LoungeRun;
 
 /**
  *
- * @author andre and joao
+ * @author jcoel
  */
-public class RepairShopRun {
+public class OutsideWorldRun {
 	private static int SERVER_PORT;
-	private static int nCustomers, nMechanics, nTypePieces;
+	private static int nCustomers, nTypePieces;
     
     public static void main(String[] args) throws SocketException {
 		SettingsProxy proxy = new SettingsProxy(); 
-        SERVER_PORT = proxy.SERVER_PORTS().get("RepairShop");
+        SERVER_PORT = proxy.SERVER_PORTS().get("OutsideWorld");
         nCustomers = proxy.N_CUSTOMERS();
 		nTypePieces = proxy.N_TYPE_PIECES();
-		nMechanics = proxy.N_MECHANICS();
 		
         // canais de comunicação
         ServerChannel serverChannel, clientChannel;
@@ -35,9 +35,11 @@ public class RepairShopRun {
         // criação do canal de escuta e sua associação
         serverChannel = new ServerChannel(SERVER_PORT);    
         serverChannel.start();
-       
-        RepairShopServer repairShopProxy = new RepairShopServer(nTypePieces, nMechanics, nCustomers, "repairShop.log");
-        System.out.println("RepairShop service has started!\nServer is listening.");
+        
+		RepairShopProxy repairShop = new RepairShopProxy();
+		
+        OutsideWorldServer outsideWorldServer = new OutsideWorldServer(nCustomers, repairShop);
+        System.out.println("OutsideWorld service has started!\nServer is listening.");
 
         // processamento de pedidos 
         
@@ -47,7 +49,7 @@ public class RepairShopRun {
                 clientChannel = serverChannel.accept();
                 // lançamento do agente prestador do serviço
                 
-				cliProxy = new ServerProxy(serverChannel, clientChannel, repairShopProxy, "RepairShop");
+				cliProxy = new ServerProxy(serverChannel, clientChannel, outsideWorldServer, "OutsideWorld");
                 cliProxy.start();
 				
             } catch (SocketTimeoutException ex) {

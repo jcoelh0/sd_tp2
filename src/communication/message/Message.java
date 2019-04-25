@@ -5,9 +5,9 @@
  */
 package communication.message;
 
-import entities.CustomerState;
-import entities.ManagerState;
-import entities.MechanicState;
+import entities.Customer.States.CustomerState;
+import entities.Manager.States.ManagerState;
+import entities.Mechanic.States.MechanicState;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;

@@ -1,8 +1,8 @@
 package repository;
 
-import entities.CustomerState;
-import entities.ManagerState;
-import entities.MechanicState;
+import entities.Customer.States.CustomerState;
+import entities.Manager.States.ManagerState;
+import entities.Mechanic.States.MechanicState;
 import genclass.GenericIO;
 import genclass.TextFile;
 import java.util.ArrayList;
