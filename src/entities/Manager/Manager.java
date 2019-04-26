@@ -2,12 +2,11 @@ package entities.Manager;
 
 import entities.Manager.States.ManagerState;
 import repository.Piece;
-import repository.RepairShop;
-import entities.Manager.Interfaces.IManagerL;
-import entities.Manager.Interfaces.IManagerOW;
-import entities.Manager.Interfaces.IManagerP;
-import entities.Manager.Interfaces.IManagerRA;
-import entities.Manager.Interfaces.IManagerSS;
+import messages.LoungeMessage.LoungeMessage;
+import messages.OutsideWorldMessage.OutsideWorldMessage;
+import messages.ParkMessage.ParkMessage;
+import messages.RepairAreaMessage.RepairAreaMessage;
+import messages.SupplierSiteMessage.SupplierSiteMessage;
 
 import static communication.ChannelPorts.*;
 import communication.ChannelClient;
@@ -110,7 +109,7 @@ public class Manager extends Thread {
 	private boolean replacementCarAvailable(int cust_id) {
 		ParkMessage response;
 		openChannel(cc_park, "Manager : Park");
-		cc_park.writeObject(new ParkMessage(ParkMessage.REPLACEMENT_CAR_AVAILABLE));
+		cc_park.writeObject(new ParkMessage(ParkMessage.REPLACEMENT_CAR_AVAILABLE, cust_id));
 		response = (ParkMessage) cc_park.readObject();
 		cc_park.close();
 		return response.getBoolean();
@@ -119,7 +118,7 @@ public class Manager extends Thread {
 	private int reserveCar(int cust_id) {
 		ParkMessage response;
 		openChannel(cc_park, "Manager : Park");
-		cc_park.writeObject(new ParkMessage(ParkMessage.RESERVE_CAR));
+		cc_park.writeObject(new ParkMessage(ParkMessage.RESERVE_CAR, cust_id));
 		response = (ParkMessage) cc_park.readObject();
 		cc_park.close();
 		return response.getCarId();
@@ -128,7 +127,7 @@ public class Manager extends Thread {
 	private void handCarKey(int car_id, int cust_id) {
 		LoungeMessage response;
 		openChannel(cc_lounge, "Manager : Lounge");
-		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.HAND_CAR_KEY), car_id, cust_id);
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.HAND_CAR_KEY, car_id, cust_id));
 		response = (LoungeMessage) cc_lounge.readObject();
 		cc_lounge.close();
 	}
@@ -136,7 +135,7 @@ public class Manager extends Thread {
 	private void addToReplacementQueue(int cust_id) {
 		LoungeMessage response;
 		openChannel(cc_lounge, "Manager : Lounge");
-		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.ADD_TO_REPLACEMENT_QUEUE), cust_id);
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.ADD_TO_REPLACEMENT_QUEUE, cust_id));
 		response = (LoungeMessage) cc_lounge.readObject();
 		cc_lounge.close();
 	}
@@ -155,13 +154,13 @@ public class Manager extends Thread {
 		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.GET_PIECE_TO_RESTOCK));
 		response = (LoungeMessage) cc_lounge.readObject();
 		cc_lounge.close();
-		// return piece
+		// return;
 	}
 
 	private void registerService(int cust_id) {
 		RepairAreaMessage response;
 		openChannel(cc_repairarea, "Manager : RepairArea");
-		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.REGISTER_SERVICE), cust_id);
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.REGISTER_SERVICE, cust_id));
 		response = (RepairAreaMessage) cc_repairarea.readObject();
 		cc_repairarea.close();
 	}
@@ -178,7 +177,7 @@ public class Manager extends Thread {
 	private boolean alertCustomer(int cust_id) {
 		LoungeMessage response;
 		openChannel(cc_lounge, "Manager : Lounge");
-		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.ALERT_CUSTOMER), cust_id);
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.ALERT_CUSTOMER, cust_id));
 		response = (LoungeMessage) cc_lounge.readObject();
 		cc_lounge.close();
 		return response.getBoolean();
@@ -187,7 +186,7 @@ public class Manager extends Thread {
 	private void phoneCustomer(int cust_id) {
 		OutsideWorldMessage response;
 		openChannel(cc_outsideworld, "Manager : OutsideWorld");
-		cc_outsideworld.writeObject(new OutsideWorldMessage(OutsideWorldMessage.PHONE_CUSTOMER), cust_id);
+		cc_outsideworld.writeObject(new OutsideWorldMessage(OutsideWorldMessage.PHONE_CUSTOMER, cust_id));
 		response = (OutsideWorldMessage) cc_outsideworld.readObject();
 		cc_outsideworld.close();
 	}
@@ -203,7 +202,7 @@ public class Manager extends Thread {
 	private int goToSupplier(Piece partNeeded) {
 		SupplierSiteMessage response;
 		openChannel(cc_suppliersite, "Manager : SupplierSite");
-		cc_suppliersite.writeObject(new SupplierSiteMessage(SupplierSiteMessage.GO_TO_SUPPLIER), partNeeded);
+		cc_suppliersite.writeObject(new SupplierSiteMessage(SupplierSiteMessage.GO_TO_SUPPLIER, partNeeded));
 		response = (SupplierSiteMessage) cc_suppliersite.readObject();
 		cc_suppliersite.close();
 		return response.getQuant();
@@ -212,7 +211,7 @@ public class Manager extends Thread {
 	private int storePart(Piece partNeeded, int quant) {
 		RepairAreaMessage response;
 		openChannel(cc_repairarea, "Manager : RepairArea");
-		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.STORE_PART), partNeeded, quant);
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.STORE_PART, partNeeded, quant));
 		response = (RepairAreaMessage) cc_repairarea.readObject();
 		cc_repairarea.close();
 		return response.getCustId();

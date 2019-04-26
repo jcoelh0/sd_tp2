@@ -3,6 +3,9 @@ package entities.Customer;
 import entities.Customer.States.CustomerState;
 import communication.ChannelClient;
 import static communication.ChannelPorts.*;
+import messages.LoungeMessage.LoungeMessage;
+import messages.OutsideWorldMessage.OutsideWorldMessage;
+import messages.ParkMessage.ParkMessage;
 
 /**
  *
@@ -53,7 +56,7 @@ public class Customer extends Thread {
 		OutsideWorldMessage response;
 		openChannel(cc_outside_world, "Customer " + this.id + ": Outside World");
 		cc_outside_world.writeObject(new OutsideWorldMessage(OutsideWorldMessage.DECIDE_ON_REPAIR, this.id));
-		response = (OutsideWorldMesssage) cc_outside_world.readObject();
+		response = (OutsideWorldMessage) cc_outside_world.readObject();
 		cc_outside_world.close();
 		return response.getBoolean();
 	}
@@ -62,7 +65,7 @@ public class Customer extends Thread {
 		OutsideWorldMessage response;
 		openChannel(cc_outside_world, "Customer " + this.id + ": Outside World");
 		cc_outside_world.writeObject(new OutsideWorldMessage(OutsideWorldMessage.BACK_TO_WORK_BY_CAR, this.id, carRepaired, replacementCar));
-		response = (OutsideWorldMesssage) cc_outside_world.readObject();
+		response = (OutsideWorldMessage) cc_outside_world.readObject();
 		cc_outside_world.close();
 		return response.getBoolean();
 	}
@@ -137,7 +140,7 @@ public class Customer extends Thread {
 		OutsideWorldMessage response;
 		openChannel(cc_outside_world, "Customer " + this.id + ": Outside World");
 		cc_outside_world.writeObject(new OutsideWorldMessage(OutsideWorldMessage.BACK_TO_WORK_BY_BUS, this.id, carRepaired));
-		response = (OutsideWorldMesssage) cc_outside_world.readObject();
+		response = (OutsideWorldMessage) cc_outside_world.readObject();
 		cc_outside_world.close();
 		return response.getBoolean();
 	}

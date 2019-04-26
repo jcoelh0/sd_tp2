@@ -3,12 +3,11 @@ package entities.Mechanic;
 import entities.Mechanic.States.MechanicState;
 import java.util.HashMap;
 import repository.Piece;
-import entities.Mechanic.Interfaces.IMechanicL;
-import entities.Mechanic.Interfaces.IMechanicP;
-import entities.Mechanic.Interfaces.IMechanicRA;
 import static communication.ChannelPorts.*;
 import communication.ChannelClient;
-
+import messages.LoungeMessage.LoungeMessage;
+import messages.ParkMessage.ParkMessage;
+import messages.RepairAreaMessage.RepairAreaMessage;
 /**
  *
  * @author Andre e Joao
@@ -51,7 +50,7 @@ public class Mechanic extends Thread {
 	private boolean readThePaper() {
 		RepairAreaMessage response;
 		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
-		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.READ_THE_PAPER), this.id);
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.READ_THE_PAPER, this.id));
 		response = (RepairAreaMessage) cc_repairarea.readObject();
 		cc_repairarea.close();
 		return response.getBoolean();
@@ -60,7 +59,7 @@ public class Mechanic extends Thread {
 	private int startRepairProcedure() {
 		RepairAreaMessage response;
 		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
-		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.START_REPAIR_PROCEDURE), this.id);
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.START_REPAIR_PROCEDURE, this.id));
 		response = (RepairAreaMessage) cc_repairarea.readObject();
 		cc_repairarea.close();
 		return response.getCarId();
@@ -69,7 +68,7 @@ public class Mechanic extends Thread {
 	private void getVehicle(int car) {
 		ParkMessage response;
 		openChannel(cc_park, "Mechanic " + this.id + " : Park");
-		cc_park.writeObject(new ParkMessage(ParkMessage.GET_VEHICLE), this.id, car);
+		cc_park.writeObject(new ParkMessage(ParkMessage.GET_VEHICLE, this.id, car));
 		response = (ParkMessage) cc_park.readObject();
 		cc_park.close();
 	}
@@ -77,7 +76,7 @@ public class Mechanic extends Thread {
 	private HashMap<Integer,Piece> getPiecesToBeRepaired() {
 		RepairAreaMessage response;
 		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
-		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.GET_PIECES_TO_BE_REPAIRED), this.id);
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.GET_PIECES_TO_BE_REPAIRED, this.id));
 		response = (RepairAreaMessage) cc_repairarea.readObject();
 		cc_repairarea.close();
 		return response.getPieces();
@@ -86,7 +85,7 @@ public class Mechanic extends Thread {
 	private void getRequiredPart(int car) {
 		RepairAreaMessage response;
 		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
-		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.GET_REQUIRED_PART), this.id, car);
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.GET_REQUIRED_PART, this.id, car));
 		response = (RepairAreaMessage) cc_repairarea.readObject();
 		cc_repairarea.close();
 	}
@@ -94,7 +93,7 @@ public class Mechanic extends Thread {
 	private int fixIt(int car, Piece piece) {
 		RepairAreaMessage response;
 		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
-		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.FIX_IT), this.id, car, piece);
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.FIX_IT, this.id, piece, car));
 		response = (RepairAreaMessage) cc_repairarea.readObject();
 		cc_repairarea.close();
 		return response.getInt();
@@ -103,7 +102,7 @@ public class Mechanic extends Thread {
 	private void returnVehicle(int car) {
 		ParkMessage response;
 		openChannel(cc_park, "Mechanic " + this.id + " : Park");
-		cc_park.writeObject(new ParkMessage(ParkMessage.RETURN_VEHICLE), this.id, car);
+		cc_park.writeObject(new ParkMessage(ParkMessage.RETURN_VEHICLE, this.id, car));
 		response = (ParkMessage) cc_park.readObject();
 		cc_park.close();
 	}
@@ -111,7 +110,7 @@ public class Mechanic extends Thread {
 	private void repairConcluded() {
 		RepairAreaMessage response;
 		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
-		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.REPAIR_CONCLUDED), this.id);
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.REPAIR_CONCLUDED, this.id));
 		response = (RepairAreaMessage) cc_repairarea.readObject();
 		cc_repairarea.close();
 	}
@@ -119,7 +118,7 @@ public class Mechanic extends Thread {
 	private void alertManager(Piece piece, int cust_id) {
 		LoungeMessage response;
 		openChannel(cc_lounge, "Mechanic " + this.id + " : Lounge");
-		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.ALERT_MANAGER), this.id, piece, cust_id);
+		cc_lounge.writeObject(new LoungeMessage(LoungeMessage.ALERT_MANAGER, this.id, piece, cust_id));
 		response = (LoungeMessage) cc_lounge.readObject();
 		cc_lounge.close();
 	}
@@ -127,7 +126,7 @@ public class Mechanic extends Thread {
 	private boolean partAvailable(Piece piece) {
 		RepairAreaMessage response;
 		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
-		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.PART_AVAILABLE), this.id, piece);
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.PART_AVAILABLE, this.id, piece));
 		response = (RepairAreaMessage) cc_repairarea.readObject();
 		cc_repairarea.close();
 		return response.getBoolean();
@@ -136,7 +135,7 @@ public class Mechanic extends Thread {
 	private void letManagerKnow(Piece piece, int car_id) {
 		RepairAreaMessage response;
 		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
-		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.LET_MANAGER_KNOW), this.id, piece, car_id);
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.LET_MANAGER_KNOW, this.id, piece, car_id));
 		response = (RepairAreaMessage) cc_repairarea.readObject();
 		cc_repairarea.close();
 	}
@@ -144,7 +143,7 @@ public class Mechanic extends Thread {
 	private void resumeRepairProcedure() {
 		RepairAreaMessage response;
 		openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
-		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.RESUME_REPAIR_PROCEDURE), this.id);
+		cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.RESUME_REPAIR_PROCEDURE, this.id));
 		response = (RepairAreaMessage) cc_repairarea.readObject();
 		cc_repairarea.close();
 	}
