@@ -13,13 +13,13 @@ public class OutsideWorldMessage {
     
     private int msg = -1;
     
-    public static int PHONE_CUSTOMER = 1;
+    public static final int PHONE_CUSTOMER = 1;
     
-    public static int DECIDE_ON_REPAIR = 2;
+    public static final int DECIDE_ON_REPAIR = 2;
     
-    public static int BACK_TO_WORK_BY_CAR = 3;
+    public static final int BACK_TO_WORK_BY_CAR = 3;
     
-    public static int BACK_TO_WORK_BY_BUS = 4;
+    public static final int BACK_TO_WORK_BY_BUS = 4;
     
     private int cust_id;
     private boolean carRepaired;

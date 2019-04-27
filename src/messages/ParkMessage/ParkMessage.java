@@ -13,19 +13,19 @@ public class ParkMessage {
     
     private int msg = -1;
     
-    public static int REPLACEMENT_CAR_AVAILABLE = 1;
+    public static final int REPLACEMENT_CAR_AVAILABLE = 1;
     
-    public static int RESERVE_CAR = 2;
+    public static final int RESERVE_CAR = 2;
     
-    public static int GET_VEHICLE = 3;
+    public static final int GET_VEHICLE = 3;
     
-    public static int RETURN_VEHICLE = 4;
+    public static final int RETURN_VEHICLE = 4;
     
-    public static int PARK_CAR = 5;
+    public static final int PARK_CAR = 5;
     
-    public static int RETURN_REPLACEMENT_CAR = 6;
+    public static final int RETURN_REPLACEMENT_CAR = 6;
     
-    public static int FIND_CAR = 7;
+    public static final int FIND_CAR = 7;
     
     private int id;
     private int car;

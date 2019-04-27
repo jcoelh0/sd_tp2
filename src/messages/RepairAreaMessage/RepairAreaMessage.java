@@ -15,29 +15,29 @@ public class RepairAreaMessage {
     
     private int msg = -1;
     
-    public static int ENOUGH_WORK = 1;
+    public static final int ENOUGH_WORK = 1;
     
-    public static int REGISTER_SERVICE = 2;
+    public static final int REGISTER_SERVICE = 2;
     
-    public static int STORE_PART = 3;
+    public static final int STORE_PART = 3;
     
-    public static int READ_THE_PAPER = 4;
+    public static final int READ_THE_PAPER = 4;
     
-    public static int START_REPAIR_PROCEDURE = 5;
+    public static final int START_REPAIR_PROCEDURE = 5;
     
-    public static int GET_PIECES_TO_BE_REPAIRED = 6;
+    public static final int GET_PIECES_TO_BE_REPAIRED = 6;
     
-    public static int GET_REQUIRED_PART = 7;
+    public static final int GET_REQUIRED_PART = 7;
     
-    public static int FIX_IT = 8;
+    public static final int FIX_IT = 8;
     
-    public static int REPAIR_CONCLUDED = 9;
+    public static final int REPAIR_CONCLUDED = 9;
     
-    public static int PART_AVAILABLE = 10;
+    public static final int PART_AVAILABLE = 10;
     
-    public static int LET_MANAGER_KNOW = 11;
+    public static final int LET_MANAGER_KNOW = 11;
     
-    public static int RESUME_REPAIR_PROCEDURE = 12;
+    public static final int RESUME_REPAIR_PROCEDURE = 12;
     
     private int id;
     private Piece piece;

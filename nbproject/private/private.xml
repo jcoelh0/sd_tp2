@@ -2,6 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/home/andre/Desktop/sd_tp2/src/entities/Mechanic/Mechanic.java</file>
+            <file>file:/home/andre/Desktop/sd_tp2/src/messages/RepairAreaMessage/RepairAreaMessage.java</file>
+            <file>file:/home/andre/Desktop/sd_tp2/src/messages/SupplierSiteMessage/SupplierSiteMessage.java</file>
+            <file>file:/home/andre/Desktop/sd_tp2/src/entities/Manager/Manager.java</file>
+            <file>file:/home/andre/Desktop/sd_tp2/src/messages/ParkMessage/ParkMessage.java</file>
+            <file>file:/home/andre/Desktop/sd_tp2/src/messages/LoungeMessage/LoungeMessage.java</file>
+            <file>file:/home/andre/Desktop/sd_tp2/src/messages/OutsideWorldMessage/OutsideWorldMessage.java</file>
+            <file>file:/home/andre/Desktop/sd_tp2/src/entities/Customer/Customer.java</file>
+        </group>
     </open-files>
 </project-private>
