@@ -13,6 +13,8 @@ public class OutsideWorldMessage {
     
     private int msg = -1;
     
+    public static final int END = 0;
+    
     public static final int PHONE_CUSTOMER = 1;
     
     public static final int DECIDE_ON_REPAIR = 2;

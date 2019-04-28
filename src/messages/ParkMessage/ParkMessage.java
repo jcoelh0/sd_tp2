@@ -13,6 +13,8 @@ public class ParkMessage {
     
     private int msg = -1;
     
+    public static final int END = 0;
+    
     public static final int REPLACEMENT_CAR_AVAILABLE = 1;
     
     public static final int RESERVE_CAR = 2;

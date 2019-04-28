@@ -15,6 +15,8 @@ public class LoungeMessage implements Serializable {
     
     private int msg = -1;
     
+    public static final int END = 0;
+    
     public static final int COLLECT_KEY = 1;
     
     public static final int GET_REPLACEMENT_CAR = 2;

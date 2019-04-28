@@ -78,7 +78,7 @@ public class LoungeInterface {
             default:
                 throw new LoungeMessageException("Invalid message type.", inMsg);
         }
+        return outMsg;
     }
 
-    return outMsg;
 }

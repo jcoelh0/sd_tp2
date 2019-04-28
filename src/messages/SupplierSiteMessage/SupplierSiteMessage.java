@@ -15,6 +15,8 @@ public class SupplierSiteMessage {
     
     private int msg = -1;
     
+    public static final int END = 0;
+    
     public static final int GO_TO_SUPPLIER = 1;
     
     private Piece piece;

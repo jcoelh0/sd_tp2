@@ -15,6 +15,8 @@ public class RepairAreaMessage {
     
     private int msg = -1;
     
+    public static final int END = 0;
+    
     public static final int ENOUGH_WORK = 1;
     
     public static final int REGISTER_SERVICE = 2;

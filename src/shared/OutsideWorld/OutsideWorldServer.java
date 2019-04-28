@@ -1,71 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shared.OutsideWorld;
 
-import shared.OutsideWorld.OutsideWorld;
-import communication.ServerChannel;
-import communication.message.Message;
-import communication.message.MessageType;
-import communication.server.ServerInterface;
-import entities.Customer.States.CustomerState;
-import java.net.SocketException;
-import repository.Piece;
-import repository.RepairShop;
-import repository.RepairShopProxy;
+import communication.ChannelServer;
+import static communication.ChannelPorts.NAME_OUTSIDE_WORLD;
+import static communication.ChannelPorts.PORT_OUTSIDE_WORLD;
 
-/**
- *
- * @author jcoel
- */
-public class OutsideWorldServer extends OutsideWorld implements ServerInterface{
-	private boolean serverEnded;
-	private final String name;
-	private boolean response_bool;
-	
-	public OutsideWorldServer(int nCustomers, RepairShopProxy repairShop) {
-		super(nCustomers, repairShop);
-		name = "OutsideWorld";
-		serverEnded = false;
-	}
-
-	@Override
-	public Message processAndReply(Message inMessage, ServerChannel scon) throws SocketException {
-		switch (inMessage.getType()) {
-			case TERMINATE:
-				serverEnded = true;
-				break;
-			case phoneCustomer:
-				response_bool = super.phoneCustomer(inMessage.getInteger1());
-				return new Message(MessageType.ACK, response_bool);
-			case decideOnRepair:
-				response_bool = super.decideOnRepair(inMessage.getInteger1(), inMessage.getCustomerState());
-				return new Message(MessageType.ACK, response_bool);
-			case goToRepairShop:
-				super.goToRepairShop(inMessage.getInteger1(), inMessage.getCustomerState());
-			case backToWorkByBus:
-				response_bool = super.backToWorkByBus(inMessage.getBoolean1(), inMessage.getInteger1(), inMessage.getCustomerState());
-				return new Message(MessageType.ACK, response_bool);
-			case goToReception:
-				super.goToReception(inMessage.getInteger1(), inMessage.getCustomerState());
-				break;
-			case backToWorkByCar:
-				response_bool = super.backToWorkByCar(inMessage.getBoolean1(), inMessage.getInteger1(), inMessage.getInteger2(), inMessage.getCustomerState());
-				return new Message(MessageType.ACK, response_bool);
-		}
-		return new Message(MessageType.ACK);
-	}
-
-	@Override
-	public String serviceName() {
-		return name;
-	}
-
-	@Override
-	public boolean serviceEnded() {
-		return serverEnded;
-	}
-	
+public class OutsideWorldServer {
+    
+    public static void main(String[] args) {
+        
+        OutsideWorld outsideWorld = new OutsideWorld();
+        OutsideWorldInterface outsideWorldInterface = new OutsideWorldInterface(outsideWorld);
+        ChannelServer listeningSocket = new ChannelServer(PORT_OUTSIDE_WORLD);
+        ChannelServer communicationSocket;
+        OutsideWorldProxyClient proxyClient;
+        
+        listeningSocket.start();
+        
+        System.out.println("OutsideWorld server up!");
+        
+        while(true) {
+            try {
+                communicationSocket = listeningSocket.accept();
+                proxyClient = new OutsideWorldProxyClient(communicationSocket, outsideWorldInterface);
+                
+                Thread.UncaughtExceptionHandler h = (Thread t, Throwable ex) -> {
+                    System.out.println("OutsideWorld server down!");
+                    System.exit(0);
+                };
+                        
+                proxyClient.setUncaughtExceptionHandler(h);
+                proxyClient.start();
+            }
+            catch(Exception ex) {
+                break;
+            }
+        }
+        
+        System.out.println("OutsideWorld server down!");
+    }
+    
 }

@@ -1,55 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shared.SupplierSite;
 
-import communication.ServerChannel;
-import communication.message.Message;
-import communication.message.MessageType;
-import communication.server.ServerInterface;
-import java.net.SocketException;
-import repository.RepairShop;
-import repository.RepairShopProxy;
+import communication.ChannelServer;
+import static communication.ChannelPorts.NAME_SUPPLIER_SITE;
+import static communication.ChannelPorts.PORT_SUPPLIER_SITE;
 
-/**
- *
- * @author andre and joao
- */
-public class SupplierSiteServer extends SupplierSite implements ServerInterface {
-	private boolean serverEnded;
-	private final String name;
-	private int response_int;
-	
-	public SupplierSiteServer(int nTypePieces, RepairShopProxy repairShop) {
-		super(nTypePieces, repairShop);
-		name = "SupplierSite Server";
-		serverEnded = false;
-	}
-
-	@Override
-	public Message processAndReply(Message inMessage, ServerChannel scon) throws SocketException {
-		switch (inMessage.getType()) {
-			case TERMINATE:
-				serverEnded = true;
-				break;
-			case goToSupplier:
-				response_int = super.goToSupplier(inMessage.getMessage_p1());
-				return new Message(MessageType.ACK, response_int);
-			
-		}
-		return new Message(MessageType.ACK);
-	}
-
-	@Override
-	public String serviceName() {
-		return name;
-	}
-
-	@Override
-	public boolean serviceEnded() {
-		return serverEnded;
-	}
-	
+public class SupplierSiteServer {
+    
+    public static void main(String[] args) {
+        
+        SupplierSite supplierSite = new SupplierSite();
+        SupplierSiteInterface supplierSiteInterface = new SupplierSiteInterface(supplierSite);
+        ChannelServer listeningSocket = new ChannelServer(PORT_SUPPLIER_SITE);
+        ChannelServer communicationSocket;
+        SupplierSiteProxyClient proxyClient;
+        
+        listeningSocket.start();
+        
+        System.out.println("SupplierSite server up!");
+        
+        while(true) {
+            try {
+                communicationSocket = listeningSocket.accept();
+                proxyClient = new SupplierSiteProxyClient(communicationSocket, supplierSiteInterface);
+                
+                Thread.UncaughtExceptionHandler h = (Thread t, Throwable ex) -> {
+                    System.out.println("SupplierSite server down!");
+                    System.exit(0);
+                };
+                        
+                proxyClient.setUncaughtExceptionHandler(h);
+                proxyClient.start();
+            }
+            catch(Exception ex) {
+                break;
+            }
+        }
+        
+        System.out.println("SupplierSite server down!");
+    }
+    
 }
