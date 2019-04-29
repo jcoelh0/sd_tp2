@@ -14,7 +14,7 @@ public interface IManagerL {
 	 * @param availableCar
 	 * @return
 	 */
-	public String talkWithCustomer(boolean availableCar);
+	public String talkWithCustomer();
 
 	/**
 	 *
@@ -34,20 +34,20 @@ public interface IManagerL {
 	 * @param state
 	 * @return
 	 */
-	public int currentCustomer(ManagerState state);
+	public int currentCustomer();
 
 	/**
 	 *
 	 * @param state
 	 */
-	public void checkWhatToDo(ManagerState state);
+	public void checkWhatToDo();
 
 	/**
 	 *
 	 * @param state
 	 * @return
 	 */
-	public int getIdToCall(ManagerState state);
+	public int getIdToCall();
 
 	/**
 	 *
@@ -83,11 +83,11 @@ public interface IManagerL {
 	 * @param state
 	 * @return
 	 */
-	public Piece getPieceToReStock(ManagerState state);
+	public Piece getPieceToReStock();
 
 	/**
 	 *
 	 * @param state
 	 */
-	public void goReplenishStock(ManagerState state);
+	public void goReplenishStock();
 }

@@ -14,7 +14,7 @@ public interface IMechanicP {
 	 * @param idMechanic
 	 * @param state
 	 */
-	public void getVehicle(int id, int idMechanic, MechanicState state);
+	public void getVehicle(int id, int idMechanic);
 
 	/**
 	 *

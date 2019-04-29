@@ -8,7 +8,6 @@ package shared.Lounge;
 import communication.ChannelServer;
 import messages.LoungeMessage.LoungeMessage;
 import messages.LoungeMessage.LoungeMessageException;
-import java.util.concurrent.locks.ReentrantLock;
 /**
  *
  * @author Andre

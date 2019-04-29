@@ -21,10 +21,10 @@ import repository.RepairShopProxy;
  * @author andre and joao
  */
 public class RepairArea implements IMechanicRA, IManagerRA {
-	
-	private RepairShop repairShop;
-	private RepairShopProxy repairShopProxy;
-	
+
+    private RepairShop repairShop;
+    private RepairShopProxy repairShopProxy;
+
     private final Queue<Integer> carsToRepair = new LinkedList<>();
     private final HashMap<Integer, Piece> carsWaitingForPieces = new HashMap<>();
     private final Queue<Integer> readyToRepair = new LinkedList<>();
@@ -35,54 +35,54 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     private boolean workMechanic = false;
     private int nRequestsManager = 0;
     private boolean enoughWork = false;
-	private final boolean[] flagPartMissing;
-	
-	
+    private final boolean[] flagPartMissing;
+
     static final int nPieces = (int) (Math.random() * 13) + 3; //between 3 and 15 Math.random() * ((max - min) + 1)) + min; //0;
 
     private static final HashMap<EnumPiece, Integer> stock = new HashMap<>();
 
-	/**
-	 * RepairArea's constructor. Initializes the stock and adds random pieces 
-	 * to stock.
-	 * @param nTypePieces
-	 * @param repairShop
-	 */
-	public RepairArea(int nTypePieces, RepairShop repairShop) {
-		this.repairShop = repairShop;
-		flagPartMissing = new boolean[nTypePieces];
-		
+    /**
+     * RepairArea's constructor. Initializes the stock and adds random pieces to
+     * stock.
+     *
+     * @param nTypePieces
+     * @param repairShop
+     */
+    public RepairArea(int nTypePieces) {
+        //this.repairShop = repairShop;
+        flagPartMissing = new boolean[nTypePieces];
+
         for (int i = 0; i < nTypePieces; i++) {
             stock.put(EnumPiece.values()[i], 0);
-			flagPartMissing[i] = true;
+            flagPartMissing[i] = true;
         }
 
         //adds random pieces to stock
         for (int i = 0; i < nPieces; i++) {
             Piece pec = new Piece();
             stock.put(pec.getTypePiece(), stock.get(pec.getTypePiece()) + 1);
-			flagPartMissing[pec.getIdTypePiece()] = false;
+            flagPartMissing[pec.getIdTypePiece()] = false;
         }
-		//repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
+        //repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
 
     }
-	
-	public RepairArea(int nTypePieces, RepairShopProxy repairShop) {
-		this.repairShopProxy = repairShop;
-		flagPartMissing = new boolean[nTypePieces];
-		
+
+    public RepairArea(int nTypePieces, RepairShopProxy repairShop) {
+        this.repairShopProxy = repairShop;
+        flagPartMissing = new boolean[nTypePieces];
+
         for (int i = 0; i < nTypePieces; i++) {
             stock.put(EnumPiece.values()[i], 0);
-			flagPartMissing[i] = true;
+            flagPartMissing[i] = true;
         }
 
         //adds random pieces to stock
         for (int i = 0; i < nPieces; i++) {
             Piece pec = new Piece();
             stock.put(pec.getTypePiece(), stock.get(pec.getTypePiece()) + 1);
-			flagPartMissing[pec.getIdTypePiece()] = false;
+            flagPartMissing[pec.getIdTypePiece()] = false;
         }
-		//repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
+        //repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
 
     }
 
@@ -102,21 +102,21 @@ public class RepairArea implements IMechanicRA, IManagerRA {
 
     private void removePieceFromStock(Piece p) {
         stock.put(p.getTypePiece(), stock.get(p.getTypePiece()) - 1);
-		repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
+        repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
     }
 
     private void addPieceToStock(Piece p) {
         stock.put(p.getTypePiece(), stock.get(p.getTypePiece()) + 1);
-		repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
+        repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
     }
 
     /**
      * Mechanic's method. Reads the paper while there is no work. When a he is
      * alerted by the manager, he starts to work.
      *
-	 * @param idMechanic
-	 * @param state
-	 * @return a boolean representing if mechanic has more work or can go home
+     * @param idMechanic
+     * @param state
+     * @return a boolean representing if mechanic has more work or can go home
      */
     @Override
     public synchronized boolean readThePaper(int idMechanic, MechanicState state) {
@@ -135,7 +135,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
             return true;
         }
         mechanicsQueue.poll();
-        
+
         return false;
     }
 
@@ -165,7 +165,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      *
      * @param id the id of the car that is going to get repaired
      * @param piece the piece that car needs to be repaired
-	 * @return 
+     * @return
      */
     @Override
     public synchronized int fixIt(int id, Piece piece) {
@@ -174,10 +174,10 @@ public class RepairArea implements IMechanicRA, IManagerRA {
             return 0;
         }
         repaired.add(id);
-        
+
         removePieceFromStock(piece);
         piecesToBeRepaired.remove(id, piece);
-		repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
+        repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
         return 1;
     }
 
@@ -190,7 +190,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     public synchronized void getRequiredPart(int id) {
         //((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.CHECKING_STOCK);
         piecesToBeRepaired.put(id, new Piece());
-		repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
+        repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
     }
 
     /**
@@ -198,8 +198,8 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      * required piece is available in stock.
      *
      * @param part a piece
-	 * @param idMechanic
-	 * @param state
+     * @param idMechanic
+     * @param state
      * @return returns true if the piece is available and false otherwise
      */
     @Override
@@ -220,8 +220,8 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     @Override
     public synchronized void letManagerKnow(Piece piece, int idCustomerNeedsPiece) {
         //((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.ALERTING_MANAGER);
-		flagPartMissing[piece.getIdTypePiece()]=true;
-		repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
+        flagPartMissing[piece.getIdTypePiece()] = true;
+        repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
         carsWaitingForPieces.put(idCustomerNeedsPiece, piece);
         carsToRepair.remove(idCustomerNeedsPiece);
     }
@@ -273,7 +273,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         }
         nRequestsManager++;
         //MANDAR PARA LOG
-		repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock, state);
+        repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock, state);
     }
 
     /**
@@ -297,10 +297,10 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         readyToRepair.add(n);
         carsWaitingForPieces.remove(n);
         for (int i = 0; i < quant; i++) {
-			addPieceToStock(part);
+            addPieceToStock(part);
         }
-		flagPartMissing[part.getIdTypePiece()]=false;
-		repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
+        flagPartMissing[part.getIdTypePiece()] = false;
+        repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
         return n;
     }
 

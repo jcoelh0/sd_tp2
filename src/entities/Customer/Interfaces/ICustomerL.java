@@ -18,7 +18,7 @@ public interface ICustomerL {
 	 * @param id
 	 * @param state
 	 */
-	public void queueIn(int id, CustomerState state);
+	public void queueIn(int id);
 
 	/**
 	 *
@@ -34,7 +34,7 @@ public interface ICustomerL {
 	 * @param state
 	 * @return
 	 */
-	public boolean collectKey(int id, CustomerState state);
+	public boolean collectKey(int id);
 
 	/**
 	 *

@@ -16,7 +16,7 @@ public interface IMechanicRA {
 	 * @param state
 	 * @return
 	 */
-	public boolean readThePaper(int idMechanic, MechanicState state);
+	public boolean readThePaper(int idMechanic);
 
 	/**
 	 *
@@ -44,7 +44,7 @@ public interface IMechanicRA {
 	 * @param state
 	 * @return
 	 */
-	public boolean partAvailable(Piece requiredPart, int idMechanic, MechanicState state);
+	public boolean partAvailable(Piece requiredPart, int idMechanic);
 
 	/**
 	 *

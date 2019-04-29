@@ -18,10 +18,13 @@ public class SupplierSiteInterface {
     public SupplierSiteMessage process(SupplierSiteMessage inMsg) throws SupplierSiteMessageException {
 
         SupplierSiteMessage outMsg = null;
+        Object response;
 
         switch(inMsg.getMessageType()) {
 
             case SupplierSiteMessage.GO_TO_SUPPLIER:
+                response = supplierSite.goToSupplier(inMsg.getPiece());
+                outMsg = new SupplierSiteMessage(SupplierSiteMessage.SUCCESS, (int) response);
                 break;
                 
         }

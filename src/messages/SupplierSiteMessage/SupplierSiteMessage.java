@@ -17,13 +17,21 @@ public class SupplierSiteMessage {
     
     public static final int END = 0;
     
+    public static final int SUCCESS = 100;
+    
     public static final int GO_TO_SUPPLIER = 1;
     
     private Piece piece;
+    private int intResponse;
     
     public SupplierSiteMessage(int msg, Piece piece) {
         this.msg = msg;
         this.piece = piece;
+    }
+    
+    public SupplierSiteMessage(int msg, int intResponse) {
+        this.msg = msg;
+        this.intResponse = intResponse;
     }
     
     public int getMessageType() {
@@ -32,5 +40,9 @@ public class SupplierSiteMessage {
     
     public Piece getPiece() {
         return this.piece;
+    }
+    
+    public int getIntResponse() {
+        return this.intResponse;
     }
 }

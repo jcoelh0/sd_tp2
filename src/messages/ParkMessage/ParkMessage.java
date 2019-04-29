@@ -15,6 +15,8 @@ public class ParkMessage {
     
     public static final int END = 0;
     
+    public static final int SUCCESS = 100;
+    
     public static final int REPLACEMENT_CAR_AVAILABLE = 1;
     
     public static final int RESERVE_CAR = 2;
@@ -31,6 +33,16 @@ public class ParkMessage {
     
     private int id;
     private int car;
+    private boolean boolResponse;
+    
+    public ParkMessage(int msg) {
+        this.msg = msg;
+    }
+    
+    public ParkMessage(int msg, boolean boolResponse) {
+        this.msg = msg;
+        this.boolResponse = boolResponse;
+    }
     
     public ParkMessage(int msg, int id) {
         this.msg = msg;
@@ -53,6 +65,10 @@ public class ParkMessage {
     
     public int getCar() {
         return this.car;
+    }
+    
+    public boolean getBoolResponse() {
+        return this.boolResponse;
     }
     
 }

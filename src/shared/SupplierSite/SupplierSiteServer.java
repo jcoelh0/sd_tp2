@@ -3,12 +3,13 @@ package shared.SupplierSite;
 import communication.ChannelServer;
 import static communication.ChannelPorts.NAME_SUPPLIER_SITE;
 import static communication.ChannelPorts.PORT_SUPPLIER_SITE;
+import static settings.Constants.N_TYPE_PIECES;
 
 public class SupplierSiteServer {
     
     public static void main(String[] args) {
         
-        SupplierSite supplierSite = new SupplierSite();
+        SupplierSite supplierSite = new SupplierSite(N_TYPE_PIECES);
         SupplierSiteInterface supplierSiteInterface = new SupplierSiteInterface(supplierSite);
         ChannelServer listeningSocket = new ChannelServer(PORT_SUPPLIER_SITE);
         ChannelServer communicationSocket;

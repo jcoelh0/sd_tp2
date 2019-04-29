@@ -18,7 +18,7 @@ public interface ICustomerP {
 	 * @param id
 	 * @param state
 	 */
-	public void parkCar(int id, CustomerState state);
+	public void parkCar(int id);
 
 	/**
 	 *
@@ -33,7 +33,7 @@ public interface ICustomerP {
 	 * @param id
 	 * @param state
 	 */
-    public void returnReplacementCar(int replacementCar, int id, CustomerState state);
+    public void returnReplacementCar(int replacementCar, int id);
 
 	/**
 	 *
@@ -41,5 +41,5 @@ public interface ICustomerP {
 	 * @param state
 	 * @param replacementCar
 	 */
-	public void findCar(int id, CustomerState state, int replacementCar);
+	public void findCar(int id, int replacementCar);
 }

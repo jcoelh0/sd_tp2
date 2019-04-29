@@ -3,12 +3,13 @@ package shared.RepairArea;
 import communication.ChannelServer;
 import static communication.ChannelPorts.NAME_REPAIR_AREA;
 import static communication.ChannelPorts.PORT_REPAIR_AREA;
+import static settings.Constants.N_TYPE_PIECES;
 
 public class RepairAreaServer {
     
     public static void main(String[] args) {
         
-        RepairArea repairArea = new RepairArea();
+        RepairArea repairArea = new RepairArea(N_TYPE_PIECES);
         RepairAreaInterface repairAreaInterface = new RepairAreaInterface(repairArea);
         ChannelServer listeningSocket = new ChannelServer(PORT_REPAIR_AREA);
         ChannelServer communicationSocket;

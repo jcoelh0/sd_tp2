@@ -15,6 +15,8 @@ public class OutsideWorldMessage {
     
     public static final int END = 0;
     
+    public static final int SUCCESS = 100;
+    
     public static final int PHONE_CUSTOMER = 1;
     
     public static final int DECIDE_ON_REPAIR = 2;
@@ -25,7 +27,8 @@ public class OutsideWorldMessage {
     
     private int cust_id;
     private boolean carRepaired;
-    private boolean replacementCar;
+    private int replacementCar;
+    private boolean boolResponse;
     
     public OutsideWorldMessage(int msg, int cust_id) {
         this.msg = msg;
@@ -38,11 +41,16 @@ public class OutsideWorldMessage {
         this.carRepaired = carRepaired;
     }
     
-    public OutsideWorldMessage(int msg, int cust_id, boolean carRepaired, boolean replacementCar) {
+    public OutsideWorldMessage(int msg, int cust_id, boolean carRepaired, int replacementCar) {
         this.msg = msg;
         this.cust_id = cust_id;
         this.carRepaired = carRepaired;
         this.replacementCar = replacementCar;
+    }
+    
+    public OutsideWorldMessage(int msg, boolean boolResponse) {
+        this.msg = msg;
+        this.boolResponse = boolResponse;
     }
     
     public int getMessageType() {
@@ -57,8 +65,12 @@ public class OutsideWorldMessage {
         return this.carRepaired;
     }
     
-    public boolean getReplacementCar() {
+    public int getReplacementCar() {
         return this.replacementCar;
+    }
+    
+    public boolean getBoolResponse() {
+        return this.boolResponse;
     }
     
 }

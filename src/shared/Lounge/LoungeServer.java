@@ -3,12 +3,14 @@ package shared.Lounge;
 import communication.ChannelServer;
 import static communication.ChannelPorts.NAME_LOUNGE;
 import static communication.ChannelPorts.PORT_LOUNGE;
+import static settings.Constants.N_CUSTOMERS;
+import static settings.Constants.N_TYPE_PIECES;
 
 public class LoungeServer {
     
     public static void main(String[] args) {
         
-        Lounge lounge = new Lounge();
+        Lounge lounge = new Lounge(N_CUSTOMERS, N_TYPE_PIECES);
         LoungeInterface loungeInterface = new LoungeInterface(lounge);
         ChannelServer listeningSocket = new ChannelServer(PORT_LOUNGE);
         ChannelServer communicationSocket;

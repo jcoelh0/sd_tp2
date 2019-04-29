@@ -1,11 +1,11 @@
 package shared.Lounge;
 
+import communication.ChannelClient;
+import static communication.ChannelPorts.NAME_GENERAL_REPOSITORY;
+import static communication.ChannelPorts.PORT_GENERAL_REPOSITORY;
 import entities.Mechanic.Interfaces.IMechanicL;
 import entities.Manager.Interfaces.IManagerL;
 import entities.Customer.Interfaces.ICustomerL;
-import entities.Customer.States.CustomerState;
-import entities.Manager.States.ManagerState;
-import entities.Mechanic.States.MechanicState;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -19,9 +19,13 @@ import repository.RepairShopProxy;
  * @author andre and joao
  */
 public class Lounge implements ICustomerL, IManagerL, IMechanicL {
-	
+
+    /*private final ReentrantLock rl;
+    private final Condition cond_manager, cond_customer, cond_mechanic;*/
+    private ChannelClient cc_repository;
+
     private final Queue<Integer> replacementQueue = new LinkedList<>();
-	private final HashMap<Integer, Integer> customersWithRepCar = new HashMap<>();
+    private final HashMap<Integer, Integer> customersWithRepCar = new HashMap<>();
     private final Queue<Integer> customersQueue = new LinkedList<>();
     private final Queue<Piece> piecesQueue = new LinkedList<>();
     private int nextCustomer = 0;
@@ -31,62 +35,52 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     private final boolean enoughWork = false;
     private final Queue<Integer> customersToCallQueue = new LinkedList<>();
     private final Queue<Integer> carsRepaired = new LinkedList<>();
-    
+
     private boolean readyToReceive;
-	private RepairShop repairShop;
+    private RepairShop repairShop;
     private boolean[] requiresReplacementCar;
-	private RepairShopProxy repairShopProxy;
 
     private static HashMap<Integer, String> order = new HashMap<Integer, String>();
+    
+    /**
+     *
+     * @param nCustomers
+     * @param nTypePieces
+     * @param repairShop
+     */
+    public Lounge(int nCustomers, int nTypePieces) {
+        requiresReplacementCar = new boolean[nCustomers];
+        Arrays.fill(requiresReplacementCar, false);
+        this.cc_repository = new ChannelClient(NAME_GENERAL_REPOSITORY, PORT_GENERAL_REPOSITORY);
+    }
 
-	/**
-	 *
-	 * @param nCustomers
-	 * @param nTypePieces
-	 * @param repairShop
-	 */
-	public Lounge(int nCustomers, int nTypePieces, RepairShop repairShop) {
-        requiresReplacementCar = new boolean[nCustomers];
-        
-        Arrays.fill(requiresReplacementCar, false);
-        
-		this.repairShop = repairShop;
-    }
-	
-	public Lounge(int nCustomers, int nTypePieces, RepairShopProxy repairShop) {
-        requiresReplacementCar = new boolean[nCustomers];
-        
-        Arrays.fill(requiresReplacementCar, false);
-        
-		repairShopProxy = repairShop;
-    }
     /**
      * Customer's method. After parking the car in need of a repair, the
      * customer now has to wait in a queue to be attended by the manager.
      *
      * @param id customer's id
-	 * @param state
+     * @param state
      */
     @Override
-    public synchronized void queueIn(int id, CustomerState state) {
+    public synchronized void queueIn(int id) {
         customersQueue.add(id);
-		repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar, id, state);
         notifyAll();
         while (nextCustomer != id && !managerAvailable) {
             try {
                 wait();
             } catch (InterruptedException e) {
-
+                Thread.currentThread().interrupt();
             }
         }
     }
-
+ 
     /**
      * Customer's method. When the customer is talking to the manager he says if
      * he requires a replacement car or not.
-	 * @param carRepaired
-	 * @param requiresCar
-	 * @param idCustomer
+     *
+     * @param carRepaired
+     * @param requiresCar
+     * @param idCustomer
      */
     @Override
     public synchronized void talkWithManager(boolean carRepaired, boolean requiresCar, int idCustomer) {
@@ -115,8 +109,8 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * to do
      */
     @Override
-    public synchronized String talkWithCustomer(boolean availableCar) {
-       // nextCustomer = customersQueue.poll();
+    public synchronized String talkWithCustomer() {
+        // nextCustomer = customersQueue.poll();
         managerAvailable = true;
         notifyAll();
         managerAvailable = false;
@@ -133,47 +127,48 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         return s;
 
     }
-	
-	/**
-	 *
-	 * @param idCustomer
-	 */
-	@Override
-	public synchronized void addToReplacementQueue(int idCustomer){
-		replacementQueue.add(idCustomer);
-		repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
-	}
+
+    /**
+     *
+     * @param idCustomer
+     */
+    @Override
+    public synchronized void addToReplacementQueue(int idCustomer) {
+        replacementQueue.add(idCustomer);
+        repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
+    }
+
     /**
      * Manager's method. Manager gives to the customer the replacement car's
      * key.
      *
-	 * @param replacementCarId
-	 * @param idCustomer
+     * @param replacementCarId
+     * @param idCustomer
      */
     @Override
     public synchronized void handCarKey(int replacementCarId, int idCustomer) {
-		while (replacementQueue.isEmpty()) {
+        while (replacementQueue.isEmpty()) {
             try {
                 wait();
             } catch (InterruptedException e) {
 
             }
         }
-		customersWithRepCar.put(idCustomer, replacementCarId);
-		System.out.println(customersWithRepCar.toString());
-		replacementQueue.remove(new Integer(idCustomer));
+        customersWithRepCar.put(idCustomer, replacementCarId);
+        System.out.println(customersWithRepCar.toString());
+        replacementQueue.remove(new Integer(idCustomer));
         requiresReplacementCar[idCustomer] = false;
-		repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
-		
+        repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
+
         notifyAll();
     }
-	
-	/**
-	 *
-	 * @param id
-	 * @return
-	 */
-	@Override
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    @Override
     public synchronized int getCarReplacementId(int id) {
         while (!customersWithRepCar.containsKey(id)) {
             try {
@@ -182,15 +177,15 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
 
             }
         }
-		int n = customersWithRepCar.get(id);
-		customersWithRepCar.remove(id);
-		return n;
+        int n = customersWithRepCar.get(id);
+        customersWithRepCar.remove(id);
+        return n;
     }
 
     /**
-	 * Customer's method. Customer waits until manager is ready to 
-	 * receive payment, and then proceeds to pay.
-	 */
+     * Customer's method. Customer waits until manager is ready to receive
+     * payment, and then proceeds to pay.
+     */
     @Override
     public synchronized void payForTheService() {
         while (!readyToReceive) {
@@ -205,10 +200,10 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         notifyAll();
     }
 
-	/**
-	 * Manager's method. Receives payment from customer.
-	 */
-	@Override
+    /**
+     * Manager's method. Receives payment from customer.
+     */
+    @Override
     public synchronized void receivePayment() {
         readyToReceive = true;
         notifyAll();
@@ -222,16 +217,15 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         payed = false;
     }
 
-	/**
-	 * Manager's method. Manager chooses the customer with the highest
-	 * priority.
-	 * 
+    /**
+     * Manager's method. Manager chooses the customer with the highest priority.
+     *
      * @param state
-	 * @return an Integer indicating the next customer's id to attend
-	 */
-	@Override
-    public synchronized int currentCustomer(ManagerState state) {
-        repairShop.updateFromLounge(state);
+     * @return an Integer indicating the next customer's id to attend
+     */
+    @Override
+    public synchronized int currentCustomer() {
+        //repairShop.updateFromLounge(state);
         int next;
         if (customersQueue.isEmpty()) {
             nextCustomer = replacementQueue.poll();
@@ -242,21 +236,21 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         return nextCustomer;
     }
 
-	/**
-	 * Customer's method. The customer waits for a replacement car's key and 
-	 * goes get one if it is available. Eventually, if the customer's car is 
-	 * repaired while waiting, he goes to the normal queue.
-	 * 
-	 * @param id
+    /**
+     * Customer's method. The customer waits for a replacement car's key and
+     * goes get one if it is available. Eventually, if the customer's car is
+     * repaired while waiting, he goes to the normal queue.
+     *
+     * @param id
      * @param state
-	 * @return 
-	 */
-	@Override
-    public synchronized boolean collectKey(int id, CustomerState state) {
+     * @return
+     */
+    @Override
+    public synchronized boolean collectKey(int id) {
         //((Customer) Thread.currentThread()).setCustomerState(CustomerState.WAITING_FOR_REPLACE_CAR);
-		replacementQueue.add(id);
-		//repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
-        repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar, id, state);
+        replacementQueue.add(id);
+        //repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
+        //repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar, id, state);
         notifyAll();
         while (!customersWithRepCar.containsKey(id) && !carsRepaired.contains(id)) { //&& !carsRepaired.contains(id)
             try {
@@ -265,24 +259,24 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
 
             }
         }
-		
+
         if (carsRepaired.contains(id)) {
             carsRepaired.remove(id);
-			replacementQueue.remove(id);
+            replacementQueue.remove(id);
             requiresReplacementCar[id] = false;
             //((Customer) Thread.currentThread()).setCustomerState(CustomerState.RECEPTION);
             //((Customer) Thread.currentThread()).carRepaired = true;
-			repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
+            repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
             return true;
-        }
-		else
+        } else {
             return false;
+        }
     }
 
-	/**
-	 * Manager's method. Manager waits while there is nothing to do.
-	 */
-	@Override
+    /**
+     * Manager's method. Manager waits while there is nothing to do.
+     */
+    @Override
     public synchronized void getNextTask() {
         while (customersQueue.isEmpty() && customersToCallQueue.isEmpty() && piecesQueue.isEmpty()) {
             try {
@@ -293,36 +287,38 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         }
     }
 
-	/**
-	 * Manager's method. Manager changes state to check what to do next.
-	 * @param state
-	 */
-	@Override
-    public synchronized void checkWhatToDo(ManagerState state) {
-        repairShop.updateFromLounge(state); //MANDAR PARA LOG
+    /**
+     * Manager's method. Manager changes state to check what to do next.
+     *
+     * @param state
+     */
+    @Override
+    public synchronized void checkWhatToDo() {
+        //repairShop.updateFromLounge(state); //MANDAR PARA LOG
         //((Manager) Thread.currentThread()).setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
     }
 
-	/**
-	 * Manager's method. Manager goes into the queue of customers to call and
-	 * retrieves the head of the queue.
-	 * 
-	 * @param state
-	 * @return an Integer indicating the customer's id
-	 */
-	@Override
-    public synchronized int getIdToCall(ManagerState state) {
-        repairShop.updateFromLounge(state); //MANDAR PARA LOG
+    /**
+     * Manager's method. Manager goes into the queue of customers to call and
+     * retrieves the head of the queue.
+     *
+     * @param state
+     * @return an Integer indicating the customer's id
+     */
+    @Override
+    public synchronized int getIdToCall() {
+        //repairShop.updateFromLounge(state); //MANDAR PARA LOG
         int next = customersToCallQueue.poll();
         return next;
     }
 
-	/**
-	 * Manager's method. When there is work to do, the manager chooses the task
-	 * with the highest priority and changes state, accordingly.
-	 * @return 
-	 */
-	@Override
+    /**
+     * Manager's method. When there is work to do, the manager chooses the task
+     * with the highest priority and changes state, accordingly.
+     *
+     * @return
+     */
+    @Override
     public synchronized int appraiseSit() {
         if (!piecesQueue.isEmpty()) {
             return 1;
@@ -333,25 +329,25 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         } else if (!customersQueue.isEmpty()) {
             return 3;
             //((Manager) Thread.currentThread()).setManagerState(ManagerState.ATTENDING_CUSTOMER);
-        }
-        else {
+        } else {
             return 0;
         }
     }
 
     /**
-     * Mechanic's method. The mechanic alerts the manager that the car is 
-	 * repaired or that he needs a type of a piece re stocked in the repair
-	 * area.
+     * Mechanic's method. The mechanic alerts the manager that the car is
+     * repaired or that he needs a type of a piece re stocked in the repair
+     * area.
      *
      * @param piece piece that needs to be re stocked
-	 * @param customerId customer that needs to be called because his car is ready to be picked up
-	 * @param idMechanic
-	 * @param state
+     * @param customerId customer that needs to be called because his car is
+     * ready to be picked up
+     * @param idMechanic
+     * @param state
      */
     @Override
-    public synchronized void alertManager(Piece piece, int customerId, int idMechanic, MechanicState state) {
-        repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar, idMechanic, state);
+    public synchronized void alertManager(Piece piece, int customerId, int idMechanic) {
+        //repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar, idMechanic, state);
         //((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.WAITING_FOR_WORK);
         if (piece == null) {
             customersToCallQueue.add(customerId);
@@ -365,53 +361,55 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
 
     /**
      * Manager's method. The manager retrieves the piece that needs to be re
-	 * stocked in the repair area.
-	 * 
-	 * @param state
+     * stocked in the repair area.
+     *
+     * @param state
      * @return a piece that needs to be re stocked in the repair area
      */
     @Override
-    public synchronized Piece getPieceToReStock(ManagerState state) {
+    public synchronized Piece getPieceToReStock() {
         Piece p = piecesQueue.poll();
-		repairShop.updateFromLounge(state);//MANDAR PARA LOG
+        //repairShop.updateFromLounge(state);//MANDAR PARA LOG
         return p;
     }
 
     /**
      * Manager's method. Manager changes state to go replenish stock.
-	 * @param state
+     *
+     * @param state
      */
     @Override
-    public synchronized void goReplenishStock(ManagerState state) {
+    public synchronized void goReplenishStock() {
         //((Manager) Thread.currentThread()).setManagerState(ManagerState.REPLENISH_STOCK);
-        repairShop.updateFromLounge(state);//MANDAR PARA LOG
+        //repairShop.updateFromLounge(state);//MANDAR PARA LOG
     }
 
     /**
      * Manager's method. Manager checks if there is any work left to do.
-	 * 
+     *
      * @return a boolean that represents if there is any work left to do
      */
     @Override
     public synchronized boolean enoughWork() {
-		return customersQueue.isEmpty() && replacementQueue.isEmpty() && enoughWork;
+        return customersQueue.isEmpty() && replacementQueue.isEmpty() && enoughWork;
     }
 
     /**
-     * Manager's method. Manager checks if the customer is in outside world
-	 * or in lounge and then calls customer and tells him that his car
-	 * is ready to be picked up.
+     * Manager's method. Manager checks if the customer is in outside world or
+     * in lounge and then calls customer and tells him that his car is ready to
+     * be picked up.
      *
      * @param id customer's id to call
-     * @return a boolean that returns true if customer is in lounge and false if he's in outside world
+     * @return a boolean that returns true if customer is in lounge and false if
+     * he's in outside world
      */
     @Override
     public synchronized boolean alertCustomer(int id) {
         if (replacementQueue.contains(id)) {
             carsRepaired.add(id);
             customersToCallQueue.remove(id);
-			notifyAll();
-			repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
+            notifyAll();
+            repairShop.updateFromLounge(replacementQueue, customersQueue, carsRepaired, requiresReplacementCar);
             return true;
         } else {
             return false;
@@ -419,20 +417,21 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     }
 
     /**
-     * Method used for log. Retrieves the size of the queue to talk to the 
-	 * manager.
-	 * 
-     * @return an Integer 
+     * Method used for log. Retrieves the size of the queue to talk to the
+     * manager.
+     *
+     * @return an Integer
      */
     public int getCustomersQueueSize() {
         return customersQueue.size();
     }
 
     /**
-     * Method used for log. Retrieves the size of the queue waiting for 
-	 * replacement cars.
-	 * 
-     * @return an Integer that represents the size of the queue for replacement cars
+     * Method used for log. Retrieves the size of the queue waiting for
+     * replacement cars.
+     *
+     * @return an Integer that represents the size of the queue for replacement
+     * cars
      */
     public int getCustomersReplacementQueueSize() {
         return replacementQueue.size();
@@ -440,7 +439,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
 
     /**
      * Method used for log. Retrieves the number of the cars already repaired.
-	 * 
+     *
      * @return an Integer that represents the number of the cars repaired
      */
     public int getCarsRepairedSize() {
@@ -449,12 +448,14 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
 
     /**
      * Method used for log. Retrieves which type of piece is missing.
-	 * 
+     *
      * @return an array of booleans that is false if the manager was alerted
-	 * that that piece is missing
-	 * 
+     * that that piece is missing
+     *
      *//*
     public boolean[] getFlagPartMissing() {
         return flagPartMissing;
     }*/
+    
+    
 }

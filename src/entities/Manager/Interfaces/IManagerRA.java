@@ -14,7 +14,7 @@ public interface IManagerRA {
 	 * @param idCustomer
 	 * @param state
 	 */
-	public void registerService(int idCustomer, ManagerState state);
+	public void registerService(int idCustomer);
 
 	/**
 	 *

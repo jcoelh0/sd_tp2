@@ -53,12 +53,17 @@ public class LoungeMessage implements Serializable {
     
     public static final int ALERT_MANAGER = 18;
     
+    public static final int SUCCESS = 100;
+    
     private int cust_id;
     private boolean carRepaired;
     private boolean requiresCar;
     private int mech_id;
     private Piece piece;
     private int car_id;
+    private String strResponse;
+    private boolean boolResponse;
+    private Piece pieceResponse;
     
     public LoungeMessage(int msg) {
         this.msg = msg;
@@ -89,6 +94,21 @@ public class LoungeMessage implements Serializable {
         this.cust_id = cust_id;
     }
     
+    public LoungeMessage(int msg, String strResponse) {
+        this.msg = msg;
+        this.strResponse = strResponse;
+    }
+    
+    public LoungeMessage(int msg, boolean boolResponse) {
+        this.msg = msg;
+        this.boolResponse = boolResponse;
+    }
+    
+    public LoungeMessage(int msg, Piece pieceResponse) {
+        this.msg = msg;
+        this.pieceResponse = pieceResponse;
+    }
+    
     public int getMessageType() {
         return this.msg;
     }
@@ -115,6 +135,18 @@ public class LoungeMessage implements Serializable {
     
     public Piece getPiece() {
         return this.piece;
+    }
+    
+    public String getStrResponse() {
+        return this.strResponse;
+    }
+    
+    public boolean getBoolResponse() {
+        return this.boolResponse;
+    }
+    
+    public Piece getPieceResponse() {
+        return this.pieceResponse;
     }
     
 }

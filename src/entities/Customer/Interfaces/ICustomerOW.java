@@ -5,8 +5,6 @@
  */
 package entities.Customer.Interfaces;
 
-import entities.Customer.States.CustomerState;
-
 /**
  *
  * @author andre
@@ -19,14 +17,14 @@ public interface ICustomerOW {
 	 * @param state
 	 * @return
 	 */
-	public boolean decideOnRepair(int id, CustomerState state);
+	public boolean decideOnRepair(int id);
 
 	/**
 	 *
 	 * @param idCustomer
 	 * @param state
 	 */
-	public void goToRepairShop(int idCustomer, CustomerState state);
+	public void goToRepairShop(int idCustomer);
 
 	/**
 	 *
@@ -35,14 +33,14 @@ public interface ICustomerOW {
 	 * @param state
 	 * @return
 	 */
-	public boolean backToWorkByBus(boolean carRepaired, int id, CustomerState state);
+	public boolean backToWorkByBus(boolean carRepaired, int id);
 
 	/**
 	 *
 	 * @param idCustomer
 	 * @param state
 	 */
-	public void goToReception(int idCustomer, CustomerState state);
+	public void goToReception(int idCustomer);
 
 	/**
 	 *
@@ -52,5 +50,5 @@ public interface ICustomerOW {
 	 * @param state
 	 * @return
 	 */
-	public boolean backToWorkByCar(boolean b, int replacementCar, int id, CustomerState state);
+	public boolean backToWorkByCar(boolean b, int replacementCar, int id);
 }

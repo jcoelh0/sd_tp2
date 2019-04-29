@@ -16,5 +16,5 @@ public interface IMechanicL {
 	 * @param idMechanic
 	 * @param state
 	 */
-	public void alertManager(Piece piece, int idCar, int idMechanic, MechanicState state);
+	public void alertManager(Piece piece, int idCar, int idMechanic);
 }
