@@ -5,6 +5,7 @@
  */
 package messages.RepairAreaMessage;
 
+import java.util.HashMap;
 import repository.Piece;
 
 /**
@@ -47,6 +48,8 @@ public class RepairAreaMessage {
     private Piece piece;
     private int quant;
     private int car;
+    private boolean boolResponse;
+    private HashMap hashResponse;
     
     public RepairAreaMessage(int msg) {
         this.msg = msg;
@@ -82,6 +85,16 @@ public class RepairAreaMessage {
         this.piece = piece;
     }
     
+    public RepairAreaMessage(int msg, boolean boolResponse) {
+        this.msg = msg;
+        this.boolResponse = boolResponse;
+    }
+    
+    public RepairAreaMessage(int msg, HashMap hashResponse) {
+        this.msg = msg;
+        this.hashResponse = hashResponse;
+    }
+    
     public int getMessageType() {
         return this.msg;
     }
@@ -102,4 +115,11 @@ public class RepairAreaMessage {
         return this.quant;
     }
     
+    public boolean getBoolResponse() {
+        return this.boolResponse;
+    }
+    
+    public HashMap getHashResponse() {
+        return this.hashResponse;
+    }
 }

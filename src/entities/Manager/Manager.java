@@ -213,7 +213,7 @@ public class Manager extends Thread {
         cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.STORE_PART, partNeeded, quant));
         response = (RepairAreaMessage) cc_repairarea.readObject();
         cc_repairarea.close();
-        return response.getCustId();
+        return response.getId();
     }
 
     @Override

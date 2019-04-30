@@ -53,7 +53,7 @@ public class Mechanic extends Thread {
         cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.READ_THE_PAPER, this.id));
         response = (RepairAreaMessage) cc_repairarea.readObject();
         cc_repairarea.close();
-        return response.getBoolean();
+        return response.getBoolResponse();
     }
 
     private int startRepairProcedure() {
@@ -62,7 +62,7 @@ public class Mechanic extends Thread {
         cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.START_REPAIR_PROCEDURE, this.id));
         response = (RepairAreaMessage) cc_repairarea.readObject();
         cc_repairarea.close();
-        return response.getCarId();
+        return response.getId();
     }
 
     private void getVehicle(int car) {
@@ -79,7 +79,7 @@ public class Mechanic extends Thread {
         cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.GET_PIECES_TO_BE_REPAIRED, this.id));
         response = (RepairAreaMessage) cc_repairarea.readObject();
         cc_repairarea.close();
-        return response.getPieces();
+        return response.getHashResponse();
     }
 
     private void getRequiredPart(int car) {
@@ -96,7 +96,7 @@ public class Mechanic extends Thread {
         cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.FIX_IT, this.id, piece, car));
         response = (RepairAreaMessage) cc_repairarea.readObject();
         cc_repairarea.close();
-        return response.getInt();
+        return response.getId();
     }
 
     private void returnVehicle(int car) {
@@ -129,7 +129,7 @@ public class Mechanic extends Thread {
         cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.PART_AVAILABLE, this.id, piece));
         response = (RepairAreaMessage) cc_repairarea.readObject();
         cc_repairarea.close();
-        return response.getBoolean();
+        return response.getBoolResponse();
     }
 
     private void letManagerKnow(Piece piece, int car_id) {

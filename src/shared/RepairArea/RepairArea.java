@@ -119,9 +119,9 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      * @return a boolean representing if mechanic has more work or can go home
      */
     @Override
-    public synchronized boolean readThePaper(int idMechanic, MechanicState state) {
+    public synchronized boolean readThePaper(int idMechanic) {
         //((Mechanic) Thread.currentThread()).setMechanicState(MechanicState.WAITING_FOR_WORK);
-        repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock, idMechanic, state);
+        //repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock, idMechanic, state);
         int id = idMechanic;
         mechanicsQueue.add(id);
         while (readyToRepair.isEmpty() && carsToRepair.isEmpty() && !enoughWork) {
@@ -203,8 +203,8 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      * @return returns true if the piece is available and false otherwise
      */
     @Override
-    public synchronized boolean partAvailable(Piece part, int idMechanic, MechanicState state) {
-        repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock, idMechanic, state);
+    public synchronized boolean partAvailable(Piece part, int idMechanic) {
+        //repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock, idMechanic, state);
         return pieceInStock(part);
     }
 
@@ -262,7 +262,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      * @param state
      */
     @Override
-    public synchronized void registerService(int idCustomer, ManagerState state) {
+    public synchronized void registerService(int idCustomer) {
         //((Manager) Thread.currentThread()).setManagerState(ManagerState.POSTING_JOB);
         if (!alreadyAdded.contains(idCustomer)) {
             carsToRepair.add(idCustomer);
@@ -273,7 +273,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         }
         nRequestsManager++;
         //MANDAR PARA LOG
-        repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock, state);
+        //repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock, state);
     }
 
     /**
