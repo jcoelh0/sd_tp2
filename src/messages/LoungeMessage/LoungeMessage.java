@@ -6,7 +6,7 @@
 package messages.LoungeMessage;
 
 import java.io.Serializable;
-import repository.Piece;
+import settings.Piece;
 /**
  *
  * @author andre

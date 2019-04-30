@@ -1,7 +1,7 @@
 package shared.Lounge;
 
 import messages.LoungeMessage.*;
-import repository.Piece;
+import settings.Piece;
 
 public class LoungeInterface {
 

@@ -1,7 +1,7 @@
 package entities.Manager.Interfaces;
 
 import entities.Manager.States.ManagerState;
-import repository.Piece;
+import settings.Piece;
 
 /**
  *

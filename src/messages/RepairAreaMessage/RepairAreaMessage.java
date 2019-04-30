@@ -6,7 +6,7 @@
 package messages.RepairAreaMessage;
 
 import java.util.HashMap;
-import repository.Piece;
+import settings.Piece;
 
 /**
  *

@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import repository.RepairShop;
-import repository.RepairShopProxy;
 
 /**
  *
@@ -20,8 +18,6 @@ import repository.RepairShopProxy;
 public class Park implements ICustomerP, IMechanicP, IManagerP {
 
     private int parkingSlots = 50;
-    private RepairShop repairShop;
-    private RepairShopProxy repairShopProxy;
 
     private final List<Integer> carsParked = new ArrayList<>();
     private final Queue<Integer> replacementCars = new LinkedList<>();
@@ -36,19 +32,9 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      * @param repairShop
      */
     public Park(int nReplacementCars) {
-        //this.repairShop = repairShop;
         for (int i = 1; i < nReplacementCars + 1; i++) {
             replacementCars.add(i);
         }
-        //repairShop.updateFromPark(carsParked, replacementCars);
-    }
-
-    public Park(int nReplacementCars, RepairShopProxy repairShop) {
-        repairShopProxy = repairShop;
-        for (int i = 1; i < nReplacementCars + 1; i++) {
-            replacementCars.add(i);
-        }
-        //repairShop.updateFromPark(carsParked, replacementCars);
     }
 
     /**
@@ -75,7 +61,6 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
     public synchronized void collectCar(int id) {
         carsParked.remove(new Integer(id));
         parkingSlots++;
-        repairShop.updateFromPark(carsParked, replacementCars);
     }
 
     /**
@@ -88,33 +73,7 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      */
     @Override
     public synchronized void findCar(int id, int replacementCarId) {
-        /*//((Customer) Thread.currentThread()).setCustomerState(CustomerState.PARK);
-		//notifyAll();
-		System.err.println(reserve.toString());
-		findCarId = id;
-		//notifyAll();
-		System.out.println("findCar():"+id);
-        while (!reserve.containsKey(id) ) {
-			try {
-				System.err.println(id + "DEALOCK MUITO PROVAVEL EM findCar()"); // é QUASE sempre o id= 0 WTFFFFWWTFWTFWTF
-				wait();
-				System.err.println(id + "DEALOCK DEFINITIVAMENTE EM findCar()"); // é QUASE sempre o id= 0 WTFFFFWWTFWTFWTF
-			} catch (InterruptedException ex) {
-				
-			}
-		}
-		
-        int n = reserve.get(id);
-        reserve.remove(id);
-        notifyAll();
-		replacementCars.remove(n);
-		repairShop.updateFromPark(carsParked, replacementCars, id, state);
-        
-        return n;
-         */
-        //System.out.println("findCar():"+id);
         replacementCars.remove(replacementCarId);
-        //repairShop.updateFromPark(carsParked, replacementCars, id, state);
     }
 
     /**
@@ -129,7 +88,6 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
     public synchronized void getVehicle(int idCar, int idMechanic) {
         carsParked.remove(new Integer(idCar));
         parkingSlots++;
-        //repairShop.updateFromPark(carsParked, replacementCars, idMechanic, state);
     }
 
     /**
@@ -142,10 +100,7 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      */
     @Override
     public synchronized void returnReplacementCar(int idCar, int idCustomer) {
-        //((Customer) Thread.currentThread()).setCustomerState(CustomerState.RECEPTION);
         replacementCars.add(idCar);
-        //System.out.println("");
-        //repairShop.updateFromPark(carsParked, replacementCars, idCustomer, state);
     }
 
     /**
@@ -158,7 +113,6 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
     public synchronized void returnVehicle(int id) {
         carsParked.add(id);
         parkingSlots--;
-        //repairShop.updateFromPark(carsParked, replacementCars);
     }
 
     /**
@@ -194,15 +148,11 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      */
     @Override
     public synchronized int reserveCar(int id) {
-        //System.out.println("reserveCar:"+id);
-        //System.out.println("findCarId:"+findCarId);
         try {
             return replacementCars.poll();
         } catch (Exception e) {
             return -1;
         }
-        //reserve.put(id, replacementCars.peek());
-        //notifyAll();
     }
 
     /**
@@ -213,15 +163,5 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      */
     @Override
     public synchronized void waitForCustomer(int id) {
-        /*notifyAll();	
-		while (reserve.containsKey(id)) {
-            try {
-                wait();
-				
-            } catch (Exception e) {
-
-            }
-        }*/
-        //notifyAll();
     }
 }

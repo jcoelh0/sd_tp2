@@ -1,7 +1,7 @@
 package entities.Manager;
 
 import entities.Manager.States.ManagerState;
-import repository.Piece;
+import settings.Piece;
 import messages.LoungeMessage.LoungeMessage;
 import messages.OutsideWorldMessage.OutsideWorldMessage;
 import messages.ParkMessage.ParkMessage;

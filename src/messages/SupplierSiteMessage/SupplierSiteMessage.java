@@ -5,7 +5,7 @@
  */
 package messages.SupplierSiteMessage;
 
-import repository.Piece;
+import settings.Piece;
 
 /**
  *

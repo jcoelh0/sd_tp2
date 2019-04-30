@@ -3,9 +3,7 @@ package shared.SupplierSite;
 import entities.Manager.Interfaces.IManagerSS;
 import entities.Manager.Manager;
 import entities.Manager.States.ManagerState;
-import repository.Piece;
-import repository.RepairShop;
-import repository.RepairShopProxy;
+import settings.Piece;
 
 /**
  *
@@ -15,8 +13,6 @@ public class SupplierSite implements IManagerSS {
 
     private Piece partNeeded;
     private int[] piecesBought;
-    private RepairShop repairShop;
-    private RepairShopProxy repairShopProxy;
 
     /**
      * SupplierSite constructor. Initializes the array containing pieces bought
@@ -26,21 +22,10 @@ public class SupplierSite implements IManagerSS {
      * @param repairShop
      */
     public SupplierSite(int nTypePieces) {
-        //this.repairShop = repairShop;
         piecesBought = new int[nTypePieces];
         for (int i = 0; i < nTypePieces; i++) {
             piecesBought[i] = 0;
         }
-        //repairShop.updateFromSupplierSite(piecesBought);
-    }
-
-    public SupplierSite(int nTypePieces, RepairShopProxy repairShop) {
-        this.repairShopProxy = repairShop;
-        piecesBought = new int[nTypePieces];
-        for (int i = 0; i < nTypePieces; i++) {
-            piecesBought[i] = 0;
-        }
-        //repairShop.updateFromSupplierSite(piecesBought);
     }
 
     /**
@@ -55,7 +40,6 @@ public class SupplierSite implements IManagerSS {
         int randomNum = 1 + (int) (Math.random() * ((5 - 1) + 1)); //between 1 and 6////
         this.partNeeded = partNeeded;
         piecesBought[partNeeded.getTypePiece().ordinal()] += randomNum;
-        repairShop.updateFromSupplierSite(piecesBought);
         return randomNum;
     }
 

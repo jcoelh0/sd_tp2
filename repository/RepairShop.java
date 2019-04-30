@@ -1,5 +1,7 @@
 package repository;
 
+import settings.EnumPiece;
+import settings.Piece;
 import entities.Customer.States.CustomerState;
 import entities.Manager.States.ManagerState;
 import entities.Mechanic.States.MechanicState;

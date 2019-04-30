@@ -2,7 +2,7 @@ package entities.Mechanic;
 
 import entities.Mechanic.States.MechanicState;
 import java.util.HashMap;
-import repository.Piece;
+import settings.Piece;
 import static communication.ChannelPorts.*;
 import communication.ChannelClient;
 import messages.LoungeMessage.LoungeMessage;

@@ -11,19 +11,14 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import repository.EnumPiece;
-import repository.Piece;
-import repository.RepairShop;
-import repository.RepairShopProxy;
+import settings.EnumPiece;
+import settings.Piece;
 
 /**
  *
  * @author andre and joao
  */
 public class RepairArea implements IMechanicRA, IManagerRA {
-
-    private RepairShop repairShop;
-    private RepairShopProxy repairShopProxy;
 
     private final Queue<Integer> carsToRepair = new LinkedList<>();
     private final HashMap<Integer, Piece> carsWaitingForPieces = new HashMap<>();
@@ -50,25 +45,6 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      */
     public RepairArea(int nTypePieces) {
         //this.repairShop = repairShop;
-        flagPartMissing = new boolean[nTypePieces];
-
-        for (int i = 0; i < nTypePieces; i++) {
-            stock.put(EnumPiece.values()[i], 0);
-            flagPartMissing[i] = true;
-        }
-
-        //adds random pieces to stock
-        for (int i = 0; i < nPieces; i++) {
-            Piece pec = new Piece();
-            stock.put(pec.getTypePiece(), stock.get(pec.getTypePiece()) + 1);
-            flagPartMissing[pec.getIdTypePiece()] = false;
-        }
-        //repairShop.updateFromRepairArea(nRequestsManager, piecesToBeRepaired, flagPartMissing, stock);
-
-    }
-
-    public RepairArea(int nTypePieces, RepairShopProxy repairShop) {
-        this.repairShopProxy = repairShop;
         flagPartMissing = new boolean[nTypePieces];
 
         for (int i = 0; i < nTypePieces; i++) {
@@ -342,4 +318,6 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         enoughWork = true;
         notifyAll();
     }
+    
+    
 }

@@ -1,7 +1,7 @@
 package entities.Mechanic.Interfaces;
 
 import entities.Mechanic.States.MechanicState;
-import repository.Piece;
+import settings.Piece;
 
 /**
  *

@@ -2,7 +2,7 @@ package entities.Mechanic.Interfaces;
 
 import entities.Mechanic.States.MechanicState;
 import java.util.HashMap;
-import repository.Piece;
+import settings.Piece;
 
 /**
  *
