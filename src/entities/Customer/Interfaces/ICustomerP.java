@@ -5,8 +5,6 @@
  */
 package entities.Customer.Interfaces;
 
-import entities.Customer.States.CustomerState;
-
 /**
  *
  * @author andre
@@ -16,22 +14,13 @@ public interface ICustomerP {
 	/**
 	 *
 	 * @param id
-	 * @param state
 	 */
 	public void parkCar(int id);
 
 	/**
 	 *
-	 * @param id
-	 */
-	public void collectCar(int id);
-    //public  findCar(int id, CustomerState state);
-
-	/**
-	 *
 	 * @param replacementCar
 	 * @param id
-	 * @param state
 	 */
     public void returnReplacementCar(int replacementCar, int id);
 

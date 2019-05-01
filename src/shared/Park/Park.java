@@ -1,5 +1,8 @@
 package shared.Park;
 
+import communication.ChannelClient;
+import static communication.ChannelPorts.NAME_GENERAL_REPOSITORY;
+import static communication.ChannelPorts.PORT_GENERAL_REPOSITORY;
 import entities.Mechanic.Interfaces.IMechanicP;
 import entities.Manager.Interfaces.IManagerP;
 import entities.Customer.Interfaces.ICustomerP;
@@ -10,6 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import messages.RepositoryMessage.RepositoryMessage;
 
 /**
  *
@@ -17,7 +21,11 @@ import java.util.Queue;
  */
 public class Park implements ICustomerP, IMechanicP, IManagerP {
 
+    private ChannelClient cc_repository;
+    
     private int parkingSlots = 50;
+    private int numcars = 0;
+    private int numrepcars = 0;
 
     private final List<Integer> carsParked = new ArrayList<>();
     private final Queue<Integer> replacementCars = new LinkedList<>();
@@ -26,15 +34,17 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
     private int findCarId;
 
     /**
-     * Park Constructor. Initializes the replacement cars in the park.
+     * Park Constructor. Initialises the replacement cars in the park.
      *
      * @param nReplacementCars the number of replacement cars
-     * @param repairShop
      */
     public Park(int nReplacementCars) {
         for (int i = 1; i < nReplacementCars + 1; i++) {
             replacementCars.add(i);
         }
+        numrepcars = nReplacementCars;
+        this.cc_repository = new ChannelClient(NAME_GENERAL_REPOSITORY, PORT_GENERAL_REPOSITORY);
+        updateNumRepCars(numrepcars);
     }
 
     /**
@@ -42,25 +52,14 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      * the park.
      *
      * @param id the id of the car
-     * @param state
      */
     @Override
     public synchronized void parkCar(int id) {
-        //((Customer) Thread.currentThread()).setCustomerState(CustomerState.RECEPTION);
+        setCustomerState(CustomerState.PARK, id);
         carsParked.add(id);
         parkingSlots--;
-        //repairShop.updateFromPark(carsParked, replacementCars, id, state);
-    }
-
-    /**
-     * Customer's method. Customer goes into the park and collect his own car.
-     *
-     * @param id the id of the car
-     */
-    @Override
-    public synchronized void collectCar(int id) {
-        carsParked.remove(new Integer(id));
-        parkingSlots++;
+        numcars++;
+        updateNumCars(numcars);        
     }
 
     /**
@@ -68,12 +67,14 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      * car that has been associated to him.
      *
      * @param id
-     * @param state
      * @param replacementCarId
      */
     @Override
     public synchronized void findCar(int id, int replacementCarId) {
+        setCustomerState(CustomerState.PARK, id);
         replacementCars.remove(replacementCarId);
+        numrepcars--;
+        updateNumRepCars(numrepcars);
     }
 
     /**
@@ -82,12 +83,14 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      *
      * @param idCar
      * @param idMechanic
-     * @param state
      */
     @Override
     public synchronized void getVehicle(int idCar, int idMechanic) {
+        setMechanicState(MechanicState.FIXING_CAR, idMechanic);
         carsParked.remove(new Integer(idCar));
         parkingSlots++;
+        numcars--;
+        updateNumCars(numcars);
     }
 
     /**
@@ -96,11 +99,12 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      *
      * @param idCar
      * @param idCustomer
-     * @param id the replacement car's id
      */
     @Override
     public synchronized void returnReplacementCar(int idCar, int idCustomer) {
         replacementCars.add(idCar);
+        numrepcars++;
+        updateNumRepCars(numrepcars);
     }
 
     /**
@@ -113,6 +117,8 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
     public synchronized void returnVehicle(int id) {
         carsParked.add(id);
         parkingSlots--;
+        numcars++;
+        updateNumCars(numcars);
     }
 
     /**
@@ -163,5 +169,48 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      */
     @Override
     public synchronized void waitForCustomer(int id) {
+    }
+    
+    private synchronized void setCustomerState(CustomerState state, int id) {
+        RepositoryMessage response;
+        startCommunication(cc_repository);
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.SET_CUSTOMER_STATE, state.toString(), id));
+        response = (RepositoryMessage) cc_repository.readObject();
+        cc_repository.close(); 
+    }
+    
+    private synchronized void setMechanicState(MechanicState state, int id) {
+        RepositoryMessage response;
+        startCommunication(cc_repository);
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.SET_MECHANIC_STATE, state.toString(), id));
+        response = (RepositoryMessage) cc_repository.readObject();
+        cc_repository.close(); 
+    }
+    
+    private synchronized void updateNumCars(int numcars) {
+        RepositoryMessage response;
+        startCommunication(cc_repository);
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.NUMBER_NONREPCARS_PARKED, numcars));
+        response = (RepositoryMessage) cc_repository.readObject();
+        cc_repository.close(); 
+    }
+    
+    private synchronized void updateNumRepCars(int numrepcars) {
+        RepositoryMessage response;
+        startCommunication(cc_repository);
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.NUMBER_REPCARS_PARKED, numrepcars));
+        response = (RepositoryMessage) cc_repository.readObject();
+        cc_repository.close(); 
+    }
+    
+    private void startCommunication(ChannelClient cc) {
+        while(!cc.open()) {
+            try {
+                Thread.sleep(1000);
+            }
+            catch(Exception e) {
+                
+            }
+        }
     }
 }

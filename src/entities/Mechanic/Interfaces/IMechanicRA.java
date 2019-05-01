@@ -54,22 +54,7 @@ public interface IMechanicRA {
 	 */
 	public int fixIt(int id, Piece p);
 
-	/**
-	 *
-	 */
-	public void getNextTask();
-
-	/**
-	 *
-	 */
-	public void resumeRepairProcedure();
-
-	/**
-	 *
-	 */
-	public void repairConcluded();
-
-	/**
+    /**
 	 *
 	 * @return
 	 */

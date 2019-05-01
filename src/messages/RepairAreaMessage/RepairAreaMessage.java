@@ -49,7 +49,7 @@ public class RepairAreaMessage {
     private int quant;
     private int car;
     private boolean boolResponse;
-    private HashMap hashResponse;
+    private HashMap<Integer, Piece> hashResponse;
     
     public RepairAreaMessage(int msg) {
         this.msg = msg;

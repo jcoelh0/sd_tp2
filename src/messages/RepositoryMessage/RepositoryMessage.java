@@ -1,5 +1,8 @@
 package messages.RepositoryMessage;
 
+import java.util.HashMap;
+import settings.EnumPiece;
+
 public class RepositoryMessage {
     
     private int msg = -1;
@@ -49,6 +52,10 @@ public class RepositoryMessage {
     private String state;
     private int id;
     private int size;
+    private HashMap hash;
+    private boolean[] flag;
+    private int[] piecesBought;
+    private String[] vehicleDriven;
     
     public RepositoryMessage(int msg, String state) {
         this.msg = msg;
@@ -66,6 +73,27 @@ public class RepositoryMessage {
         this.size = size;
     }
     
+    public RepositoryMessage(int msg, HashMap hash) {
+        this.msg = msg;
+        this.hash = hash;
+    }
+    
+    public RepositoryMessage(int msg, boolean[] flag) {
+        this.msg = msg;
+        this.flag = flag;
+    }
+    
+    public RepositoryMessage(int msg, int[] piecesBought) {
+        this.msg = msg;
+        this.piecesBought = piecesBought;
+    }
+    
+    public RepositoryMessage(int msg, String[] vehicleDriven) {
+        this.msg = msg;
+        this.vehicleDriven = vehicleDriven;
+    }
+
+    
     public int getMessageType() {
         return this.msg;
     }
@@ -82,4 +110,19 @@ public class RepositoryMessage {
         return this.size;
     }
     
+    public HashMap getStock() {
+        return this.hash;
+    }
+    
+    public boolean[] getFlag() {
+        return this.flag;
+    }
+    
+    public int[] getPiecesBought() {
+        return this.piecesBought;
+    }
+    
+    public String[] getVehicleDriven() {
+        return this.vehicleDriven;
+    }
 }

@@ -1,5 +1,8 @@
 package shared.OutsideWorld;
 
+import communication.ChannelClient;
+import static communication.ChannelPorts.NAME_GENERAL_REPOSITORY;
+import static communication.ChannelPorts.PORT_GENERAL_REPOSITORY;
 import entities.Manager.Interfaces.IManagerOW;
 import entities.Customer.Interfaces.ICustomerOW;
 import entities.Customer.Customer;
@@ -9,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Random;
+import messages.RepositoryMessage.RepositoryMessage;
 
 /**
  *
@@ -16,6 +20,8 @@ import java.util.Random;
  */
 public class OutsideWorld implements ICustomerOW, IManagerOW {
 
+    private ChannelClient cc_repository;
+    
     private final List<Integer> repairedCars;
     private final List<Integer> waitingForCar;
     private final String[] vehicleDriven;
@@ -23,13 +29,11 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
     /**
      *
      * @param nCustomers
-     * @param repairShop
      */
     public OutsideWorld(int nCustomers) {
         this.waitingForCar = new ArrayList<>();
         this.repairedCars = new ArrayList<>();
         vehicleDriven = new String[nCustomers];
-
         for (int i = 0; i < nCustomers; i++) {
             if (i < 10) {
                 vehicleDriven[i] = "0" + Integer.toString(i);
@@ -37,6 +41,8 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
                 vehicleDriven[i] = Integer.toString(i);
             }
         }
+        this.cc_repository = new ChannelClient(NAME_GENERAL_REPOSITORY, PORT_GENERAL_REPOSITORY);
+        updateVehicleDriven(vehicleDriven);
     }
     
     /**
@@ -45,11 +51,11 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
      * going to need a replacement car or not.
      *
      * @param id
-     * @param state
      * @return
      */
     @Override
     public synchronized boolean decideOnRepair(int id) {
+        setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR, id);
         Random requires = new Random();
         Random n = new Random();
         int randomNum = 0;
@@ -65,11 +71,11 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
      *
      * @param carRepaired
      * @param id
-     * @param state
      * @return
      */
     @Override
     public synchronized boolean backToWorkByBus(boolean carRepaired, int id) {
+        setCustomerState(CustomerState.NORMAL_LIFE_WITHOUT_CAR, id);
         vehicleDriven[id] = "--";
         if (!carRepaired) {
             waitingForCar.add(id);
@@ -81,10 +87,7 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
 
                 }
             }
-            //System.out.println(id + " called");
-            //System.out.println(repairedCars.toString());
-            repairedCars.remove(new Integer(id));//repairedCars.remove(new Integer(id));
-            //System.out.println(id + "acordado");
+            repairedCars.remove(new Integer(id));
             return true;
         }
         return carRepaired;
@@ -98,11 +101,11 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
      * @param carRepaired
      * @param replacementCar
      * @param id
-     * @param state
      * @return
      */
     @Override
     public synchronized boolean backToWorkByCar(boolean carRepaired, int replacementCar, int id) {
+        setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR, id);
         if (replacementCar == -1) {
             if (id < 10) {
                 vehicleDriven[id] = "0" + Integer.toString(id);
@@ -129,28 +132,6 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
     }
 
     /**
-     * Customer's method. When the customer decides that he wants to repair his
-     * car, he goes to the repair shop's park to park his car.
-     *
-     * @param idCustomer
-     * @param state
-     */
-    @Override
-    public synchronized void goToRepairShop(int idCustomer) {
-    }
-
-    /**
-     * Customer's method. After parking his car, the customer goes to the
-     * reception to speak to the manager.
-     *
-     * @param idCustomer
-     * @param state
-     */
-    @Override
-    public synchronized void goToReception(int idCustomer) {
-    }
-
-    /**
      * Manager's method. After knowing that the car is ready by the mechanic,
      * the manager calls the customer to get his car back.
      *
@@ -174,6 +155,33 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
             return true;
         } else {
             return false;
+        }
+    }
+    
+    private synchronized void setCustomerState(CustomerState state, int id) {
+        RepositoryMessage response;
+        startCommunication(cc_repository);
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.SET_CUSTOMER_STATE, state.toString(), id));
+        response = (RepositoryMessage) cc_repository.readObject();
+        cc_repository.close(); 
+    }
+    
+    private synchronized void updateVehicleDriven(String[] vehicleDriven) {
+        RepositoryMessage response;
+        startCommunication(cc_repository);
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.VEHICLE_DRIVEN, vehicleDriven));
+        response = (RepositoryMessage) cc_repository.readObject();
+        cc_repository.close(); 
+    }
+    
+    private void startCommunication(ChannelClient cc) {
+        while(!cc.open()) {
+            try {
+                Thread.sleep(1000);
+            }
+            catch(Exception e) {
+                
+            }
         }
     }
 }

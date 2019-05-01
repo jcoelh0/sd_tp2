@@ -63,16 +63,6 @@ public class RepairAreaInterface {
                 outMsg = new RepairAreaMessage(RepairAreaMessage.SUCCESS);
                 break;
 
-            case RepairAreaMessage.REPAIR_CONCLUDED:
-                repairArea.repairConcluded();
-                outMsg = new RepairAreaMessage(RepairAreaMessage.SUCCESS);
-                break;
-
-            case RepairAreaMessage.RESUME_REPAIR_PROCEDURE:
-                repairArea.resumeRepairProcedure();
-                outMsg = new RepairAreaMessage(RepairAreaMessage.SUCCESS);
-                break;
-
             case RepairAreaMessage.START_REPAIR_PROCEDURE:
                 response = repairArea.startRepairProcedure();
                 outMsg = new RepairAreaMessage(RepairAreaMessage.SUCCESS, (int) response);

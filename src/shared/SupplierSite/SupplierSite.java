@@ -1,8 +1,10 @@
 package shared.SupplierSite;
 
+import communication.ChannelClient;
+import static communication.ChannelPorts.NAME_GENERAL_REPOSITORY;
+import static communication.ChannelPorts.PORT_GENERAL_REPOSITORY;
 import entities.Manager.Interfaces.IManagerSS;
-import entities.Manager.Manager;
-import entities.Manager.States.ManagerState;
+import messages.RepositoryMessage.RepositoryMessage;
 import settings.Piece;
 
 /**
@@ -11,17 +13,20 @@ import settings.Piece;
  */
 public class SupplierSite implements IManagerSS {
 
+    private ChannelClient cc_repository;
+    
     private Piece partNeeded;
     private int[] piecesBought;
 
     /**
-     * SupplierSite constructor. Initializes the array containing pieces bought
+     * SupplierSite constructor. Initialises the array containing pieces bought
      * by the manager over time.
      *
      * @param nTypePieces number of type of pieces
      * @param repairShop
      */
     public SupplierSite(int nTypePieces) {
+        this.cc_repository = new ChannelClient(NAME_GENERAL_REPOSITORY, PORT_GENERAL_REPOSITORY);
         piecesBought = new int[nTypePieces];
         for (int i = 0; i < nTypePieces; i++) {
             piecesBought[i] = 0;
@@ -40,6 +45,7 @@ public class SupplierSite implements IManagerSS {
         int randomNum = 1 + (int) (Math.random() * ((5 - 1) + 1)); //between 1 and 6////
         this.partNeeded = partNeeded;
         piecesBought[partNeeded.getTypePiece().ordinal()] += randomNum;
+        updatePiecesBought(piecesBought);
         return randomNum;
     }
 
@@ -52,5 +58,24 @@ public class SupplierSite implements IManagerSS {
      */
     public int[] getPiecesBought() {
         return piecesBought;
+    }
+    
+    private synchronized void updatePiecesBought(int[] piecesBought) {
+        RepositoryMessage response;
+        startCommunication(cc_repository);
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.NUMBER_PARTS_PURCHASED, piecesBought));
+        response = (RepositoryMessage) cc_repository.readObject();
+        cc_repository.close(); 
+    }
+    
+    private void startCommunication(ChannelClient cc) {
+        while(!cc.open()) {
+            try {
+                Thread.sleep(1000);
+            }
+            catch(Exception e) {
+                
+            }
+        }
     }
 }

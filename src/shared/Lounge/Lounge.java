@@ -381,8 +381,9 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized boolean alertCustomer(int id) {
+        carsRepaired.add(id);
+        updateCarsRepaired(carsRepaired.size());
         if (replacementQueue.contains(id)) {
-            carsRepaired.add(id);
             customersToCallQueue.remove(id);
             notifyAll();
             return true;
@@ -468,6 +469,14 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         RepositoryMessage response;
         startCommunication(cc_repository);
         cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.WAITING_REPLACEMENT, size));
+        response = (RepositoryMessage) cc_repository.readObject();
+        cc_repository.close(); 
+    }
+    
+    private synchronized void updateCarsRepaired(int size) {
+        RepositoryMessage response;
+        startCommunication(cc_repository);
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.NUMBER_CARS_REPAIRED, size));
         response = (RepositoryMessage) cc_repository.readObject();
         cc_repository.close(); 
     }

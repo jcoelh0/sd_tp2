@@ -160,7 +160,6 @@ public class Mechanic extends Thread {
                         noMoreWork = true;
                         break;
                     }
-
                     idCarToFix = startRepairProcedure();
                     if (idCarToFix == -1) {
                         setMechanicState(MechanicState.WAITING_FOR_WORK);
@@ -183,9 +182,8 @@ public class Mechanic extends Thread {
                         break;
                     }
                     returnVehicle(idCarToFix);
-                    repairConcluded();
-                    setMechanicState(MechanicState.ALERTING_MANAGER);
                     repairConcluded = true;
+                    setMechanicState(MechanicState.ALERTING_MANAGER);
                     break;
 
                 case ALERTING_MANAGER:
@@ -204,7 +202,6 @@ public class Mechanic extends Thread {
                         setMechanicState(MechanicState.ALERTING_MANAGER);
                         returnVehicle(idCarToFix);
                     } else {
-                        resumeRepairProcedure();//NAO FAZ NADA
                         setMechanicState(MechanicState.FIXING_CAR);
                     }
                     break;
