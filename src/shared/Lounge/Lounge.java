@@ -6,10 +6,14 @@ import static communication.ChannelPorts.PORT_GENERAL_REPOSITORY;
 import entities.Mechanic.Interfaces.IMechanicL;
 import entities.Manager.Interfaces.IManagerL;
 import entities.Customer.Interfaces.ICustomerL;
+import entities.Customer.States.CustomerState;
+import entities.Manager.States.ManagerState;
+import entities.Mechanic.States.MechanicState;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
+import messages.RepositoryMessage.RepositoryMessage;
 import settings.Piece;
 
 /**
@@ -41,7 +45,6 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      *
      * @param nCustomers
      * @param nTypePieces
-     * @param repairShop
      */
     public Lounge(int nCustomers, int nTypePieces) {
         requiresReplacementCar = new boolean[nCustomers];
@@ -54,11 +57,12 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * customer now has to wait in a queue to be attended by the manager.
      *
      * @param id customer's id
-     * @param state
      */
     @Override
     public synchronized void queueIn(int id) {
+        setCustomerState(CustomerState.RECEPTION, id);
         customersQueue.add(id);
+        setCustomersQueueSize(customersQueue.size());
         notifyAll();
         while (nextCustomer != id && !managerAvailable) {
             try {
@@ -212,12 +216,11 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     /**
      * Manager's method. Manager chooses the customer with the highest priority.
      *
-     * @param state
      * @return an Integer indicating the next customer's id to attend
      */
     @Override
     public synchronized int currentCustomer() {
-        int next;
+        setManagerState(ManagerState.ATTENDING_CUSTOMER);
         if (customersQueue.isEmpty()) {
             nextCustomer = replacementQueue.poll();
         } else {
@@ -232,12 +235,13 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * repaired while waiting, he goes to the normal queue.
      *
      * @param id
-     * @param state
      * @return
      */
     @Override
     public synchronized boolean collectKey(int id) {
+        setCustomerState(CustomerState.WAITING_FOR_REPLACE_CAR, id);
         replacementQueue.add(id);
+        setReplacementQueueSize(replacementQueue.size());
         notifyAll();
         while (!customersWithRepCar.containsKey(id) && !carsRepaired.contains(id)) { //&& !carsRepaired.contains(id)
             try {
@@ -274,21 +278,21 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     /**
      * Manager's method. Manager changes state to check what to do next.
      *
-     * @param state
      */
     @Override
     public synchronized void checkWhatToDo() {
+        setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
     }
 
     /**
      * Manager's method. Manager goes into the queue of customers to call and
      * retrieves the head of the queue.
      *
-     * @param state
      * @return an Integer indicating the customer's id
      */
     @Override
     public synchronized int getIdToCall() {
+        setManagerState(ManagerState.ALERTING_CUSTOMER);
         int next = customersToCallQueue.poll();
         return next;
     }
@@ -321,10 +325,10 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * @param customerId customer that needs to be called because his car is
      * ready to be picked up
      * @param idMechanic
-     * @param state
      */
     @Override
     public synchronized void alertManager(Piece piece, int customerId, int idMechanic) {
+        setMechanicState(MechanicState.ALERTING_MANAGER, idMechanic);
         if (piece == null) {
             customersToCallQueue.add(customerId);
             notifyAll();
@@ -338,11 +342,11 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * Manager's method. The manager retrieves the piece that needs to be re
      * stocked in the repair area.
      *
-     * @param state
      * @return a piece that needs to be re stocked in the repair area
      */
     @Override
     public synchronized Piece getPieceToReStock() {
+        setManagerState(ManagerState.GETTING_NEW_PARTS);
         Piece p = piecesQueue.poll();
         return p;
     }
@@ -350,12 +354,10 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     /**
      * Manager's method. Manager changes state to go replenish stock.
      *
-     * @param state
      */
     @Override
     public synchronized void goReplenishStock() {
-        //((Manager) Thread.currentThread()).setManagerState(ManagerState.REPLENISH_STOCK);
-        //repairShop.updateFromLounge(state);//MANDAR PARA LOG
+        setManagerState(ManagerState.REPLENISH_STOCK);
     }
 
     /**
@@ -430,5 +432,54 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         return flagPartMissing;
     }*/
     
+    private synchronized void setManagerState(ManagerState state) {
+        RepositoryMessage response;
+        startCommunication(cc_repository);
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.SET_MANAGER_STATE, state.toString()));
+        response = (RepositoryMessage) cc_repository.readObject();
+        cc_repository.close();
+    }
     
+    private synchronized void setCustomerState(CustomerState state, int id) {
+        RepositoryMessage response;
+        startCommunication(cc_repository);
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.SET_CUSTOMER_STATE, state.toString(), id));
+        response = (RepositoryMessage) cc_repository.readObject();
+        cc_repository.close(); 
+    }
+    
+    private synchronized void setMechanicState(MechanicState state, int id) {
+        RepositoryMessage response;
+        startCommunication(cc_repository);
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.SET_MECHANIC_STATE, state.toString(), id));
+        response = (RepositoryMessage) cc_repository.readObject();
+        cc_repository.close(); 
+    }
+    
+    private synchronized void setCustomersQueueSize(int size) {
+        RepositoryMessage response;
+        startCommunication(cc_repository);
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.NUMBER_IN_QUEUE, size));
+        response = (RepositoryMessage) cc_repository.readObject();
+        cc_repository.close(); 
+    }
+    
+    private synchronized void setReplacementQueueSize(int size) {
+        RepositoryMessage response;
+        startCommunication(cc_repository);
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.WAITING_REPLACEMENT, size));
+        response = (RepositoryMessage) cc_repository.readObject();
+        cc_repository.close(); 
+    }
+    
+    private void startCommunication(ChannelClient cc) {
+        while(!cc.open()) {
+            try {
+                Thread.sleep(1000);
+            }
+            catch(Exception e) {
+                
+            }
+        }
+    }
 }

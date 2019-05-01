@@ -46,4 +46,40 @@ public class RepositoryMessage {
     
     public static final int NUMBER_PARTS_PURCHASED = 19;
     
+    private String state;
+    private int id;
+    private int size;
+    
+    public RepositoryMessage(int msg, String state) {
+        this.msg = msg;
+        this.state = state;
+    }
+    
+    public RepositoryMessage(int msg, String state, int id) {
+        this.msg = msg;
+        this.state = state;
+        this.id = id;
+    }
+    
+    public RepositoryMessage(int msg, int size) {
+        this.msg = msg;
+        this.size = size;
+    }
+    
+    public int getMessageType() {
+        return this.msg;
+    }
+    
+    public String getState() {
+        return this.state;
+    }
+    
+    public int getId() {
+        return this.id;
+    }
+    
+    public int getSize() {
+        return this.size;
+    }
+    
 }

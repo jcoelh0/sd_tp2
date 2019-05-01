@@ -5,10 +5,25 @@
  */
 package shared.Repository;
 
+import entities.Customer.States.CustomerState;
+import entities.Manager.States.ManagerState;
+import entities.Mechanic.States.MechanicState;
+import java.io.PrintWriter;
+
 /**
  *
  * @author Andre
  */
 public class Repository {
+    
+    private final String file_name = "log.txt";
+    
+    public PrintWriter writer;
+    
+    private ManagerState managerState;
+    
+    private CustomerState[] customerState;
+    
+    private MechanicState[] mechanicState;
     
 }
