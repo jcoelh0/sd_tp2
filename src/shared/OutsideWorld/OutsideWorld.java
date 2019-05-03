@@ -187,7 +187,7 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
     private synchronized void updateRequiresCar(String s, int i) {
         RepositoryMessage response;
         startCommunication(cc_repository);
-        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.REPAIRED_CAR, s, i));
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.REQUIRES_CAR, s, i));
         response = (RepositoryMessage) cc_repository.readObject();
         cc_repository.close();
     }

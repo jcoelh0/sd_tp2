@@ -95,6 +95,8 @@ public class RepositoryInterface {
                 break;
             
             case RepositoryMessage.PART_NEEDED:
+                repository.setManagerNotifed(inMsg.getVehicleDriven());
+                outMsg = new RepositoryMessage(RepositoryMessage.SUCCESS);
                 break;
             
             case RepositoryMessage.NUMBER_PARTS:

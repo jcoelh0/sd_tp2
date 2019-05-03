@@ -37,6 +37,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     private int nRequestsManager = 0;
     private boolean enoughWork = false;
     private final boolean[] flagPartMissing;
+    private String[] flag;
 
     //static final int nPieces = (int) (Math.random() * 13) + 3; //between 3 and 15 Math.random() * ((max - min) + 1)) + min; //0;
     static final int nPieces = 10;
@@ -60,6 +61,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
             stock.put(pec.getTypePiece(), stock.get(pec.getTypePiece()) + 1);
             flagPartMissing[pec.getIdTypePiece()] = false;
         }
+        Arrays.fill(flag, "F");
         this.cc_repository = new ChannelClient(NAME_GENERAL_REPOSITORY, PORT_GENERAL_REPOSITORY);
         updateStock(stock);
     }
@@ -190,7 +192,8 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     @Override
     public synchronized void letManagerKnow(Piece piece, int idCustomerNeedsPiece) {
         flagPartMissing[piece.getIdTypePiece()] = true;
-        updatePartsMissing(flagPartMissing);
+        flag[piece.getIdTypePiece()] = "T";
+        updatePartsMissing(flag);
         carsWaitingForPieces.put(idCustomerNeedsPiece, piece);
         carsToRepair.remove(idCustomerNeedsPiece);
     }
@@ -239,7 +242,8 @@ public class RepairArea implements IMechanicRA, IManagerRA {
             addPieceToStock(part);
         }
         flagPartMissing[part.getIdTypePiece()] = false;
-        updatePartsMissing(flagPartMissing);
+        flag[part.getIdTypePiece()] = "F";
+        updatePartsMissing(flag);
         return n;
     }
 
@@ -315,7 +319,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         cc_repository.close();
     }
     
-    private synchronized void updatePartsMissing(boolean[] flag) {
+    private synchronized void updatePartsMissing(String[] flag) {
         RepositoryMessage response;
         startCommunication(cc_repository);
         cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.PART_NEEDED, flag));
