@@ -57,6 +57,10 @@ public class RepositoryMessage {
     private int[] piecesBought;
     private String[] vehicleDriven;
     
+    public RepositoryMessage(int msg) {
+        this.msg = msg;
+    }
+    
     public RepositoryMessage(int msg, String state) {
         this.msg = msg;
         this.state = state;

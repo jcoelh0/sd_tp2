@@ -42,7 +42,7 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
             }
         }
         this.cc_repository = new ChannelClient(NAME_GENERAL_REPOSITORY, PORT_GENERAL_REPOSITORY);
-        updateVehicleDriven(vehicleDriven);
+        //updateVehicleDriven(vehicleDriven);
     }
     
     /**
@@ -62,7 +62,14 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
         while (randomNum != 1) {
             randomNum = n.nextInt((100 - 1) + 1) + 1;
         }
-        return requires.nextBoolean();
+        boolean req = requires.nextBoolean();
+        if(req == true) {
+            updateRequiresCar("T", id);
+        }
+        else {
+            updateRequiresCar("F", id);
+        }
+        return req;
     }
 
     /**
@@ -76,6 +83,7 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
     @Override
     public synchronized boolean backToWorkByBus(boolean carRepaired, int id) {
         setCustomerState(CustomerState.NORMAL_LIFE_WITHOUT_CAR, id);
+        updateVehicleDriven("--", id);
         vehicleDriven[id] = "--";
         if (!carRepaired) {
             waitingForCar.add(id);
@@ -107,12 +115,14 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
     public synchronized boolean backToWorkByCar(boolean carRepaired, int replacementCar, int id) {
         setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR, id);
         if (replacementCar == -1) {
+            updateVehicleDriven(Integer.toString(id), id);
             if (id < 10) {
                 vehicleDriven[id] = "0" + Integer.toString(id);
             } else {
                 vehicleDriven[id] = Integer.toString(id);
             }
         } else {
+            updateVehicleDriven("R" + Integer.toString(replacementCar), id);
             vehicleDriven[id] = "R" + Integer.toString(replacementCar);
         }
         if (!carRepaired) {
@@ -166,12 +176,20 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
         cc_repository.close(); 
     }
     
-    private synchronized void updateVehicleDriven(String[] vehicleDriven) {
+    private synchronized void updateVehicleDriven(String s, int i) {
         RepositoryMessage response;
         startCommunication(cc_repository);
-        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.VEHICLE_DRIVEN, vehicleDriven));
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.VEHICLE_DRIVEN, s, i));
         response = (RepositoryMessage) cc_repository.readObject();
         cc_repository.close(); 
+    }
+    
+    private synchronized void updateRequiresCar(String s, int i) {
+        RepositoryMessage response;
+        startCommunication(cc_repository);
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.REPAIRED_CAR, s, i));
+        response = (RepositoryMessage) cc_repository.readObject();
+        cc_repository.close();
     }
     
     private void startCommunication(ChannelClient cc) {

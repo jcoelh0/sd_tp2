@@ -7,7 +7,9 @@ import entities.Mechanic.Interfaces.IMechanicRA;
 import entities.Manager.Interfaces.IManagerRA;
 import entities.Manager.States.ManagerState;
 import entities.Mechanic.States.MechanicState;
+import static settings.Constants.N_TYPE_PIECES;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,8 +38,9 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     private boolean enoughWork = false;
     private final boolean[] flagPartMissing;
 
-    static final int nPieces = (int) (Math.random() * 13) + 3; //between 3 and 15 Math.random() * ((max - min) + 1)) + min; //0;
-
+    //static final int nPieces = (int) (Math.random() * 13) + 3; //between 3 and 15 Math.random() * ((max - min) + 1)) + min; //0;
+    static final int nPieces = 10;
+    
     private static final HashMap<EnumPiece, Integer> stock = new HashMap<>();
 
     /**
