@@ -9,8 +9,8 @@ public interface IManagerOW {
 
 	/**
 	 *
-	 * @param id
-	 * @return
+	 * @param id id of customer
+	 * @return true if customer called successfully
 	 */
 	public boolean phoneCustomer(int id);
 }

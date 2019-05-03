@@ -60,7 +60,7 @@ public class ParkMessage {
     
     /**
      * Constructor of ParkMessage.
-     * @param msg 
+     * @param msg type of message received
      */
     public ParkMessage(int msg) {
         this.msg = msg;
@@ -68,8 +68,8 @@ public class ParkMessage {
     
     /**
      * Constructor of ParkMessage.
-     * @param msg
-     * @param boolResponse 
+     * @param msg type of message received
+     * @param boolResponse boolean received
      */
     public ParkMessage(int msg, boolean boolResponse) {
         this.msg = msg;
@@ -78,8 +78,8 @@ public class ParkMessage {
     
     /**
      * Constructor of ParkMessage.
-     * @param msg
-     * @param id 
+     * @param msg type of message received
+     * @param id int received
      */
     public ParkMessage(int msg, int id) {
         this.msg = msg;
@@ -88,9 +88,9 @@ public class ParkMessage {
     
     /**
      * Constructor of ParkMessage.
-     * @param msg
-     * @param id
-     * @param car 
+     * @param msg type of message received
+     * @param id id received
+     * @param car car received
      */
     public ParkMessage(int msg, int id, int car) {
         this.msg = msg;

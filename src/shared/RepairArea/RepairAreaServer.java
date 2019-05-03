@@ -12,6 +12,10 @@ import static settings.Constants.N_TYPE_PIECES;
  */
 public class RepairAreaServer {
     
+    /**
+     * Server running the repair area.
+     * @param args -
+     */ 
     public static void main(String[] args) {
         
         RepairArea repairArea = new RepairArea(N_TYPE_PIECES);

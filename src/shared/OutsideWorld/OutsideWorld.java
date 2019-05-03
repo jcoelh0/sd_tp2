@@ -26,7 +26,7 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
 
     /**
      *
-     * @param nCustomers
+     * @param nCustomers number of customers
      */
     public OutsideWorld(int nCustomers) {
         this.waitingForCar = new ArrayList<>();
@@ -48,8 +48,8 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
      * until he decides do repair his car. Furthermore, he also decides if he is
      * going to need a replacement car or not.
      *
-     * @param id
-     * @return
+     * @param id id of the customer
+     * @return boolean indicating if customer requires car
      */
     @Override
     public synchronized boolean decideOnRepair(int id) {
@@ -74,9 +74,9 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
      * Customer's method. After going back to work by bus, the customer waits
      * for the manager to tell him that his car has been repaired.
      *
-     * @param carRepaired
-     * @param id
-     * @return
+     * @param carRepaired indicates if car is repaired
+     * @param id id of the customer
+     * @return true when car is repaired
      */
     @Override
     public synchronized boolean backToWorkByBus(boolean carRepaired, int id) {
@@ -104,10 +104,10 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
      * car), the customer waits for the manager to tell him that his car has
      * been repaired.
      *
-     * @param carRepaired
-     * @param replacementCar
-     * @param id
-     * @return
+     * @param carRepaired indicates if car is repaired
+     * @param replacementCar id of replacement car
+     * @param id id of the customer
+     * @return true when car is repaired
      */
     @Override
     public synchronized boolean backToWorkByCar(boolean carRepaired, int replacementCar, int id) {

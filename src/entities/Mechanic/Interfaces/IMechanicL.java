@@ -10,10 +10,10 @@ import settings.Piece;
 public interface IMechanicL {
 
 	/**
-	 *
-	 * @param piece
-	 * @param idCar
-	 * @param idMechanic
+	 * alertManager method
+	 * @param piece piece needed
+	 * @param idCar car in need of piece
+	 * @param idMechanic id of the mechanic
 	 */
 	public void alertManager(Piece piece, int idCar, int idMechanic);
 }

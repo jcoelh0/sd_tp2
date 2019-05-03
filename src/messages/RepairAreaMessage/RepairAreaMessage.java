@@ -91,7 +91,7 @@ public class RepairAreaMessage {
     
     /**
      * Contructor of RepairAreaMessage.
-     * @param msg 
+     * @param msg type of message received 
      */
     public RepairAreaMessage(int msg) {
         this.msg = msg;
@@ -99,8 +99,8 @@ public class RepairAreaMessage {
     
     /**
      * Contructor of RepairAreaMessage.
-     * @param msg
-     * @param id 
+     * @param msg type of message received
+     * @param id id received
      */
     public RepairAreaMessage(int msg, int id) {
         this.msg = msg;
@@ -109,10 +109,10 @@ public class RepairAreaMessage {
     
     /**
      * Contructor of RepairAreaMessage.
-     * @param msg
-     * @param id
-     * @param piece
-     * @param car 
+     * @param msg type of message received
+     * @param id id received
+     * @param piece piece received
+     * @param car car received
      */
     public RepairAreaMessage(int msg, int id, Piece piece, int car) {
         this.msg = msg;
@@ -123,9 +123,9 @@ public class RepairAreaMessage {
     
     /**
      * Contructor of RepairAreaMessage.
-     * @param msg
-     * @param id
-     * @param piece 
+     * @param msg type of message received
+     * @param id id received
+     * @param piece piece received
      */
     public RepairAreaMessage(int msg, int id, Piece piece) {
         this.msg = msg;
@@ -135,9 +135,9 @@ public class RepairAreaMessage {
     
     /**
      * Contructor of RepairAreaMessage.
-     * @param msg
-     * @param id
-     * @param car 
+     * @param msg type of message received
+     * @param id id received
+     * @param car car received
      */
     public RepairAreaMessage(int msg, int id, int car) {
         this.msg = msg;
@@ -147,9 +147,9 @@ public class RepairAreaMessage {
     
     /**
      * Contructor of RepairAreaMessage.
-     * @param msg
-     * @param piece
-     * @param quant 
+     * @param msg type of message received
+     * @param piece piece received
+     * @param quant quantity of piece received
      */
     public RepairAreaMessage(int msg, Piece piece, int quant) {
         this.msg = msg;
@@ -159,8 +159,8 @@ public class RepairAreaMessage {
     
     /**
      * Contructor of RepairAreaMessage.
-     * @param msg
-     * @param boolResponse 
+     * @param msg type of message received
+     * @param boolResponse boolean response received
      */
     public RepairAreaMessage(int msg, boolean boolResponse) {
         this.msg = msg;
@@ -169,8 +169,8 @@ public class RepairAreaMessage {
     
     /**
      * Contructor of RepairAreaMessage.
-     * @param msg
-     * @param hashResponse 
+     * @param msg type of message received
+     * @param hashResponse hashmap response received
      */
     public RepairAreaMessage(int msg, HashMap hashResponse) {
         this.msg = msg;

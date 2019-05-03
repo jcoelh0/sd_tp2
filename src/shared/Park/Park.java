@@ -67,8 +67,8 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      * Customer's method. Customer goes into the park and finds the replacement
      * car that has been associated to him.
      *
-     * @param id
-     * @param replacementCarId
+     * @param id id of the customer
+     * @param replacementCarId id of the replacement car
      */
     @Override
     public synchronized void findCar(int id, int replacementCarId) {
@@ -82,8 +82,8 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      * Mechanic's method. Mechanic goes into the park and gets the vehicle to
      * repair.
      *
-     * @param idCar
-     * @param idMechanic
+     * @param idCar id of the car to repair
+     * @param idMechanic id of the mechanic
      */
     @Override
     public synchronized void getVehicle(int idCar, int idMechanic) {
@@ -98,8 +98,8 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      * Customer's method. After being alerted that his own car is ready, the
      * customer goes into the park and parks his replacement car.
      *
-     * @param idCar
-     * @param idCustomer
+     * @param idCar id of the car to return
+     * @param idCustomer id of the customer
      */
     @Override
     public synchronized void returnReplacementCar(int idCar, int idCustomer) {
@@ -135,7 +135,7 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      * Manager's method. Manager checks if there is any replacement car
      * available in the park.
      *
-     * @param idCustomer
+     * @param idCustomer id of the customer
      * @return a boolean representing if a replacement car is available
      */
     @Override
@@ -151,7 +151,7 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      * Manager's method. Reserves a replacement car for a customer.
      *
      * @param id customer's id
-     * @return
+     * @return replacement car id reserved
      */
     @Override
     public synchronized int reserveCar(int id) {
@@ -166,7 +166,7 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      * Manager's method. Manager waits for customer to get the replacement car
      * it was given to him.
      *
-     * @param id
+     * @param id id of the customer
      */
     @Override
     public synchronized void waitForCustomer(int id) {

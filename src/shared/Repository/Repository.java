@@ -9,7 +9,6 @@ import static settings.Constants.N_TYPE_PIECES;
 import genclass.FileOp;
 import genclass.GenericIO;
 import genclass.TextFile;
-import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.HashMap;
 import settings.EnumPiece;
@@ -23,8 +22,6 @@ public class Repository {
     
     private final String file_name = "log.txt";
     TextFile log = new TextFile();
-    
-    public PrintWriter writer;
     
     private String managerState;  
     private String[] customerState;
@@ -48,6 +45,9 @@ public class Repository {
     
     private int[] boughtPieces = new int[N_TYPE_PIECES];
     
+    /**
+     * Repository constructor. Creates the log file and initializes data.
+     */
     public Repository() {
         if(FileOp.exists(".", file_name)) {
             FileOp.deleteFile(".", file_name);
@@ -69,6 +69,9 @@ public class Repository {
         Arrays.fill(boughtPieces, 0);        
     }
     
+    /**
+     * Method that updates the log each time something changes.
+     */
     public void updateLog() {
         if(!log.openForAppending(".", file_name)) {
             GenericIO.writelnString("Couldn't create " + file_name + "!");
@@ -106,51 +109,94 @@ public class Repository {
         }
     }
     
+    /**
+     * Method that updates the manager state.
+     * @param state new manager state
+     */
     public synchronized void setManagerState(String state) {
         managerState = state;
         updateLog();
     }
     
+    /**
+     * Method that updates a customer state.
+     * @param state new customer state
+     * @param i id of the customer
+     */
     public synchronized void setCustomerState(String state, int i) {
         customerState[i] = state;
         updateLog();
     }
     
+    /**
+     * Method that updates a mechanic state.
+     * @param state new mechanic state
+     * @param i id of the mechanic
+     */
     public synchronized void setMechanicState(String state, int i) {
         mechanicState[i] = state;
         updateLog();
     }
     
+    /**
+     * Method that updates the number of customers in queue.
+     * @param size size of the queue.
+     */
     public synchronized void setCustomersQueue(int size) {
         customersQueue = size;
         updateLog();
     }
     
+    /**
+     * Method that updates the number of customers waiting for replacement
+     * car.
+     * @param size number of customers waiting. 
+     */
     public synchronized void setReplacementQueue(int size) {
         replacementQueue = size;
         updateLog();
     }
     
+    /**
+     * Method that updates the number of cars that have been repaired.
+     * @param size number of cars repaired.
+     */
     public synchronized void setNumCarsRepaired(int size) {
         numCarsRepaired = size;
         updateLog();
     }
     
+    /**
+     * Method that updates the number of customer cars parked.
+     * @param n number of cars parked.
+     */
     public synchronized void setCustomersParked(int n) {
         customersParked = n;
         updateLog();
     }
     
+    /**
+     * Method that updates the number of replacement cars parked.
+     * @param n number of cars parked.
+     */
     public synchronized void setReplacementParked(int n) {
         replacementParked = n;
         updateLog();
     }
     
+    /**
+     * Method that updates the number of requests made to the manager.
+     * @param n number of requests.
+     */
     public synchronized void setRequests(int n) {
         requests = n;
         updateLog();
     }
     
+    /**
+     * Method that updates the number of pieces in stock.
+     * @param pieces current stock.
+     */
     public synchronized void setPiecesStock(HashMap<EnumPiece, Integer> pieces) {
         int i = 0;
         for(EnumPiece key : pieces.keySet()) {
@@ -160,16 +206,29 @@ public class Repository {
         updateLog();
     }
     
+    /**
+     * Method that updates the pieces that are required.
+     * @param pieces pieces required.
+     */
     public synchronized void setPiecesRequired(int[] pieces) {
         piecesRequired = pieces;
         updateLog();
     }
     
+    /**
+     * Method that updates the pieces that the manager was notified
+     * to go get.
+     * @param not pieces notified. 
+     */
     public synchronized void setManagerNotifed(String[] not) {
         managerNotified = not;
         updateLog();
     }
     
+    /**
+     * Method that updates the pieces that the manager has bought.
+     * @param pieces pieces bought.
+     */
     public synchronized void setBoughtPieces(int[] pieces) {
         for(int i = 0; i < boughtPieces.length; i++) {
             boughtPieces[i] += pieces[i];
@@ -177,11 +236,21 @@ public class Repository {
         updateLog();
     }
     
+    /**
+     * Method that updates if a customer requires a replacement car.
+     * @param s "T" if true, "F" if false
+     * @param i id of customer
+     */
     public synchronized void setRequiresCar(String s, int i) {
         requiresCar[i] = s;
         updateLog();
     }
     
+    /**
+     * Method that updates what car a customer is driving.
+     * @param s car driven
+     * @param i id of customer
+     */
     public synchronized void setVehicleDriven(String s, int i) {
         carsDriven[i] = s;
         updateLog();

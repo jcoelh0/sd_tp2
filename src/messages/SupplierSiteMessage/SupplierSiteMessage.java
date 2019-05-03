@@ -31,8 +31,8 @@ public class SupplierSiteMessage {
     
     /**
      * Contructor of SupplierSiteMessage.
-     * @param msg
-     * @param piece 
+     * @param msg type of message received
+     * @param piece piece received
      */
     public SupplierSiteMessage(int msg, Piece piece) {
         this.msg = msg;
@@ -41,8 +41,8 @@ public class SupplierSiteMessage {
     
     /**
      * Contructor of SupplierSiteMessage.
-     * @param msg
-     * @param intResponse 
+     * @param msg type of message received
+     * @param intResponse int response received
      */
     public SupplierSiteMessage(int msg, int intResponse) {
         this.msg = msg;

@@ -11,7 +11,7 @@ public class MechanicRun {
 
     /**
      * Instantiates all the mechanics.
-     * @param args 
+     * @param args -
      */
     public static void main(String[] args) {
 

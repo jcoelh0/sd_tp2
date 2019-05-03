@@ -12,6 +12,10 @@ import static settings.Constants.N_REPLACEMENT_CARS;
  */
 public class ParkServer {
     
+    /**
+     * Server running the park.
+     * @param args -
+     */ 
     public static void main(String[] args) {
         
         Park park = new Park(N_REPLACEMENT_CARS);

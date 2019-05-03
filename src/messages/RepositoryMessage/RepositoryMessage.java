@@ -126,7 +126,7 @@ public class RepositoryMessage {
     
     /**
      * Contructor of RepositoryMessage.
-     * @param msg 
+     * @param msg type of message received
      */
     public RepositoryMessage(int msg) {
         this.msg = msg;
@@ -134,8 +134,8 @@ public class RepositoryMessage {
     
     /**
      * Contructor of RepositoryMessage.
-     * @param msg
-     * @param state 
+     * @param msg type of message received
+     * @param state state received
      */
     public RepositoryMessage(int msg, String state) {
         this.msg = msg;
@@ -144,9 +144,9 @@ public class RepositoryMessage {
     
     /**
      * Contructor of RepositoryMessage.
-     * @param msg
-     * @param state
-     * @param id 
+     * @param msg type of message received
+     * @param state state received
+     * @param id id received
      */
     public RepositoryMessage(int msg, String state, int id) {
         this.msg = msg;
@@ -156,8 +156,8 @@ public class RepositoryMessage {
     
     /**
      * Contructor of RepositoryMessage.
-     * @param msg
-     * @param size 
+     * @param msg type of message received
+     * @param size size received
      */
     public RepositoryMessage(int msg, int size) {
         this.msg = msg;
@@ -166,8 +166,8 @@ public class RepositoryMessage {
     
     /**
      * Contructor of RepositoryMessage.
-     * @param msg
-     * @param hash 
+     * @param msg type of message received
+     * @param hash hashmap received
      */
     public RepositoryMessage(int msg, HashMap hash) {
         this.msg = msg;
@@ -176,8 +176,8 @@ public class RepositoryMessage {
     
     /**
      * Contructor of RepositoryMessage.
-     * @param msg
-     * @param flag 
+     * @param msg type of message received
+     * @param flag boolean array received
      */
     public RepositoryMessage(int msg, boolean[] flag) {
         this.msg = msg;
@@ -186,8 +186,8 @@ public class RepositoryMessage {
     
     /**
      * Contructor of RepositoryMessage.
-     * @param msg
-     * @param piecesBought 
+     * @param msg type of message received
+     * @param piecesBought int array received
      */
     public RepositoryMessage(int msg, int[] piecesBought) {
         this.msg = msg;
@@ -196,8 +196,8 @@ public class RepositoryMessage {
     
     /**
      * Contructor of RepositoryMessage.
-     * @param msg
-     * @param vehicleDriven 
+     * @param msg type of message received
+     * @param vehicleDriven string array received
      */
     public RepositoryMessage(int msg, String[] vehicleDriven) {
         this.msg = msg;

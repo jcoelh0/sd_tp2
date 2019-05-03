@@ -13,14 +13,30 @@ public class LoungeInterface {
     private Lounge lounge;
     private boolean status = true;
 
+    /**
+     * LoungeInterface constructor
+     * @param lounge Lounge reference
+     */
     public LoungeInterface(Lounge lounge) {
         this.lounge = lounge;
     }
 
+    /**
+     * Checks if the server is running.
+     * @return boolean to determine server status.
+     */
     public boolean getStatus() {
         return this.status;
     }
 
+    /**
+     * Method that processes the message received and executes the operation
+     * associated to that message.
+     * 
+     * @param inMsg message that contains a given request
+     * @return LoungeMessage reply
+     * @throws LoungeMessageException if the message contains an invalid request
+     */
     public LoungeMessage process(LoungeMessage inMsg) throws LoungeMessageException {
         
         LoungeMessage outMsg = null;

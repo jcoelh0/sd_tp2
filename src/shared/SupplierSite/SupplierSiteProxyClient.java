@@ -15,6 +15,12 @@ public class SupplierSiteProxyClient extends Thread {
     
     private SupplierSiteInterface supplierSiteInterface;
     
+    /**
+     * SupplierSite proxy client constructor.
+     * 
+     * @param cs communication channel
+     * @param supplierSiteInterface supplier site interface
+     */
     public SupplierSiteProxyClient(ChannelServer cs, SupplierSiteInterface supplierSiteInterface) {
         this.cs = cs;
         this.supplierSiteInterface = supplierSiteInterface;

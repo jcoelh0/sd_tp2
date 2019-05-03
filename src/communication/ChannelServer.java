@@ -98,7 +98,7 @@ public class ChannelServer {
     /**
      * Listening process. Creates a communication channel for a pending request.
      * Opens input and output streams.
-     * @param a
+     * @param a -
      * @return communication channel
      */
     public ChannelServer accept (boolean... a){

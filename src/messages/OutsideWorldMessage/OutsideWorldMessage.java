@@ -46,8 +46,8 @@ public class OutsideWorldMessage {
     
     /**
      * Constructor of OutsideWorldMessage.
-     * @param msg
-     * @param cust_id 
+     * @param msg type of message received
+     * @param cust_id id of the customer
      */
     public OutsideWorldMessage(int msg, int cust_id) {
         this.msg = msg;
@@ -56,9 +56,9 @@ public class OutsideWorldMessage {
     
     /**
      * Constructor of OutsideWorldMessage.
-     * @param msg
-     * @param cust_id
-     * @param carRepaired 
+     * @param msg type of message received
+     * @param cust_id id of the customer
+     * @param carRepaired boolean signalizing if car is repaired
      */
     public OutsideWorldMessage(int msg, int cust_id, boolean carRepaired) {
         this.msg = msg;
@@ -68,10 +68,10 @@ public class OutsideWorldMessage {
     
     /**
      * Constructor of OutsideWorldMessage.
-     * @param msg
-     * @param cust_id
-     * @param carRepaired
-     * @param replacementCar 
+     * @param msg type of message received
+     * @param cust_id id of the customer
+     * @param carRepaired boolean signalizing if car is repaired
+     * @param replacementCar id of the replacement car
      */
     public OutsideWorldMessage(int msg, int cust_id, boolean carRepaired, int replacementCar) {
         this.msg = msg;
@@ -82,8 +82,8 @@ public class OutsideWorldMessage {
     
     /**
      * Constructor of OutsideWorldMessage.
-     * @param msg
-     * @param boolResponse 
+     * @param msg type of message received
+     * @param boolResponse boolean response received 
      */
     public OutsideWorldMessage(int msg, boolean boolResponse) {
         this.msg = msg;

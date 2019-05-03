@@ -15,6 +15,12 @@ public class ParkProxyClient extends Thread {
     
     private ParkInterface parkInterface;
     
+    /**
+     * Park proxy client constructor.
+     * 
+     * @param cs communication channel
+     * @param parkInterface park interface
+     */
     public ParkProxyClient(ChannelServer cs, ParkInterface parkInterface) {
         this.cs = cs;
         this.parkInterface = parkInterface;

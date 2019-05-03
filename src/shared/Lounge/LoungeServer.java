@@ -7,12 +7,16 @@ import static settings.Constants.N_CUSTOMERS;
 import static settings.Constants.N_TYPE_PIECES;
 
 /**
- *
+ * 
  * @author André Oliveira
  * @author João Coelho
  */
 public class LoungeServer {
     
+    /**
+     * Server running the lounge.
+     * @param args -
+     */    
     public static void main(String[] args) {
         
         Lounge lounge = new Lounge(N_CUSTOMERS, N_TYPE_PIECES);

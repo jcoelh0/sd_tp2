@@ -12,6 +12,10 @@ import static settings.Constants.N_TYPE_PIECES;
  */
 public class SupplierSiteServer {
     
+    /**
+     * Server running the supplier site.
+     * @param args -
+     */ 
     public static void main(String[] args) {
         
         SupplierSite supplierSite = new SupplierSite(N_TYPE_PIECES);

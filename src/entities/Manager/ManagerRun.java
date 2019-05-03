@@ -11,7 +11,7 @@ public class ManagerRun {
 
     /**
      * Starts the manager.
-     * @param args 
+     * @param args -
      */
     public static void main(String[] args) {
         Manager manager = new Manager(N_CUSTOMERS);

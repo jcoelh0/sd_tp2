@@ -10,6 +10,10 @@ import communication.ChannelServer;
  */
 public class RepositoryServer {
     
+    /**
+     * Server running the repository.
+     * @param args -
+     */ 
     public static void main(String[] args) {
         
         Repository repository = new Repository();

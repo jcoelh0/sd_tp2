@@ -12,6 +12,10 @@ import static settings.Constants.N_CUSTOMERS;
  */
 public class OutsideWorldServer {
     
+    /**
+     * Server running the outside world.
+     * @param args -
+     */ 
     public static void main(String[] args) {
         
         OutsideWorld outsideWorld = new OutsideWorld(N_CUSTOMERS);

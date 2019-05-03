@@ -15,6 +15,12 @@ public class OutsideWorldProxyClient extends Thread {
     
     private OutsideWorldInterface outsideWorldInterface;
     
+    /**
+     * OutsideWorld proxy client constructor.
+     * 
+     * @param cs communication channel
+     * @param outsideWorldInterface outside world interface
+     */
     public OutsideWorldProxyClient(ChannelServer cs, OutsideWorldInterface outsideWorldInterface) {
         this.cs = cs;
         this.outsideWorldInterface = outsideWorldInterface;

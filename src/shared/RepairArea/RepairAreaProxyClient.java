@@ -15,6 +15,12 @@ public class RepairAreaProxyClient extends Thread {
     
     private RepairAreaInterface repairAreaInterface;
     
+    /**
+     * RepairArea proxy client constructor.
+     * 
+     * @param cs communication channel
+     * @param repairAreaInterface repair area interface
+     */
     public RepairAreaProxyClient(ChannelServer cs, RepairAreaInterface repairAreaInterface) {
         this.cs = cs;
         this.repairAreaInterface = repairAreaInterface;

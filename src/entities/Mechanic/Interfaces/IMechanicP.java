@@ -9,15 +9,15 @@ package entities.Mechanic.Interfaces;
 public interface IMechanicP {
 
 	/**
-	 *
-	 * @param id
-	 * @param idMechanic
+	 * getVehicle method
+	 * @param id id of the car to repair
+	 * @param idMechanic id of the mechanic
 	 */
 	public void getVehicle(int id, int idMechanic);
 
 	/**
-	 *
-	 * @param id
+	 * returnVehicle method
+	 * @param id id of the repaired car
 	 */
 	public void returnVehicle(int id);
 }

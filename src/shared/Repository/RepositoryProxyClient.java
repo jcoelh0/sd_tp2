@@ -15,6 +15,12 @@ public class RepositoryProxyClient extends Thread {
     
     private RepositoryInterface repositoryInterface;
     
+    /**
+     * Repository proxy client constructor.
+     * 
+     * @param cs communication channel
+     * @param repositoryInterface repository interface
+     */
     public RepositoryProxyClient(ChannelServer cs, RepositoryInterface repositoryInterface) {
         this.cs = cs;
         this.repositoryInterface = repositoryInterface;

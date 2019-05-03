@@ -124,7 +124,7 @@ public class LoungeMessage implements Serializable {
     
     /**
      * Constructor of LoungeMessage.
-     * @param msg 
+     * @param msg type of message received 
      */
     public LoungeMessage(int msg) {
         this.msg = msg;
@@ -132,8 +132,8 @@ public class LoungeMessage implements Serializable {
     
     /**
      * Constructor of LoungeMessage.
-     * @param msg
-     * @param cust_id 
+     * @param msg type of message received
+     * @param cust_id id of customer received
      */
     public LoungeMessage(int msg, int cust_id) {
         this.msg = msg;
@@ -142,10 +142,10 @@ public class LoungeMessage implements Serializable {
     
     /**
      * Constructor of LoungeMessage.
-     * @param msg
-     * @param cust_id
-     * @param carRepaired
-     * @param requiresCar 
+     * @param msg type of message received
+     * @param cust_id id of customer received
+     * @param carRepaired boolean indicating if car is repaired
+     * @param requiresCar boolean indicating if customer requires car
      */
     public LoungeMessage(int msg, int cust_id, boolean carRepaired, boolean requiresCar) {
         this.msg = msg;
@@ -156,10 +156,10 @@ public class LoungeMessage implements Serializable {
     
     /**
      * Constructor of LoungeMessage.
-     * @param msg
-     * @param mech_id
-     * @param piece
-     * @param cust_id 
+     * @param msg type of message received
+     * @param mech_id id of mechanic received
+     * @param piece piece received
+     * @param cust_id id of customer received
      */
     public LoungeMessage(int msg, int mech_id, Piece piece, int cust_id) {
         this.msg = msg;
@@ -170,9 +170,9 @@ public class LoungeMessage implements Serializable {
     
     /**
      * Constructor of LoungeMessage.
-     * @param msg
-     * @param car_id
-     * @param cust_id 
+     * @param msg type of message received
+     * @param car_id id of car received
+     * @param cust_id id of customer received
      */
     public LoungeMessage(int msg, int car_id, int cust_id) {
         this.msg = msg;
@@ -182,8 +182,8 @@ public class LoungeMessage implements Serializable {
     
     /**
      * Constructor of LoungeMessage.
-     * @param msg
-     * @param strResponse 
+     * @param msg type of message received
+     * @param strResponse string received
      */
     public LoungeMessage(int msg, String strResponse) {
         this.msg = msg;
@@ -192,8 +192,8 @@ public class LoungeMessage implements Serializable {
     
     /**
      * Constructor of LoungeMessage.
-     * @param msg
-     * @param boolResponse 
+     * @param msg type of message received
+     * @param boolResponse boolean received
      */
     public LoungeMessage(int msg, boolean boolResponse) {
         this.msg = msg;
@@ -202,8 +202,8 @@ public class LoungeMessage implements Serializable {
     
     /**
      * Constructor of LoungeMessage.
-     * @param msg
-     * @param pieceResponse 
+     * @param msg type of message received
+     * @param pieceResponse piece received
      */
     public LoungeMessage(int msg, Piece pieceResponse) {
         this.msg = msg;

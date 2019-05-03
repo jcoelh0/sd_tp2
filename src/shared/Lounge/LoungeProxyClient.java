@@ -15,6 +15,12 @@ public class LoungeProxyClient extends Thread {
     
     private LoungeInterface loungeInterface;
     
+    /**
+     * Lounge proxy client constructor.
+     * 
+     * @param cs communication channel
+     * @param loungeInterface lounge interface
+     */
     public LoungeProxyClient(ChannelServer cs, LoungeInterface loungeInterface) {
         this.cs = cs;
         this.loungeInterface = loungeInterface;

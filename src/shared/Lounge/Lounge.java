@@ -44,8 +44,8 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     
     /**
      *
-     * @param nCustomers
-     * @param nTypePieces
+     * @param nCustomers number of customers
+     * @param nTypePieces number of type of pieces
      */
     public Lounge(int nCustomers, int nTypePieces) {
         requiresReplacementCar = new boolean[nCustomers];
@@ -78,9 +78,9 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * Customer's method. When the customer is talking to the manager he says if
      * he requires a replacement car or not.
      *
-     * @param carRepaired
-     * @param requiresCar
-     * @param idCustomer
+     * @param carRepaired represents if customers car is repaired
+     * @param requiresCar represents if customer requires replacement car
+     * @param idCustomer id of the customer
      */
     @Override
     public synchronized void talkWithManager(boolean carRepaired, boolean requiresCar, int idCustomer) {
@@ -103,8 +103,6 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * Manager's method. The manager awakes the customer next in the queue, and
      * then waits to see if the customer requires a replacement car.
      *
-     * @param availableCar boolean representing if there is a replacement car
-     * available
      * @return a String containing the information about what the customer needs
      * to do
      */
@@ -130,7 +128,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
 
     /**
      *
-     * @param idCustomer
+     * @param idCustomer id of the customer
      */
     @Override
     public synchronized void addToReplacementQueue(int idCustomer) {
@@ -141,8 +139,8 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * Manager's method. Manager gives to the customer the replacement car's
      * key.
      *
-     * @param replacementCarId
-     * @param idCustomer
+     * @param replacementCarId id of the replacement car
+     * @param idCustomer id of the customer
      */
     @Override
     public synchronized void handCarKey(int replacementCarId, int idCustomer) {
@@ -162,8 +160,8 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
 
     /**
      *
-     * @param id
-     * @return
+     * @param id id of the customer
+     * @return id of the replacement car
      */
     @Override
     public synchronized int getCarReplacementId(int id) {
@@ -235,8 +233,8 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * goes get one if it is available. Eventually, if the customer's car is
      * repaired while waiting, he goes to the normal queue.
      *
-     * @param id
-     * @return
+     * @param id id of the customer
+     * @return true if car was repaired while customer waited for replacement car
      */
     @Override
     public synchronized boolean collectKey(int id) {
@@ -302,7 +300,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * Manager's method. When there is work to do, the manager chooses the task
      * with the highest priority and changes state, accordingly.
      *
-     * @return
+     * @return int representing next task
      */
     @Override
     public synchronized int appraiseSit() {
@@ -325,7 +323,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      * @param piece piece that needs to be re stocked
      * @param customerId customer that needs to be called because his car is
      * ready to be picked up
-     * @param idMechanic
+     * @param idMechanic id of the mechanic
      */
     @Override
     public synchronized void alertManager(Piece piece, int customerId, int idMechanic) {

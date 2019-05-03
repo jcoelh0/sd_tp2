@@ -24,7 +24,6 @@ public class SupplierSite implements IManagerSS {
      * by the manager over time.
      *
      * @param nTypePieces number of type of pieces
-     * @param repairShop
      */
     public SupplierSite(int nTypePieces) {
         this.cc_repository = new ChannelClient(NAME_GENERAL_REPOSITORY, PORT_GENERAL_REPOSITORY);
