@@ -4,10 +4,15 @@ import static settings.Constants.*;
 
 /**
  *
- * @author andre e joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public class ManagerRun {
 
+    /**
+     * Starts the manager.
+     * @param args 
+     */
     public static void main(String[] args) {
         Manager manager = new Manager(N_CUSTOMERS);
         manager.start();

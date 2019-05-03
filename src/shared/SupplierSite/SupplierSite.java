@@ -9,7 +9,8 @@ import settings.Piece;
 
 /**
  *
- * @author andre and joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public class SupplierSite implements IManagerSS {
 

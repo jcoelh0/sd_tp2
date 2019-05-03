@@ -20,7 +20,8 @@ import settings.Piece;
 
 /**
  *
- * @author andre and joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public class RepairArea implements IMechanicRA, IManagerRA {
 

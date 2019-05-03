@@ -2,7 +2,8 @@ package entities.Manager.Interfaces;
 
 /**
  *
- * @author andre e joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public interface IManagerOW {
 

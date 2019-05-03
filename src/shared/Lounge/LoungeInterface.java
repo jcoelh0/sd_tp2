@@ -3,6 +3,11 @@ package shared.Lounge;
 import messages.LoungeMessage.*;
 import settings.Piece;
 
+/**
+ *
+ * @author André Oliveira
+ * @author João Coelho
+ */
 public class LoungeInterface {
 
     private Lounge lounge;

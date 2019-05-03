@@ -11,7 +11,8 @@ import messages.RepairAreaMessage.RepairAreaMessage;
 
 /**
  *
- * @author Andre e Joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public class Mechanic extends Thread {
 
@@ -29,6 +30,10 @@ public class Mechanic extends Thread {
     Piece pieceManagerReStock;
     int idCarToFix = 0;
 
+    /**
+     * Instantiates a mechanic.
+     * @param i is the mechanic id.
+     */
     public Mechanic(int i) {
         this.id = i;
         this.cc_repairarea = new ChannelClient(NAME_REPAIR_AREA, PORT_REPAIR_AREA);

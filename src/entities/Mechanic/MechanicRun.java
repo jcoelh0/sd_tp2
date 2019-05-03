@@ -4,10 +4,15 @@ import static settings.Constants.*;
 
 /**
  *
- * @author andre and joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public class MechanicRun {
 
+    /**
+     * Instantiates all the mechanics.
+     * @param args 
+     */
     public static void main(String[] args) {
 
         Mechanic[] mechanics = new Mechanic[N_MECHANICS];

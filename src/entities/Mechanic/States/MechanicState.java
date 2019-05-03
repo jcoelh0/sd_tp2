@@ -2,7 +2,8 @@ package entities.Mechanic.States;
 
 /**
  *
- * @author andre e joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public enum MechanicState {
     //Mechanic stats: wfw, ftc, amg, cks

@@ -1,17 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shared.SupplierSite;
 
 import communication.ChannelServer;
 import messages.SupplierSiteMessage.SupplierSiteMessage;
 import messages.SupplierSiteMessage.SupplierSiteMessageException;
-import java.util.concurrent.locks.ReentrantLock;
+
 /**
  *
- * @author Andre
+ * @author André Oliveira
+ * @author João Coelho
  */
 public class SupplierSiteProxyClient extends Thread {
     

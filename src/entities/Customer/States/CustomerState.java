@@ -2,14 +2,15 @@ package entities.Customer.States;
 
 /**
  *
- * @author andre e joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public enum CustomerState {
 
     //Customer stats: lwc, prk, wrc, rcp, lnc
 
 	/**
-	 *
+	 * NORMAL_LIFE_WITH_CAR state.
 	 */
     NORMAL_LIFE_WITH_CAR {
         @Override
@@ -19,7 +20,7 @@ public enum CustomerState {
     },
 
 	/**
-	 *
+	 * PARK state.
 	 */
 	PARK {
         @Override
@@ -29,7 +30,7 @@ public enum CustomerState {
     },
 
 	/**
-	 *
+	 * WAITING_FOR_REPLACE_CAR state.
 	 */
 	WAITING_FOR_REPLACE_CAR {
         @Override
@@ -39,7 +40,7 @@ public enum CustomerState {
     },
 
 	/**
-	 *
+	 * RECEPTION state.
 	 */
 	RECEPTION {
         @Override
@@ -49,7 +50,7 @@ public enum CustomerState {
     },
 
 	/**
-	 *
+	 * NORMAL_LIFE_WITHOUT_CAR state.
 	 */
 	NORMAL_LIFE_WITHOUT_CAR {
         @Override

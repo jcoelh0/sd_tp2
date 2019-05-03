@@ -17,7 +17,8 @@ import messages.RepositoryMessage.RepositoryMessage;
 
 /**
  *
- * @author andre and joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public class Park implements ICustomerP, IMechanicP, IManagerP {
 

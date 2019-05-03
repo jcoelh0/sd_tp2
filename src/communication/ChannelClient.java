@@ -13,6 +13,13 @@ import java.net.SocketAddress;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
+/**
+ * Client side communication channel creation.
+ * 
+ * @author André Oliveira
+ * @author João Coelho
+ */
+
 public class ChannelClient {
 
     private Socket communication_socket = null;
@@ -25,11 +32,21 @@ public class ChannelClient {
 
     private ObjectOutputStream output_stream = null;
 
+    /**
+     * Instantiation of a communication channel.
+     * @param name name of the computational system where the server is located
+     * @param port port number of the listening port of the server
+     */
+    
     public ChannelClient (String name, int port){
         server_name = name;
         server_port = port;
     }
     
+    /**
+     * Opening of a communication channel.
+     * @return true if communication channel opened succesfully, false if otherwise
+     */
     public boolean open(){
         boolean success = true; 
         SocketAddress server_addr = new InetSocketAddress (this.server_name, this.server_port);
@@ -91,6 +108,10 @@ public class ChannelClient {
         return (success);
     }
     
+    /**
+     * Closing of the communication channel, sockets and input and output
+     * socket streams.
+     */
     public void close (){
         try{ 
             input_stream.close();
@@ -121,10 +142,12 @@ public class ChannelClient {
         
     }
      
-   public Object readObject(){
-        // object 
+    /**
+     * Reading of an object from the communication channel
+     * @return object read
+     */
+    public Object readObject(){
         Object fromServer = null;
-
         try{
             fromServer = input_stream.readObject ();
         }
@@ -147,7 +170,11 @@ public class ChannelClient {
 
         return fromServer;
     }
-
+    
+    /**
+     * Writtingof an object to the communication channel
+     * @param toServer object to be written
+     */
     public void writeObject (Object toServer){
         try{ 
             output_stream.writeObject (toServer);

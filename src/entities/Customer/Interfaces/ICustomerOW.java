@@ -1,25 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities.Customer.Interfaces;
 
 /**
  *
- * @author andre
+ * @author André Oliveira
+ * @author João Coelho
  */
 public interface ICustomerOW {
 
 	/**
-	 *
+	 * decideOnRepair method.
 	 * @param id
 	 * @return
 	 */
 	public boolean decideOnRepair(int id);
 
 	/**
-	 *
+	 * backToWorkByBus method.
 	 * @param carRepaired
 	 * @param id
 	 * @return
@@ -27,7 +23,7 @@ public interface ICustomerOW {
 	public boolean backToWorkByBus(boolean carRepaired, int id);
 
 	/**
-	 *
+	 * backToWorkByCar method.
 	 * @param b
 	 * @param replacementCar
 	 * @param id

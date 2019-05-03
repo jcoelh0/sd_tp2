@@ -8,8 +8,9 @@ import messages.OutsideWorldMessage.OutsideWorldMessage;
 import messages.ParkMessage.ParkMessage;
 
 /**
- *
- * @author Andre e Joao
+ * 
+ * @author André Oliveira
+ * @author João Coelho
  */
 public class Customer extends Thread {
 
@@ -33,6 +34,10 @@ public class Customer extends Thread {
     private ChannelClient cc_park;
     private ChannelClient cc_lounge;
 
+    /**
+     * Instantiation of a customer.
+     * @param i represents its id.
+     */
     public Customer(int i) {
         this.id = i;
         this.cc_outside_world = new ChannelClient(NAME_OUTSIDE_WORLD, PORT_OUTSIDE_WORLD);

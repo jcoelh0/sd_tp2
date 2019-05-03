@@ -1,8 +1,12 @@
 package shared.OutsideWorld;
 
-import entities.Customer.States.CustomerState;
 import messages.OutsideWorldMessage.*;
 
+/**
+ *
+ * @author André Oliveira
+ * @author João Coelho
+ */
 public class OutsideWorldInterface {
 
     private OutsideWorld outsideWorld;

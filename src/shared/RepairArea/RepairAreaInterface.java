@@ -3,6 +3,11 @@ package shared.RepairArea;
 import java.util.HashMap;
 import messages.RepairAreaMessage.*;
 
+/**
+ *
+ * @author André Oliveira
+ * @author João Coelho
+ */
 public class RepairAreaInterface {
 
     private RepairArea repairArea;

@@ -2,6 +2,11 @@ package shared.Park;
 
 import messages.ParkMessage.*;
 
+/**
+ *
+ * @author André Oliveira
+ * @author João Coelho
+ */
 public class ParkInterface {
 
     private Park park;

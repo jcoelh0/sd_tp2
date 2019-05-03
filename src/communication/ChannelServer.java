@@ -10,27 +10,61 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 
+/**
+ * Server side communication channel creation.
+ * 
+ * @author André Oliveira
+ * @author João Coelho
+ */
+
 public class ChannelServer {
 
+    /**
+     * Listening socket.
+     */
     private ServerSocket listening_socket = null;
-
+    
+    /**
+     * Communication socket.
+     */
     private Socket communication_socket = null;
     
+    /**
+     * Number of the listening port of the server.
+     */
     private int server_port;
 
+    /**
+     * Input stream of the communication channel.
+     */
     private ObjectInputStream input_stream = null;
     
+    /**
+     * Output stream of the communication channel.
+     */
     private ObjectOutputStream output_stream = null;
 
+    /**
+     * Instantiation of a communication channel.
+     * @param portNumb number of the listening port of the server.
+     */
     public ChannelServer(int portNumb){
         server_port = portNumb;
     }
 
+    /**
+     * Instantiation of a communication channel.
+     * @param portNumb number of the listening port of the server.
+     * @param lSocket listening socket of the server
+     */
     public ChannelServer(int portNumb, ServerSocket lSocket){
         server_port = portNumb;
         listening_socket = lSocket;
     }
 
+    /**
+     * Establishes the listening socket.
+     */
     public void start (){
         try{ 
             listening_socket = new ServerSocket (server_port);
@@ -47,6 +81,9 @@ public class ChannelServer {
         }
     }
 
+    /**
+     * Closes the service and the listening socket.
+     */
     public void end (){
         try{ 
             listening_socket.close ();
@@ -58,6 +95,12 @@ public class ChannelServer {
         }
     }  
 
+    /**
+     * Listening process. Creates a communication channel for a pending request.
+     * Opens input and output streams.
+     * @param a
+     * @return communication channel
+     */
     public ChannelServer accept (boolean... a){
         
         ChannelServer scon;
@@ -99,6 +142,9 @@ public class ChannelServer {
         return scon;
     }
 
+    /**
+     * Closes the communication channel, socket and input and output streams.
+     */
     public void close (){
         try{ 
             input_stream.close();
@@ -128,6 +174,10 @@ public class ChannelServer {
         }
     } 
 
+    /**
+     * Reading of a communication channel object.
+     * @return object read.
+     */
     public Object readObject(){
 
         Object fromClient = null;
@@ -154,6 +204,10 @@ public class ChannelServer {
         return fromClient;
     }
 
+    /**
+     * Writes an object to the communication channel.
+     * @param toClient object to be written.
+     */
     public void writeObject (Object toClient){
       
         try{ 

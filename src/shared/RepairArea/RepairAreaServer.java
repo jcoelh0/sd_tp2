@@ -5,6 +5,11 @@ import static communication.ChannelPorts.NAME_REPAIR_AREA;
 import static communication.ChannelPorts.PORT_REPAIR_AREA;
 import static settings.Constants.N_TYPE_PIECES;
 
+/**
+ *
+ * @author André Oliveira
+ * @author João Coelho
+ */
 public class RepairAreaServer {
     
     public static void main(String[] args) {

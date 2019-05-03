@@ -5,6 +5,11 @@ import static communication.ChannelPorts.NAME_PARK;
 import static communication.ChannelPorts.PORT_PARK;
 import static settings.Constants.N_REPLACEMENT_CARS;
 
+/**
+ *
+ * @author André Oliveira
+ * @author João Coelho
+ */
 public class ParkServer {
     
     public static void main(String[] args) {

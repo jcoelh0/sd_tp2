@@ -1,27 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities.Customer.Interfaces;
-
-import entities.Customer.States.CustomerState;
 
 /**
  *
- * @author andre
+ * @author André Oliveira
+ * @author João Coelho
  */
 public interface ICustomerL {
 
 	/**
-	 *
+	 * queueIn method.
 	 * @param id
-	 * @param state
 	 */
 	public void queueIn(int id);
 
 	/**
-	 *
+	 * talkWithManager method.
 	 * @param carRepaired
 	 * @param requiresCar
 	 * @param idCustomer
@@ -29,20 +22,19 @@ public interface ICustomerL {
 	public void talkWithManager(boolean carRepaired, boolean requiresCar, int idCustomer);
 
 	/**
-	 *
+	 * collectKey method.
 	 * @param id
-	 * @param state
 	 * @return
 	 */
 	public boolean collectKey(int id);
 
 	/**
-	 *
+	 * payForTheService method.
 	 */
 	public void payForTheService();
 
 	/**
-	 *
+	 * getCarReplacementId method.
 	 * @param id
 	 * @return
 	 */

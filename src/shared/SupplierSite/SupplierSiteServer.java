@@ -5,6 +5,11 @@ import static communication.ChannelPorts.NAME_SUPPLIER_SITE;
 import static communication.ChannelPorts.PORT_SUPPLIER_SITE;
 import static settings.Constants.N_TYPE_PIECES;
 
+/**
+ *
+ * @author André Oliveira
+ * @author João Coelho
+ */
 public class SupplierSiteServer {
     
     public static void main(String[] args) {

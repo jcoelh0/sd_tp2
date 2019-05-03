@@ -4,12 +4,13 @@ import settings.Piece;
 
 /**
  *
- * @author andre e joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public interface IManagerSS {
 
 	/**
-	 *
+	 * goToSupplier method.
 	 * @param partNeeded
 	 * @return
 	 */

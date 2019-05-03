@@ -5,6 +5,11 @@ import static communication.ChannelPorts.NAME_OUTSIDE_WORLD;
 import static communication.ChannelPorts.PORT_OUTSIDE_WORLD;
 import static settings.Constants.N_CUSTOMERS;
 
+/**
+ *
+ * @author André Oliveira
+ * @author João Coelho
+ */
 public class OutsideWorldServer {
     
     public static void main(String[] args) {

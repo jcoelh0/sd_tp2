@@ -1,18 +1,17 @@
 package entities.Manager.Interfaces;
 
-import entities.Manager.States.ManagerState;
 import settings.Piece;
 
 /**
  *
- * @author andre e joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public interface IManagerRA {
 
 	/**
 	 *
 	 * @param idCustomer
-	 * @param state
 	 */
 	public void registerService(int idCustomer);
 
@@ -25,7 +24,7 @@ public interface IManagerRA {
 	public int storePart(Piece part, int quant);
 
 	/**
-	 *
+	 * enoughWork method.
 	 */
 	public void enoughWork();
 }

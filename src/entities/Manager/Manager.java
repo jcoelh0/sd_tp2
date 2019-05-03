@@ -13,7 +13,8 @@ import communication.ChannelClient;
 
 /**
  *
- * @author Andre e Joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public class Manager extends Thread {
 
@@ -34,6 +35,10 @@ public class Manager extends Thread {
     private ChannelClient cc_repairarea;
     private ChannelClient cc_suppliersite;
 
+    /**
+     * Instantiates the manager.
+     * @param nCustomers number of customers.
+     */
     public Manager(int nCustomers) {
         this.nCustomers = nCustomers;
         this.cc_outsideworld = new ChannelClient(NAME_OUTSIDE_WORLD, PORT_OUTSIDE_WORLD);

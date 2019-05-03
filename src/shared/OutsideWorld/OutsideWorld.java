@@ -5,18 +5,16 @@ import static communication.ChannelPorts.NAME_GENERAL_REPOSITORY;
 import static communication.ChannelPorts.PORT_GENERAL_REPOSITORY;
 import entities.Manager.Interfaces.IManagerOW;
 import entities.Customer.Interfaces.ICustomerOW;
-import entities.Customer.Customer;
 import entities.Customer.States.CustomerState;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import java.util.Random;
 import messages.RepositoryMessage.RepositoryMessage;
 
 /**
  *
- * @author andre and joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public class OutsideWorld implements ICustomerOW, IManagerOW {
 

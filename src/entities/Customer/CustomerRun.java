@@ -3,11 +3,17 @@ package entities.Customer;
 import static settings.Constants.*;
 
 /**
- *
- * @author andre and joao
+ * Main customer class. Instantiates the customers.
+ * 
+ * @author André Oliveira
+ * @author João Coelho
  */
 public class CustomerRun {
 
+    /**
+     * Main customer class. Instantiates the customers.
+     * @param args 
+     */
     public static void main(String[] args) {
         
         Customer[] customers = new Customer[N_CUSTOMERS];

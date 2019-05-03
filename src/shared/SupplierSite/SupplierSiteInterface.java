@@ -2,6 +2,11 @@ package shared.SupplierSite;
 
 import messages.SupplierSiteMessage.*;
 
+/**
+ *
+ * @author André Oliveira
+ * @author João Coelho
+ */
 public class SupplierSiteInterface {
 
     private SupplierSite supplierSite;

@@ -6,6 +6,11 @@ import static communication.ChannelPorts.PORT_LOUNGE;
 import static settings.Constants.N_CUSTOMERS;
 import static settings.Constants.N_TYPE_PIECES;
 
+/**
+ *
+ * @author André Oliveira
+ * @author João Coelho
+ */
 public class LoungeServer {
     
     public static void main(String[] args) {

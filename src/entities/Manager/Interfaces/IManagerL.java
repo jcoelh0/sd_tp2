@@ -1,17 +1,16 @@
 package entities.Manager.Interfaces;
 
 import settings.Piece;
-import entities.Manager.States.ManagerState;
 
 /**
  *
- * @author andre e joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public interface IManagerL {
 
 	/**
 	 *
-	 * @param availableCar
 	 * @return
 	 */
 	public String talkWithCustomer();
@@ -31,20 +30,17 @@ public interface IManagerL {
 
 	/**
 	 *
-	 * @param state
 	 * @return
 	 */
 	public int currentCustomer();
 
 	/**
-	 *
-	 * @param state
+	 * checkWhatToDo method.
 	 */
 	public void checkWhatToDo();
 
 	/**
 	 *
-	 * @param state
 	 * @return
 	 */
 	public int getIdToCall();
@@ -63,12 +59,12 @@ public interface IManagerL {
 	public boolean alertCustomer(int id);
 
 	/**
-	 *
+	 * getNextTask method.
 	 */
 	public void getNextTask();
 
 	/**
-	 *
+	 * receivePayment method.
 	 */
 	public void receivePayment();
 
@@ -80,14 +76,12 @@ public interface IManagerL {
 
 	/**
 	 *
-	 * @param state
 	 * @return
 	 */
 	public Piece getPieceToReStock();
 
 	/**
-	 *
-	 * @param state
+	 * goReplenishStock method.
 	 */
 	public void goReplenishStock();
 }

@@ -1,19 +1,18 @@
 package entities.Mechanic.Interfaces;
 
-import entities.Mechanic.States.MechanicState;
 import java.util.HashMap;
 import settings.Piece;
 
 /**
  *
- * @author andre e joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public interface IMechanicRA {
 
 	/**
 	 *
 	 * @param idMechanic
-	 * @param state
 	 * @return
 	 */
 	public boolean readThePaper(int idMechanic);
@@ -41,7 +40,6 @@ public interface IMechanicRA {
 	 *
 	 * @param requiredPart
 	 * @param idMechanic
-	 * @param state
 	 * @return
 	 */
 	public boolean partAvailable(Piece requiredPart, int idMechanic);

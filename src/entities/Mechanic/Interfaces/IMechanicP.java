@@ -1,10 +1,10 @@
 package entities.Mechanic.Interfaces;
 
-import entities.Mechanic.States.MechanicState;
 
 /**
  *
- * @author andre e joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public interface IMechanicP {
 
@@ -12,7 +12,6 @@ public interface IMechanicP {
 	 *
 	 * @param id
 	 * @param idMechanic
-	 * @param state
 	 */
 	public void getVehicle(int id, int idMechanic);
 

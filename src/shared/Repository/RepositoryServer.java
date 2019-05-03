@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shared.Repository;
 
 import static communication.ChannelPorts.PORT_GENERAL_REPOSITORY;
@@ -10,7 +5,8 @@ import communication.ChannelServer;
 
 /**
  *
- * @author Andre
+ * @author André Oliveira
+ * @author João Coelho
  */
 public class RepositoryServer {
     

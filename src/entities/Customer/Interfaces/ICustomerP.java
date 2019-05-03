@@ -1,33 +1,28 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities.Customer.Interfaces;
 
 /**
  *
- * @author andre
+ * @author André Oliveira
+ * @author João Coelho
  */
 public interface ICustomerP {
 
 	/**
-	 *
+	 * parkCar method.
 	 * @param id
 	 */
 	public void parkCar(int id);
 
 	/**
-	 *
+	 * returnReplacementCar method.
 	 * @param replacementCar
 	 * @param id
 	 */
     public void returnReplacementCar(int replacementCar, int id);
 
 	/**
-	 *
+	 * findCar method.
 	 * @param id
-	 * @param state
 	 * @param replacementCar
 	 */
 	public void findCar(int id, int replacementCar);

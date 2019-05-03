@@ -18,7 +18,8 @@ import settings.Piece;
 
 /**
  *
- * @author andre and joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     

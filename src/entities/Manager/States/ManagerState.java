@@ -2,14 +2,15 @@ package entities.Manager.States;
 
 /**
  *
- * @author andre e joao
+ * @author André Oliveira
+ * @author João Coelho
  */
 public enum ManagerState {
 
     //Manager states: aCtm, cwtd, gnwp, pjob, aCtm, rSto
 
 	/**
-	 *
+	 * CHECKING_WHAT_TO_DO state.
 	 */
     CHECKING_WHAT_TO_DO {
         @Override
@@ -19,7 +20,7 @@ public enum ManagerState {
     },
 
 	/**
-	 *
+	 * ATTENDING_CUSTOMER state.
 	 */
 	ATTENDING_CUSTOMER {
         @Override
@@ -29,7 +30,7 @@ public enum ManagerState {
     },
 
 	/**
-	 *
+	 * GETTING_NEW_PARTS state.
 	 */
 	GETTING_NEW_PARTS {
         @Override
@@ -39,7 +40,7 @@ public enum ManagerState {
     },
 
 	/**
-	 *
+	 * POSTING_JOB state.
 	 */
 	POSTING_JOB {
         @Override
@@ -49,7 +50,7 @@ public enum ManagerState {
     },
 
 	/**
-	 *
+	 * ALERTING_CUSTOMER state.
 	 */
 	ALERTING_CUSTOMER {
         @Override
@@ -59,7 +60,7 @@ public enum ManagerState {
     },
 
 	/**
-	 *
+	 * REPLENISH_STOCK state.
 	 */
 	REPLENISH_STOCK {
         @Override
