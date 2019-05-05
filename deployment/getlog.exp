@@ -1,0 +1,8 @@
+#!usr/bin/expect -f
+
+spawn scp -r sd0301@l040101-ws08.ua.pt:sd_tp2/log.txt ../sd_tp2/
+expect "sd0301@l040101-ws08.ua.pt's password:"
+send "qwerty\r"
+
+interact 
+sleep 5
