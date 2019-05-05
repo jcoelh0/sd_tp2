@@ -77,7 +77,15 @@ public class ParkInterface {
                 park.returnVehicle(inMsg.getCar());
                 outMsg = new ParkMessage(ParkMessage.SUCCESS);
                 break;
-                       
+            
+            case ParkMessage.END:
+                System.out.println("End!");
+                this.status = false;
+                outMsg = new ParkMessage(ParkMessage.SUCCESS);
+                break;
+                
+            default:
+                throw new ParkMessageException("Invalid message type.", inMsg);
         }
 
         return outMsg;

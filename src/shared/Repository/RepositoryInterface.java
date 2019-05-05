@@ -122,8 +122,13 @@ public class RepositoryInterface {
                 break;
             
             case RepositoryMessage.END:
+                System.out.println("End!");
+                this.status = false;
+                outMsg = new RepositoryMessage(RepositoryMessage.SUCCESS);
                 break;
             
+            default:
+                throw new RepositoryMessageException("Invalid message type.", inMsg);
         }
         
         return outMsg;

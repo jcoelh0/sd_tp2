@@ -93,6 +93,15 @@ public class RepairAreaInterface {
                 response = repairArea.storePart(inMsg.getPiece(), inMsg.getQuant());
                 outMsg = new RepairAreaMessage(RepairAreaMessage.SUCCESS, (int) response);
                 break;
+                
+            case RepairAreaMessage.END:
+                System.out.println("End!");
+                this.status = false;
+                outMsg = new RepairAreaMessage(RepairAreaMessage.SUCCESS);
+                break;
+                
+            default:
+                throw new RepairAreaMessageException("Invalid message type.", inMsg);
 
         }
 

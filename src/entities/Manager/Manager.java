@@ -10,6 +10,7 @@ import messages.SupplierSiteMessage.SupplierSiteMessage;
 
 import static communication.ChannelPorts.*;
 import communication.ChannelClient;
+import messages.RepositoryMessage.RepositoryMessage;
 
 /**
  *
@@ -34,6 +35,7 @@ public class Manager extends Thread {
     private ChannelClient cc_lounge;
     private ChannelClient cc_repairarea;
     private ChannelClient cc_suppliersite;
+    private ChannelClient cc_repository;
 
     /**
      * Instantiates the manager.
@@ -46,6 +48,7 @@ public class Manager extends Thread {
         this.cc_lounge = new ChannelClient(NAME_LOUNGE, PORT_LOUNGE);
         this.cc_repairarea = new ChannelClient(NAME_REPAIR_AREA, PORT_REPAIR_AREA);
         this.cc_suppliersite = new ChannelClient(NAME_SUPPLIER_SITE, PORT_SUPPLIER_SITE);
+        this.cc_repository = new ChannelClient(NAME_GENERAL_REPOSITORY, PORT_GENERAL_REPOSITORY);
     }
 
     private void openChannel(ChannelClient cc, String name) {
@@ -220,6 +223,38 @@ public class Manager extends Thread {
         cc_repairarea.close();
         return response.getId();
     }
+    
+    private void endProgram() {
+        openChannel(cc_lounge, "Lounge");
+        cc_lounge.writeObject(new LoungeMessage(LoungeMessage.END));
+        cc_lounge.readObject();
+        cc_lounge.close();
+        
+        openChannel(cc_repairarea, "RepairArea");
+        cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.END));
+        cc_repairarea.readObject();
+        cc_repairarea.close();
+        
+        openChannel(cc_park, "Park");
+        cc_park.writeObject(new ParkMessage(ParkMessage.END));
+        cc_park.readObject();
+        cc_park.close();
+        
+        openChannel(cc_outsideworld, "OutsideWorld");
+        cc_outsideworld.writeObject(new OutsideWorldMessage(OutsideWorldMessage.END));
+        cc_outsideworld.readObject();
+        cc_outsideworld.close();
+        
+        openChannel(cc_suppliersite, "SupplierSite");
+        cc_suppliersite.writeObject(new SupplierSiteMessage(SupplierSiteMessage.END));
+        cc_suppliersite.readObject();
+        cc_suppliersite.close();
+        
+        openChannel(cc_repository, "Repository");
+        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.END));
+        cc_repository.readObject();
+        cc_repository.close();
+    }
 
     @Override
     public void run() {
@@ -232,6 +267,7 @@ public class Manager extends Thread {
                     if (leftCustomers == nCustomers) {
                         enoughWork();
                         noMoreTasks = true;
+                        endProgram();
                         break;
                     }
                     getNextTask();

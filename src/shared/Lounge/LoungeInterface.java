@@ -133,6 +133,12 @@ public class LoungeInterface {
                 lounge.talkWithManager(inMsg.getCarRepaired(), inMsg.getRequiresCar(), inMsg.getCustId());
                 outMsg = new LoungeMessage(LoungeMessage.SUCCESS);
                 break;
+                
+            case LoungeMessage.END:
+                System.out.println("End!");
+                this.status = false;
+                outMsg = new LoungeMessage(LoungeMessage.SUCCESS);
+                break;
 
             default:
                 throw new LoungeMessageException("Invalid message type.", inMsg);

@@ -49,6 +49,14 @@ public class SupplierSiteInterface {
                 outMsg = new SupplierSiteMessage(SupplierSiteMessage.SUCCESS, (int) response);
                 break;
                 
+            case SupplierSiteMessage.END:
+                System.out.println("End!");
+                this.status = false;
+                outMsg = new SupplierSiteMessage(SupplierSiteMessage.SUCCESS);
+                break;
+                
+            default:
+                throw new SupplierSiteMessageException("Invalid message type.", inMsg);
         }
 
         return outMsg;

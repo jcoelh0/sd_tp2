@@ -62,7 +62,15 @@ public class OutsideWorldInterface {
                 response = outsideWorld.decideOnRepair(inMsg.getCustId());
                 outMsg = new OutsideWorldMessage(OutsideWorldMessage.SUCCESS, (boolean) response);
                 break;
-
+            
+            case OutsideWorldMessage.END:
+                System.out.println("End!");
+                this.status = false;
+                outMsg = new OutsideWorldMessage(OutsideWorldMessage.SUCCESS);
+                break;
+                
+            default:
+                throw new OutsideWorldMessageException("Invalid message type.", inMsg);
         }
 
         return outMsg;

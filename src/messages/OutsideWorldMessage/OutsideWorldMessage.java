@@ -47,6 +47,14 @@ public class OutsideWorldMessage {
     /**
      * Constructor of OutsideWorldMessage.
      * @param msg type of message received
+     */
+    public OutsideWorldMessage(int msg) {
+        this.msg = msg;
+    }
+    
+    /**
+     * Constructor of OutsideWorldMessage.
+     * @param msg type of message received
      * @param cust_id id of the customer
      */
     public OutsideWorldMessage(int msg, int cust_id) {
