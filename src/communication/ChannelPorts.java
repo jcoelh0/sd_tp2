@@ -57,46 +57,55 @@ public class ChannelPorts {
     /**
      * Name of the repository.
      */
-    public static final String NAME_GENERAL_REPOSITORY = "l040101-ws01.ua.pt";
+    public static final String NAME_GENERAL_REPOSITORY = "localhost";
+    //public static final String NAME_GENERAL_REPOSITORY = "l040101-ws01.ua.pt";
     
     /**
      * Name of the lounge.
      */
-    public static final String NAME_LOUNGE = "l040101-ws02.ua.pt";
+    public static final String NAME_LOUNGE = "localhost";
+    //public static final String NAME_LOUNGE = "l040101-ws02.ua.pt";
     
     /**
      * Name of the park.
      */
-    public static final String NAME_PARK = "l040101-ws03.ua.pt";
+    public static final String NAME_PARK = "localhost";
+    //public static final String NAME_PARK = "l040101-ws03.ua.pt";
     
     /**
      * Name of the outside world.
      */
-    public static final String NAME_OUTSIDE_WORLD = "l040101-ws04.ua.pt";
+    public static final String NAME_OUTSIDE_WORLD = "localhost";
+    //public static final String NAME_OUTSIDE_WORLD = "l040101-ws04.ua.pt";
     
     /**
      * Name of the supplier site.
      */
-    public static final String NAME_SUPPLIER_SITE = "l040101-ws05.ua.pt";
+    public static final String NAME_SUPPLIER_SITE = "localhost";
+    //public static final String NAME_SUPPLIER_SITE = "l040101-ws05.ua.pt";
     
     /**
      * Name of the repair area.
      */
-    public static final String NAME_REPAIR_AREA = "l040101-ws06.ua.pt";
+    public static final String NAME_REPAIR_AREA = "localhost";
+    //public static final String NAME_REPAIR_AREA = "l040101-ws06.ua.pt";
     
     /**
      * Name of the manager.
      */
-    public static final String NAME_MANAGER = "l040101-ws08.ua.pt";
+    public static final String NAME_MANAGER = "localhost";
+    //public static final String NAME_MANAGER = "l040101-ws08.ua.pt";
     
     /**
      * Name of the mechanics.
      */
-    public static final String NAME_MECHANICS = "l040101-ws10.ua.pt";
+    public static final String NAME_MECHANICS = "localhost";
+    //public static final String NAME_MECHANICS = "l040101-ws10.ua.pt";
     
     /**
      * Name of the customers.
      */
-    public static final String NAME_CUSTOMERS = "l040101-ws09.ua.pt";
+    public static final String NAME_CUSTOMERS = "localhost";
+    //public static final String NAME_CUSTOMERS = "l040101-ws09.ua.pt";
 
 }

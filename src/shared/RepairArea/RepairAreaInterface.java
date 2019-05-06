@@ -2,6 +2,7 @@ package shared.RepairArea;
 
 import java.util.HashMap;
 import messages.RepairAreaMessage.*;
+import settings.Piece;
 
 /**
  *
@@ -56,7 +57,7 @@ public class RepairAreaInterface {
 
             case RepairAreaMessage.GET_PIECES_TO_BE_REPAIRED:
                 response = repairArea.getPiecesToBeRepaired();
-                outMsg = new RepairAreaMessage(RepairAreaMessage.SUCCESS, (HashMap) response);
+                outMsg = new RepairAreaMessage(RepairAreaMessage.SUCCESS, (HashMap<Integer,Piece>) response);
                 break;
 
             case RepairAreaMessage.GET_REQUIRED_PART:

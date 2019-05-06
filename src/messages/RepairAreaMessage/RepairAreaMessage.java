@@ -172,7 +172,7 @@ public class RepairAreaMessage {
      * @param msg type of message received
      * @param hashResponse hashmap response received
      */
-    public RepairAreaMessage(int msg, HashMap hashResponse) {
+    public RepairAreaMessage(int msg, HashMap<Integer,Piece> hashResponse) {
         this.msg = msg;
         this.hashResponse = hashResponse;
     }
@@ -229,7 +229,7 @@ public class RepairAreaMessage {
      * Get method for hashResponse.
      * @return hashResponse
      */
-    public HashMap getHashResponse() {
+    public HashMap<Integer,Piece> getHashResponse() {
         return this.hashResponse;
     }
 }

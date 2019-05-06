@@ -62,6 +62,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
             stock.put(pec.getTypePiece(), stock.get(pec.getTypePiece()) + 1);
             flagPartMissing[pec.getIdTypePiece()] = false;
         }
+        flag = new String[nTypePieces];
         Arrays.fill(flag, "F");
         this.cc_repository = new ChannelClient(NAME_GENERAL_REPOSITORY, PORT_GENERAL_REPOSITORY);
         updateStock(stock);
@@ -304,7 +305,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         cc_repository.close();
     }
     
-    private synchronized void updateStock(HashMap stock) {
+    private synchronized void updateStock(HashMap<EnumPiece,Integer> stock) {
         RepositoryMessage response;
         startCommunication(cc_repository);
         cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.NUMBER_PARTS, stock));
@@ -328,10 +329,10 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         cc_repository.close();
     }
     
-    private synchronized void updatePiecesToBeRepaired(HashMap piecesToBeRepaired) {
+    private synchronized void updatePiecesToBeRepaired(HashMap<Integer,Piece> piecesToBeRepaired) {
         RepositoryMessage response;
         startCommunication(cc_repository);
-        cc_repository.writeObject(new RepositoryMessage(RepositoryMessage.NUMBER_VEHICLES_WAITING, piecesToBeRepaired));
+        cc_repository.writeObject(new RepositoryMessage(piecesToBeRepaired, RepositoryMessage.NUMBER_VEHICLES_WAITING));
         response = (RepositoryMessage) cc_repository.readObject();
         cc_repository.close();
     }

@@ -1,6 +1,8 @@
 package messages.RepositoryMessage;
 
 import java.util.HashMap;
+import settings.EnumPiece;
+import settings.Piece;
 
 /**
  *
@@ -119,10 +121,11 @@ public class RepositoryMessage {
     private String state;
     private int id;
     private int size;
-    private HashMap hash;
+    private HashMap<EnumPiece,Integer> hash;
     private boolean[] flag;
     private int[] piecesBought;
     private String[] vehicleDriven;
+    private HashMap<Integer,Piece> piecesToRepair;
     
     /**
      * Contructor of RepositoryMessage.
@@ -169,9 +172,19 @@ public class RepositoryMessage {
      * @param msg type of message received
      * @param hash hashmap received
      */
-    public RepositoryMessage(int msg, HashMap hash) {
+    public RepositoryMessage(int msg, HashMap<EnumPiece,Integer> hash) {
         this.msg = msg;
         this.hash = hash;
+    }
+    
+        /**
+     * Contructor of RepositoryMessage.
+     * @param msg type of message received
+     * @param piecesToRepair hashmap received
+     */
+    public RepositoryMessage(HashMap<Integer,Piece> piecesToRepair, int msg) {
+        this.msg = msg;
+        this.piecesToRepair = piecesToRepair;
     }
     
     /**
@@ -240,8 +253,16 @@ public class RepositoryMessage {
      * Get method for hash.
      * @return hash
      */
-    public HashMap getStock() {
+    public HashMap<EnumPiece,Integer> getStock() {
         return this.hash;
+    }
+    
+    /**
+     * Get method for piecesToRepair.
+     * @return hash
+     */
+    public HashMap<Integer,Piece> getPiecesToRepair() {
+        return this.piecesToRepair;
     }
     
     /**
