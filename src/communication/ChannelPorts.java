@@ -12,47 +12,47 @@ public class ChannelPorts {
     /**
      * Port number of the repository.
      */
-    public static final int PORT_GENERAL_REPOSITORY = 22910;
+    public static final int PORT_GENERAL_REPOSITORY = 22310;
     
     /**
      * Port number of the lounge.
      */
-    public static final int PORT_LOUNGE = 22911;
+    public static final int PORT_LOUNGE = 22311;
     
     /**
      * Port number of the park.
      */
-    public static final int PORT_PARK = 22912;
+    public static final int PORT_PARK = 22312;
     
     /**
      * Port number of the outside world.
      */
-    public static final int PORT_OUTSIDE_WORLD= 22913;
+    public static final int PORT_OUTSIDE_WORLD= 22313;
     
     /**
      * Port number of the supplier site.
      */
-    public static final int PORT_SUPPLIER_SITE = 22914;
+    public static final int PORT_SUPPLIER_SITE = 22314;
     
     /**
      * Port number of the repair area.
      */
-    public static final int PORT_REPAIR_AREA = 22915;
+    public static final int PORT_REPAIR_AREA = 22315;
     
     /**
      * Port number of the manager.
      */
-    public static final int PORT_MANAGER = 22916;
+    public static final int PORT_MANAGER = 22316;
     
     /**
      * Port number of the mechanics.
      */
-    public static final int PORT_MECHANICS = 22917;
+    public static final int PORT_MECHANICS = 22317;
        
     /**
      * Port number of the customers.
      */ 
-    public static final int PORT_CUSTOMERS = 22918;
+    public static final int PORT_CUSTOMERS = 22318;
 
     /**
      * Name of the repository.
