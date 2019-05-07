@@ -9,6 +9,7 @@ import settings.Piece;
  * @author André Oliveira
  * @author João Coelho
  */
+@SuppressWarnings("unchecked")
 public class RepairAreaInterface {
 
     private RepairArea repairArea;
