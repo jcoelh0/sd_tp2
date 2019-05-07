@@ -1,5 +1,6 @@
 package messages.RepairAreaMessage;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import settings.Piece;
 
@@ -8,7 +9,7 @@ import settings.Piece;
  * @author André Oliveira
  * @author João Coelho
  */
-public class RepairAreaMessage {
+public class RepairAreaMessage implements Serializable {
     
     private int msg = -1;
     

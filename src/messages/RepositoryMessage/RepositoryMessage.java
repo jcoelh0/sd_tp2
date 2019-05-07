@@ -1,5 +1,6 @@
 package messages.RepositoryMessage;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import settings.EnumPiece;
 import settings.Piece;
@@ -9,7 +10,7 @@ import settings.Piece;
  * @author André Oliveira
  * @author João Coelho
  */
-public class RepositoryMessage {
+public class RepositoryMessage implements Serializable {
     
     private int msg = -1;
     

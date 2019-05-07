@@ -1,11 +1,13 @@
 package messages.OutsideWorldMessage;
 
+import java.io.Serializable;
+
 /**
  *
  * @author André Oliveira
  * @author João Coelho
  */
-public class OutsideWorldMessage {
+public class OutsideWorldMessage implements Serializable {
     
     private int msg = -1;
     

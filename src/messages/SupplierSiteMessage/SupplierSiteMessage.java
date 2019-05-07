@@ -1,5 +1,6 @@
 package messages.SupplierSiteMessage;
 
+import java.io.Serializable;
 import settings.Piece;
 
 /**
@@ -7,7 +8,7 @@ import settings.Piece;
  * @author André Oliveira
  * @author João Coelho
  */
-public class SupplierSiteMessage {
+public class SupplierSiteMessage implements Serializable {
     
     private int msg = -1;
     
