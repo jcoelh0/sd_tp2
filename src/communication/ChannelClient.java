@@ -1,5 +1,6 @@
 package communication;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InvalidClassException;
 import java.io.NotSerializableException;
@@ -156,6 +157,9 @@ public class ChannelClient {
             e.printStackTrace ();
             System.exit (1);
         }
+        catch(EOFException e) {
+            
+        }
         catch (IOException e){ 
             System.out.println(Thread.currentThread ().getName () + " - error while reading object from the input channel of the communication socket!");
             e.printStackTrace ();
@@ -167,6 +171,7 @@ public class ChannelClient {
             e.printStackTrace ();
             System.exit (1);
         }
+        
 
         return fromServer;
     }
