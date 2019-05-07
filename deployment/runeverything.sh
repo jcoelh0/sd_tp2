@@ -1,16 +1,16 @@
 #!/bin/bash
 
-expect senddata.exp &&
+#expect senddata.exp &&
 
-sh runrepository.sh &
-sh runlounge.sh &
-sh runoutsideworld.sh &
-sh runpark.sh &
-sh runrepairarea.sh &
-sh runsuppliersite.sh &
-sh runmanager.sh &
-sh runmechanic.sh &
-sh runcustomer.sh &
+sh repository.sh &
+sh lounge.sh &
+sh outsideworld.sh &
+sh park.sh &
+sh repairarea.sh &
+sh suppliersite.sh &
+sh manager.sh &
+sh mechanic.sh &
+sh customer.sh &
 
 sleep 60
 
