@@ -45,7 +45,7 @@ public class SupplierSite implements IManagerSS {
         int randomNum = 1 + (int) (Math.random() * ((5 - 1) + 1)); //between 1 and 6////
         this.partNeeded = partNeeded;
         piecesBought[partNeeded.getTypePiece().ordinal()] += randomNum;
-        updatePiecesBought(piecesBought);
+        //updatePiecesBought(piecesBought);
         return randomNum;
     }
 

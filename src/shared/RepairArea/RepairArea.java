@@ -65,7 +65,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         flag = new String[nTypePieces];
         Arrays.fill(flag, "F");
         this.cc_repository = new ChannelClient(NAME_GENERAL_REPOSITORY, PORT_GENERAL_REPOSITORY);
-        updateStock(stock);
+        //updateStock(stock);
     }
 
     /**
@@ -84,12 +84,12 @@ public class RepairArea implements IMechanicRA, IManagerRA {
 
     private void removePieceFromStock(Piece p) {
         stock.put(p.getTypePiece(), stock.get(p.getTypePiece()) - 1);
-        updateStock(stock);
+        //updateStock(stock);
     }
 
     private void addPieceToStock(Piece p) {
         stock.put(p.getTypePiece(), stock.get(p.getTypePiece()) + 1);
-        updateStock(stock);
+        //updateStock(stock);
     }
 
     /**
@@ -101,7 +101,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      */
     @Override
     public synchronized boolean readThePaper(int idMechanic) {
-        setMechanicState(MechanicState.WAITING_FOR_WORK, idMechanic);
+        //setMechanicState(MechanicState.WAITING_FOR_WORK, idMechanic);
         int id = idMechanic;
         mechanicsQueue.add(id);
         while (readyToRepair.isEmpty() && carsToRepair.isEmpty() && !enoughWork) {
@@ -152,8 +152,8 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         repaired.add(id);
         removePieceFromStock(piece);
         piecesToBeRepaired.remove(id, piece);
-        updateStock(stock);
-        updatePiecesToBeRepaired(piecesToBeRepaired);
+        //updateStock(stock);
+        //updatePiecesToBeRepaired(piecesToBeRepaired);
         return 1;
     }
 
@@ -165,7 +165,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     @Override
     public synchronized void getRequiredPart(int id) {
         piecesToBeRepaired.put(id, new Piece());
-        updatePiecesToBeRepaired(piecesToBeRepaired);
+        //updatePiecesToBeRepaired(piecesToBeRepaired);
     }
 
     /**
@@ -178,7 +178,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      */
     @Override
     public synchronized boolean partAvailable(Piece part, int idMechanic) {
-        setMechanicState(MechanicState.CHECKING_STOCK, idMechanic);
+        //setMechanicState(MechanicState.CHECKING_STOCK, idMechanic);
         return pieceInStock(part);
     }
 
@@ -195,7 +195,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     public synchronized void letManagerKnow(Piece piece, int idCustomerNeedsPiece) {
         flagPartMissing[piece.getIdTypePiece()] = true;
         flag[piece.getIdTypePiece()] = "T";
-        updatePartsMissing(flag);
+        //updatePartsMissing(flag);
         carsWaitingForPieces.put(idCustomerNeedsPiece, piece);
         carsToRepair.remove(idCustomerNeedsPiece);
     }
@@ -208,7 +208,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      */
     @Override
     public synchronized void registerService(int idCustomer) {
-        setManagerState(ManagerState.POSTING_JOB);
+        //setManagerState(ManagerState.POSTING_JOB);
         if (!alreadyAdded.contains(idCustomer)) {
             carsToRepair.add(idCustomer);
         }
@@ -217,7 +217,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
             notify();
         }
         nRequestsManager++;
-        updateRequests(nRequestsManager);
+        //updateRequests(nRequestsManager);
     }
 
     /**
@@ -245,7 +245,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         }
         flagPartMissing[part.getIdTypePiece()] = false;
         flag[part.getIdTypePiece()] = "F";
-        updatePartsMissing(flag);
+        //updatePartsMissing(flag);
         return n;
     }
 

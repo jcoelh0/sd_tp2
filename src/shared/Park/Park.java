@@ -45,7 +45,7 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
         }
         numrepcars = nReplacementCars;
         this.cc_repository = new ChannelClient(NAME_GENERAL_REPOSITORY, PORT_GENERAL_REPOSITORY);
-        updateNumRepCars(numrepcars);
+        //updateNumRepCars(numrepcars);
     }
 
     /**
@@ -56,11 +56,11 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      */
     @Override
     public synchronized void parkCar(int id) {
-        setCustomerState(CustomerState.PARK, id);
+        //setCustomerState(CustomerState.PARK, id);
         carsParked.add(id);
         parkingSlots--;
         numcars++;
-        updateNumCars(numcars);        
+        //updateNumCars(numcars);        
     }
 
     /**
@@ -72,10 +72,10 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      */
     @Override
     public synchronized void findCar(int id, int replacementCarId) {
-        setCustomerState(CustomerState.PARK, id);
+        //setCustomerState(CustomerState.PARK, id);
         replacementCars.remove(replacementCarId);
         numrepcars--;
-        updateNumRepCars(numrepcars);
+        //updateNumRepCars(numrepcars);
     }
 
     /**
@@ -87,11 +87,11 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      */
     @Override
     public synchronized void getVehicle(int idCar, int idMechanic) {
-        setMechanicState(MechanicState.FIXING_CAR, idMechanic);
+        //setMechanicState(MechanicState.FIXING_CAR, idMechanic);
         carsParked.remove(new Integer(idCar));
         parkingSlots++;
         numcars--;
-        updateNumCars(numcars);
+        //updateNumCars(numcars);
     }
 
     /**
@@ -105,7 +105,7 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
     public synchronized void returnReplacementCar(int idCar, int idCustomer) {
         replacementCars.add(idCar);
         numrepcars++;
-        updateNumRepCars(numrepcars);
+        //updateNumRepCars(numrepcars);
     }
 
     /**
@@ -119,7 +119,7 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
         carsParked.add(id);
         parkingSlots--;
         numcars++;
-        updateNumCars(numcars);
+        //updateNumCars(numcars);
     }
 
     /**

@@ -11,6 +11,7 @@ import genclass.GenericIO;
 import genclass.TextFile;
 import java.util.Arrays;
 import java.util.HashMap;
+import static settings.Constants.N_MECHANICS;
 import settings.EnumPiece;
 
 /**
@@ -24,8 +25,8 @@ public class Repository {
     TextFile log = new TextFile();
     
     private String managerState;  
-    private String[] customerState;
-    private String[] mechanicState;
+    private String[] customerState = new String[N_CUSTOMERS];
+    private String[] mechanicState = new String[N_MECHANICS];
     
     private String[] carsDriven = new String[N_CUSTOMERS];
     private String[] requiresCar = new String[N_CUSTOMERS];
