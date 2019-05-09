@@ -1,12 +1,13 @@
 package settings;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  *
  * @author Andre and Joao
  */
-public class Piece {
+public class Piece implements Serializable {
 
     EnumPiece p;
 

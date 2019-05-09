@@ -10,12 +10,12 @@ public class Constants {
     /**
      * Number of customers.
      */
-    public static final int N_CUSTOMERS = 30;
+    public static final int N_CUSTOMERS = 1;
 
     /**
      * Number of mechanics.
      */
-    public static final int N_MECHANICS = 2;
+    public static final int N_MECHANICS = 1;
 
     /**
      * Number of managers.

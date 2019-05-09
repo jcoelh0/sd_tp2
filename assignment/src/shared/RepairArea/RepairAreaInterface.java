@@ -72,7 +72,11 @@ public class RepairAreaInterface {
                 break;
 
             case RepairAreaMessage.PART_AVAILABLE:
+                System.out.println("ENTREI EM PARTE AVAILABKE");
+                System.out.println(inMsg.getPiece());
+                System.out.println(" - " + inMsg.getId());
                 response = repairArea.partAvailable(inMsg.getPiece(), inMsg.getId());
+                System.out.println(response.toString() + " RESPONSE");
                 outMsg = new RepairAreaMessage(RepairAreaMessage.SUCCESS, (boolean) response);
                 break;
 
