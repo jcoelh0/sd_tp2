@@ -298,7 +298,6 @@ public class Manager extends Thread {
                             handCarKey(replacementCarId, idCustomer);
                         } else {
                             addToReplacementQueue(idCustomer);
-                            System.err.println(idCustomer + " not added to list of rep cars");
                         }
                         this.setManagerState(ManagerState.POSTING_JOB);
                     } else if (action.equals("nocar")) {

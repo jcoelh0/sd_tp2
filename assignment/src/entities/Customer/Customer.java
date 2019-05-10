@@ -91,6 +91,7 @@ public class Customer extends Thread {
     }
 
     private boolean collectKey() {
+        System.out.println("Collect key " + this.id);
         LoungeMessage response;
         openChannel(cc_lounge, "Customer " + this.id + ": Lounge");
         cc_lounge.writeObject(new LoungeMessage(LoungeMessage.COLLECT_KEY, this.id));

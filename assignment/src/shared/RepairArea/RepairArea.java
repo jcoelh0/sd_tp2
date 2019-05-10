@@ -166,7 +166,6 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     @Override
     public synchronized void getRequiredPart(int id) {
         piecesToBeRepaired.put(id, new Piece());
-        System.out.println(piecesToBeRepaired.toString());
         //updatePiecesToBeRepaired(piecesToBeRepaired);
     }
 
@@ -181,7 +180,6 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     @Override
     public synchronized boolean partAvailable(Piece part, int idMechanic) {
         //setMechanicState(MechanicState.CHECKING_STOCK, idMechanic);
-        System.out.println("ENTRA AQUI _ " + pieceInStock(part));
         return pieceInStock(part);
     }
 
@@ -271,7 +269,6 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      */
     @Override
     public synchronized HashMap getPiecesToBeRepaired() {
-        System.out.println("ON GET PIECES TO BE REPAIRED");
         return piecesToBeRepaired;
     }
 

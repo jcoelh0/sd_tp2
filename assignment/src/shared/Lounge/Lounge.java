@@ -63,6 +63,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     public synchronized void queueIn(int id) {
         //setCustomerState(CustomerState.RECEPTION, id);
         customersQueue.add(id);
+        System.out.println(customersQueue.toString());
         //setCustomersQueueSize(customersQueue.size());
         notifyAll();
         while (nextCustomer != id && !managerAvailable) {
@@ -133,6 +134,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     @Override
     public synchronized void addToReplacementQueue(int idCustomer) {
         replacementQueue.add(idCustomer);
+        System.out.println(replacementQueue.toString());
     }
 
     /**
@@ -152,8 +154,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
             }
         }
         customersWithRepCar.put(idCustomer, replacementCarId);
-        System.out.println(customersWithRepCar.toString());
-        replacementQueue.remove(new Integer(idCustomer));
+        replacementQueue.remove(idCustomer);
         requiresReplacementCar[idCustomer] = false;
         notifyAll();
     }
@@ -240,6 +241,8 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     public synchronized boolean collectKey(int id) {
         //setCustomerState(CustomerState.WAITING_FOR_REPLACE_CAR, id);
         replacementQueue.add(id);
+        System.out.println("JUST ADDED MYSELF - " + id);
+        System.out.println(replacementQueue.toString());
         //setReplacementQueueSize(replacementQueue.size());
         notifyAll();
         while (!customersWithRepCar.containsKey(id) && !carsRepaired.contains(id)) { //&& !carsRepaired.contains(id)

@@ -62,12 +62,10 @@ public class Mechanic extends Thread {
     }
 
     private boolean partAvailable(Piece piece) {
-        System.out.println(piece.toString());
         RepairAreaMessage response;
         openChannel(cc_repairarea, "Mechanic " + this.id + " : RepairArea");
         cc_repairarea.writeObject(new RepairAreaMessage(RepairAreaMessage.PART_AVAILABLE, this.id, piece));
         response = (RepairAreaMessage) cc_repairarea.readObject();
-        System.out.println(response.toString());
         cc_repairarea.close();
         return response.getBoolResponse();
     }
@@ -205,7 +203,6 @@ public class Mechanic extends Thread {
                     break;
 
                 case CHECKING_STOCK:
-                    System.out.println("PIECES TO BE REPAIARED " + piecesToBeRepaired.toString());
                     if (!partAvailable(piecesToBeRepaired.get(idCarToFix))) {
                         letManagerKnow(piecesToBeRepaired.get(idCarToFix), idCarToFix);
                         setMechanicState(MechanicState.ALERTING_MANAGER);
