@@ -34,6 +34,7 @@ public class OutsideWorldServer {
                 proxyClient = new OutsideWorldProxyClient(communicationSocket, outsideWorldInterface);
                 
                 Thread.UncaughtExceptionHandler h = (Thread t, Throwable ex) -> {
+                    System.out.println(ex);
                     System.out.println("OutsideWorld server down!");
                     System.exit(0);
                 };

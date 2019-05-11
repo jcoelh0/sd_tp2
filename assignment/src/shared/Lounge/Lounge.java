@@ -134,7 +134,6 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     @Override
     public synchronized void addToReplacementQueue(int idCustomer) {
         replacementQueue.add(idCustomer);
-        System.out.println(replacementQueue.toString());
     }
 
     /**
@@ -241,8 +240,6 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     public synchronized boolean collectKey(int id) {
         //setCustomerState(CustomerState.WAITING_FOR_REPLACE_CAR, id);
         replacementQueue.add(id);
-        System.out.println("JUST ADDED MYSELF - " + id);
-        System.out.println(replacementQueue.toString());
         //setReplacementQueueSize(replacementQueue.size());
         notifyAll();
         while (!customersWithRepCar.containsKey(id) && !carsRepaired.contains(id)) { //&& !carsRepaired.contains(id)
@@ -332,9 +329,11 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     public synchronized void alertManager(Piece piece, int customerId, int idMechanic) {
         //setMechanicState(MechanicState.ALERTING_MANAGER, idMechanic);
         if (piece == null) {
+            System.out.println("Mechanic " + idMechanic + " - Customer " + customerId + " car is repaired!");
             customersToCallQueue.add(customerId);
             notifyAll();
         } else {
+            System.out.println("Mechanic " + idMechanic + " - Piece " + piece.toString() + " is required.");
             piecesQueue.add(piece);
             notifyAll();
         }

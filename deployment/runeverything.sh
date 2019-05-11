@@ -14,4 +14,4 @@ sh customer.sh &
 
 sleep 60
 
-expect getlog.exp
+#expect getlog.exp

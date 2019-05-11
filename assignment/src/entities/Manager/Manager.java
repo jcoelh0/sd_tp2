@@ -283,13 +283,14 @@ public class Manager extends Thread {
                             this.setManagerState(ManagerState.ATTENDING_CUSTOMER);
                             break;
                         default:
-                            System.out.println("ERROR GETTING NEXT TASK");
+                            System.out.println("ERROR GETTING NEXT TASK" + nextTask);
                             break;
                     }
                     break;
 
                 case ATTENDING_CUSTOMER:
                     idCustomer = currentCustomer();
+                    System.out.println("Manager - Attending customer " + idCustomer);
                     String action = talkWithCustomer();
                     if (action.equals("car")) {
                         availableReplacementCar = replacementCarAvailable(idCustomer);

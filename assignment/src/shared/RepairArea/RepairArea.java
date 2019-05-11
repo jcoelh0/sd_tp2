@@ -41,7 +41,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     private String[] flag;
 
     //static final int nPieces = (int) (Math.random() * 13) + 3; //between 3 and 15 Math.random() * ((max - min) + 1)) + min; //0;
-    static final int nPieces = 10;
+    static final int nPieces = 0;
     
     private static final HashMap<EnumPiece, Integer> stock = new HashMap<>();
 
@@ -210,6 +210,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     @Override
     public synchronized void registerService(int idCustomer) {
         //setManagerState(ManagerState.POSTING_JOB);
+        System.out.println("Manager - Customer " + idCustomer + " needs car repaired.");
         if (!alreadyAdded.contains(idCustomer)) {
             carsToRepair.add(idCustomer);
         }
@@ -217,7 +218,6 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         if (!mechanicsQueue.isEmpty()) {
             notify();
         }
-        System.out.println(idCustomer + " NEEDS CAR REPAIRED");
         nRequestsManager++;
         //updateRequests(nRequestsManager);
     }
@@ -233,17 +233,15 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      */
     @Override
     public synchronized int storePart(Piece part, int quant) {
-        int n = 0;
-        for (int j = 0; j < carsWaitingForPieces.size(); j++) {
-            Piece p = carsWaitingForPieces.get(carsWaitingForPieces.keySet().toArray()[j]);
-            if (p == part) {
-                n = (int) getKeyFromValue(carsWaitingForPieces, p);
-            }
-        }
-        readyToRepair.add(n);
-        carsWaitingForPieces.remove(n);
+        System.out.println("MANAGER - ADDED " + quant + " OF " + part);
         for (int i = 0; i < quant; i++) {
             addPieceToStock(part);
+        }
+        int n = 0;
+        if(carsWaitingForPieces.containsValue(part)) {
+            n = (int) getKeyFromValue(carsWaitingForPieces, part);
+            readyToRepair.add(n);
+            carsWaitingForPieces.remove(n);
         }
         flagPartMissing[part.getIdTypePiece()] = false;
         flag[part.getIdTypePiece()] = "F";

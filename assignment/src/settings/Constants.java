@@ -15,7 +15,7 @@ public class Constants {
     /**
      * Number of mechanics.
      */
-    public static final int N_MECHANICS = 1;
+    public static final int N_MECHANICS = 2;
 
     /**
      * Number of managers.
