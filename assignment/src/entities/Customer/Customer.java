@@ -212,6 +212,7 @@ public class Customer extends Thread {
                     break;
 
                 case NORMAL_LIFE_WITHOUT_CAR:
+                    System.out.println("NORMAL LIFE WITHOUT CAR");
                     carRepaired = backToWorkByBus(carRepaired);
                     setCustomerState(CustomerState.RECEPTION);
                     break;

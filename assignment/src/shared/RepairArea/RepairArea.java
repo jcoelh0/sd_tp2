@@ -41,7 +41,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     private String[] flag;
 
     //static final int nPieces = (int) (Math.random() * 13) + 3; //between 3 and 15 Math.random() * ((max - min) + 1)) + min; //0;
-    static final int nPieces = 0;
+    static final int nPieces = 100;
     
     private static final HashMap<EnumPiece, Integer> stock = new HashMap<>();
 
