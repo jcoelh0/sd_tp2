@@ -264,7 +264,7 @@ public class Manager extends Thread {
             switch (this.state) {
                 case CHECKING_WHAT_TO_DO:
                     checkWhatToDo();
-                    System.out.println("CARS REPAIRED " + leftCustomers);
+                    System.out.println("CARS REPAIRED " + leftCustomers + "    (isto não é cars repaired)");
                     if (leftCustomers == nCustomers) {
                         enoughWork();
                         noMoreTasks = true;

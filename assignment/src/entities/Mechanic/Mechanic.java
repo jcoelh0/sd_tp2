@@ -182,7 +182,6 @@ public class Mechanic extends Thread {
                         setMechanicState(MechanicState.CHECKING_STOCK);
                         break;
                     }
-                    piecesToBeRepaired = getPiecesToBeRepaired();
                     int fix = fixIt(idCarToFix, piecesToBeRepaired.get(idCarToFix));
                     if (fix == 0) {
                         setMechanicState(MechanicState.CHECKING_STOCK);

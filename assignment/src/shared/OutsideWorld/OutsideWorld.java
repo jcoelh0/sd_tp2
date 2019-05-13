@@ -60,8 +60,8 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
         while (randomNum != 1) {
             randomNum = n.nextInt((100 - 1) + 1) + 1;
         }
-        //boolean req = requires.nextBoolean();
-        boolean req = false;
+        boolean req = requires.nextBoolean();
+        //boolean req = false;
         if(req == true) {
             //updateRequiresCar("T", id);
         }

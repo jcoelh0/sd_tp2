@@ -99,10 +99,10 @@ public class Customer extends Thread {
         return response.getBoolResponse();
     }
 
-    private int getCarReplacementId() {
+    private int getCarReplacementId(int id) {
         LoungeMessage response;
         openChannel(cc_lounge, "Customer " + this.id + ": Lounge");
-        cc_lounge.writeObject(new LoungeMessage(LoungeMessage.GET_REPLACEMENT_CAR, this.id));
+        cc_lounge.writeObject(new LoungeMessage(LoungeMessage.GET_REPLACEMENT_CAR, id));
         response = (LoungeMessage) cc_lounge.readObject();
         cc_lounge.close();
         return response.getCustId();
@@ -189,7 +189,7 @@ public class Customer extends Thread {
                         setCustomerState(CustomerState.RECEPTION);
                         break;
                     }
-                    replacementCar = getCarReplacementId();
+                    replacementCar = getCarReplacementId(id);
                     findCar(replacementCar);
                     haveReplacementCar = true;
                     setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR);
