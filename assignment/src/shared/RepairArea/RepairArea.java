@@ -133,10 +133,10 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     public synchronized int startRepairProcedure() {
         if (readyToRepair.isEmpty() && carsToRepair.isEmpty()) {
             return -1;
-        } else if (!readyToRepair.isEmpty()) {
-            return readyToRepair.poll();
-        } else {
+        } else if (!carsToRepair.isEmpty()) {
             return carsToRepair.poll();
+        } else {
+            return readyToRepair.poll();
         }
     }
 
@@ -200,13 +200,13 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     public synchronized void letManagerKnow(Piece piece, int idCustomerNeedsPiece) {
         flagPartMissing[piece.getIdTypePiece()] = true;
         flag[piece.getIdTypePiece()] = "T";
+        
         if(piece.toString().equals("Engine"))
             engineQueue.add(idCustomerNeedsPiece);
-        if(piece.toString().equals("Wheels"))
+        else if(piece.toString().equals("Wheels"))
             wheelsQueue.add(idCustomerNeedsPiece);
-        if(piece.toString().equals("Brakes"))
+        else if(piece.toString().equals("Brakes"))
             brakesQueue.add(idCustomerNeedsPiece);
-        
         
         //updatePartsMissing(flag);
         carsWaitingForPieces.put(idCustomerNeedsPiece, piece);
