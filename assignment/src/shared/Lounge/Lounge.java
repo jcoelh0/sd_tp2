@@ -61,10 +61,10 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized void queueIn(int id) {
-        //setCustomerState(CustomerState.RECEPTION, id);
+        setCustomerState(CustomerState.RECEPTION, id);
         customersQueue.add(id);
         System.out.println(customersQueue.toString());
-        //setCustomersQueueSize(customersQueue.size());
+        setCustomersQueueSize(customersQueue.size());
         notifyAll();
         while (nextCustomer != id && !managerAvailable) {
             try {
@@ -219,7 +219,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized int currentCustomer() {
-        //setManagerState(ManagerState.ATTENDING_CUSTOMER);
+        setManagerState(ManagerState.ATTENDING_CUSTOMER);
         nextCustomer = customersQueue.poll();
         /*if (replacementQueue.isEmpty()) {
             nextCustomer = customersQueue.poll();
@@ -240,9 +240,9 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized boolean collectKey(int id) {
-        //setCustomerState(CustomerState.WAITING_FOR_REPLACE_CAR, id);
+        setCustomerState(CustomerState.WAITING_FOR_REPLACE_CAR, id);
         replacementQueue.add(id);
-        //setReplacementQueueSize(replacementQueue.size());
+        setReplacementQueueSize(replacementQueue.size());
         notifyAll();
         while (!customersWithRepCar.containsKey(id) && !carsRepaired.contains(id)) { //&& !carsRepaired.contains(id)
             try {
@@ -282,7 +282,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized void checkWhatToDo() {
-        //setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
+        setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
     }
 
     /**
@@ -293,7 +293,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized int getIdToCall() {
-        //setManagerState(ManagerState.ALERTING_CUSTOMER);
+        setManagerState(ManagerState.ALERTING_CUSTOMER);
         int next = customersToCallQueue.poll();
         return next;
     }
@@ -329,7 +329,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized void alertManager(Piece piece, int customerId, int idMechanic) {
-        //setMechanicState(MechanicState.ALERTING_MANAGER, idMechanic);
+        setMechanicState(MechanicState.ALERTING_MANAGER, idMechanic);
         if (piece == null) {
             System.out.println("Mechanic " + idMechanic + " - Customer " + customerId + " car is repaired!");
             customersToCallQueue.add(customerId);
@@ -349,7 +349,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized Piece getPieceToReStock() {
-        //setManagerState(ManagerState.GETTING_NEW_PARTS);
+        setManagerState(ManagerState.GETTING_NEW_PARTS);
         Piece p = piecesQueue.poll();
         return p;
     }
@@ -360,7 +360,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized void goReplenishStock() {
-        //setManagerState(ManagerState.REPLENISH_STOCK);
+        setManagerState(ManagerState.REPLENISH_STOCK);
     }
 
     /**
@@ -385,7 +385,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     @Override
     public synchronized boolean alertCustomer(int id) {
         carsRepaired.add(id);
-        //updateCarsRepaired(carsRepaired.size());
+        updateCarsRepaired(carsRepaired.size());
         if (replacementQueue.contains(id)) {
             customersToCallQueue.remove(id);
             notifyAll();
