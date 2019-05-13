@@ -47,7 +47,7 @@ public class SupplierSite implements IManagerSS {
         System.out.println("Manager - Bought " + randomNum + " of " + partNeeded);
         this.partNeeded = partNeeded;
         piecesBought[partNeeded.getTypePiece().ordinal()] += randomNum;
-        //updatePiecesBought(piecesBought);
+        updatePiecesBought(piecesBought);
         return randomNum;
     }
 
