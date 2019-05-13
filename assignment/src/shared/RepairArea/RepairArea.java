@@ -108,14 +108,14 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         //setMechanicState(MechanicState.WAITING_FOR_WORK, idMechanic);
         int id = idMechanic;
         mechanicsQueue.add(id);
-        System.out.println(readyToRepair.toString() + " " + carsToRepair.toString() + " " + enoughWork);
         while (readyToRepair.isEmpty() && carsToRepair.isEmpty() && !enoughWork) {
             try {
                 wait();
             } catch (Exception e) {
 
             }
-        }
+        }        
+        System.out.println(readyToRepair.toString() + " " + carsToRepair.toString() + " " + enoughWork);
         if (enoughWork) {
             return true;
         }
@@ -255,15 +255,15 @@ public class RepairArea implements IMechanicRA, IManagerRA {
                     readyToRepair.add(brakesQueue.poll());
             }
         }
-        if(part.toString().equals("Engine")) {
+        else if(part.toString().equals("Engine")) {
             for(int i = 0; i < quant; i++) {
-                if(!brakesQueue.isEmpty())
+                if(!engineQueue.isEmpty())
                     readyToRepair.add(engineQueue.poll());
             }
         }
-        if(part.toString().equals("Wheels")) {
+        else {
             for(int i = 0; i < quant; i++) {
-                if(!brakesQueue.isEmpty())
+                if(!wheelsQueue.isEmpty())
                     readyToRepair.add(wheelsQueue.poll());
             }
         }
