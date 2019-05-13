@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import messages.RepositoryMessage.RepositoryMessage;
 import settings.EnumPiece;
@@ -34,6 +35,9 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     private final HashMap<Integer, Piece> piecesToBeRepaired = new HashMap<>();
     private final List<Integer> alreadyAdded = new ArrayList<>();
     private final Queue<Integer> mechanicsQueue = new LinkedList<>();
+    private final Queue<Integer> engineQueue = new LinkedList<>();
+    private final Queue<Integer> wheelsQueue = new LinkedList<>();
+    private final Queue<Integer> brakesQueue = new LinkedList<>();
     private boolean workMechanic = false;
     private int nRequestsManager = 0;
     private boolean enoughWork = false;
@@ -41,7 +45,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     private String[] flag;
 
     //static final int nPieces = (int) (Math.random() * 13) + 3; //between 3 and 15 Math.random() * ((max - min) + 1)) + min; //0;
-    static final int nPieces = 100;
+    static final int nPieces = 0;
     
     private static final HashMap<EnumPiece, Integer> stock = new HashMap<>();
 
@@ -196,6 +200,14 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     public synchronized void letManagerKnow(Piece piece, int idCustomerNeedsPiece) {
         flagPartMissing[piece.getIdTypePiece()] = true;
         flag[piece.getIdTypePiece()] = "T";
+        if(piece.toString().equals("Engine"))
+            engineQueue.add(idCustomerNeedsPiece);
+        if(piece.toString().equals("Wheels"))
+            wheelsQueue.add(idCustomerNeedsPiece);
+        if(piece.toString().equals("Brakes"))
+            brakesQueue.add(idCustomerNeedsPiece);
+        
+        
         //updatePartsMissing(flag);
         carsWaitingForPieces.put(idCustomerNeedsPiece, piece);
         carsToRepair.remove(idCustomerNeedsPiece);
@@ -233,19 +245,32 @@ public class RepairArea implements IMechanicRA, IManagerRA {
      */
     @Override
     public synchronized int storePart(Piece part, int quant) {
-        System.out.println("MANAGER - ADDED " + quant + " OF " + part);
         for (int i = 0; i < quant; i++) {
             addPieceToStock(part);
         }
         int n = 0;
-        if(carsWaitingForPieces.containsValue(part)) {
-            n = (int) getKeyFromValue(carsWaitingForPieces, part);
-            readyToRepair.add(n);
-            carsWaitingForPieces.remove(n);
+        if(part.toString().equals("Brakes")) {
+            for(int i = 0; i < quant; i++) {
+                if(!brakesQueue.isEmpty())
+                    readyToRepair.add(brakesQueue.poll());
+            }
+        }
+        if(part.toString().equals("Engine")) {
+            for(int i = 0; i < quant; i++) {
+                if(!brakesQueue.isEmpty())
+                    readyToRepair.add(engineQueue.poll());
+            }
+        }
+        if(part.toString().equals("Wheels")) {
+            for(int i = 0; i < quant; i++) {
+                if(!brakesQueue.isEmpty())
+                    readyToRepair.add(wheelsQueue.poll());
+            }
         }
         flagPartMissing[part.getIdTypePiece()] = false;
         flag[part.getIdTypePiece()] = "F";
         //updatePartsMissing(flag);
+        notifyAll();
         return n;
     }
 

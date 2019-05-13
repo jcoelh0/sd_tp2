@@ -220,11 +220,12 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     @Override
     public synchronized int currentCustomer() {
         //setManagerState(ManagerState.ATTENDING_CUSTOMER);
-        if (replacementQueue.isEmpty()) {
+        nextCustomer = customersQueue.poll();
+        /*if (replacementQueue.isEmpty()) {
             nextCustomer = customersQueue.poll();
         } else {
-            nextCustomer = replacementQueue.poll();
-        }
+            nextCustomer = customersQueue.poll();
+        }*/
         System.out.println("NEXT CUSTOMER " + nextCustomer);
         return nextCustomer;
     }
