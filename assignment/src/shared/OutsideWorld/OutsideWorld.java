@@ -60,8 +60,8 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
         while (randomNum != 1) {
             randomNum = n.nextInt((100 - 1) + 1) + 1;
         }
-        //boolean req = requires.nextBoolean();
-        boolean req = false;
+        boolean req = requires.nextBoolean();
+        //boolean req = false;
         if(req == true) {
             updateRequiresCar("T", id);
         }
@@ -115,7 +115,6 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
     public synchronized boolean backToWorkByCar(boolean carRepaired, int replacementCar, int id) {
         setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR, id);
         if (replacementCar == -1) {
-            
             //updateVehicleDriven(Integer.toString(id), id);
             if (id < 10) {
                 vehicleDriven[id] = "0" + Integer.toString(id);
@@ -132,14 +131,13 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
             while (!repairedCars.contains(id)) {
                 try {
                     wait();
-
                 } catch (InterruptedException e) {
 
                 }
             }
             return true;
         }
-        return carRepaired;
+        return true;
     }
 
     /**

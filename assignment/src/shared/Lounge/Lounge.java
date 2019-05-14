@@ -152,8 +152,8 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
 
             }
         }
-        customersWithRepCar.put(idCustomer, replacementCarId);
-        replacementQueue.remove(new Integer(idCustomer));
+        customersWithRepCar.put(replacementQueue.peek(), replacementCarId);
+        //replacementQueue.remove(idCustomer);
         requiresReplacementCar[idCustomer] = false;
         notifyAll();
     }
@@ -253,7 +253,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     @Override
     public synchronized boolean collectKey(int id) {
         setCustomerState(CustomerState.WAITING_FOR_REPLACE_CAR, id);
-        //replacementQueue.add(id);
+        replacementQueue.add(id);
         setReplacementQueueSize(replacementQueue.size());
         notifyAll();
         while (!customersWithRepCar.containsKey(id) && !carsRepaired.contains(id)) { //&& !carsRepaired.contains(id)
@@ -263,10 +263,9 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
 
             }
         }
-
+        replacementQueue.remove(id);
         if (carsRepaired.contains(id)) {
             carsRepaired.remove(id);
-            replacementQueue.remove(id);
             requiresReplacementCar[id] = false;
             return true;
         } else {

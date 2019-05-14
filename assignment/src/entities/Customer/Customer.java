@@ -174,7 +174,7 @@ public class Customer extends Thread {
                     if (haveReplacementCar && carRepaired) {
                         haveReplacementCar = false;
                         returnReplacementCar(replacementCar);
-                        backToWorkByCar(false, -1);
+                        //backToWorkByCar(false, -1);
                         setCustomerState(CustomerState.RECEPTION);
                         break;
                     }
@@ -189,10 +189,12 @@ public class Customer extends Thread {
                         setCustomerState(CustomerState.RECEPTION);
                         break;
                     }
-                    replacementCar = getCarReplacementId(id);
-                    findCar(replacementCar);
-                    haveReplacementCar = true;
-                    setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR);
+                    else {
+                        replacementCar = getCarReplacementId(id);
+                        findCar(replacementCar);
+                        haveReplacementCar = true;
+                        setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR);
+                    }
                     break;
 
                 case RECEPTION:
