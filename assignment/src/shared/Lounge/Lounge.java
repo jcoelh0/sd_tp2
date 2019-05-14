@@ -133,7 +133,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized void addToReplacementQueue(int idCustomer) {
-        replacementQueue.add(idCustomer);
+        //replacementQueue.add(idCustomer);
     }
 
     /**
