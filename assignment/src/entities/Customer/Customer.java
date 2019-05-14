@@ -210,6 +210,7 @@ public class Customer extends Thread {
                             setCustomerState(CustomerState.NORMAL_LIFE_WITHOUT_CAR);
                         }
                     } else {
+                        System.out.println(this.id + " GOING TO PAY");
                         payForTheService();
                         System.out.println(this.id + " HAS CAR REPAIRED AND IS GOING TO DIE");
                         setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR);
