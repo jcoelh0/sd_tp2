@@ -198,7 +198,7 @@ public class Customer extends Thread {
                     break;
 
                 case RECEPTION:
-                    System.out.println("queueIn: "+id);
+                    System.out.println("queueIn: "+id + " REQUIRES CAR : " + this.requiresCar);
                     queueIn();
                     System.out.println("talkwithmanager: "+id);
                     talkWithManager(carRepaired, requiresCar);

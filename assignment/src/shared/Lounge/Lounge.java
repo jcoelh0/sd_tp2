@@ -225,7 +225,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         
         setManagerState(ManagerState.ATTENDING_CUSTOMER);
         nextCustomer = customersQueue.poll();
-        notifyAll();
+        notify();
         /*if (replacementQueue.isEmpty()) {
             nextCustomer = customersQueue.poll();
         } else {
