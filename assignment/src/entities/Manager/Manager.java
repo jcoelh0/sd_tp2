@@ -336,7 +336,7 @@ public class Manager extends Thread {
                     goReplenishStock();
                     quant = goToSupplier(partNeeded);
                     idCustomer = storePart(partNeeded, quant);
-                    this.setManagerState(ManagerState.POSTING_JOB);
+                    this.setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
                     break;
             }
         }
