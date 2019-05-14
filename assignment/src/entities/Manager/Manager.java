@@ -308,6 +308,7 @@ public class Manager extends Thread {
                     } else {
                         receivePayment();
                         leftCustomers++;
+                        idCustomer = -1;
                         this.setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
                     }
 
@@ -320,6 +321,7 @@ public class Manager extends Thread {
 
                 case POSTING_JOB:
                     registerService(idCustomer);
+                    idCustomer = -1;
                     this.setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
                     break;
 
@@ -329,6 +331,7 @@ public class Manager extends Thread {
                     if (!customerWaiting) {
                         phoneCustomer(idToCall);
                     }
+                    idCustomer = -1;
                     this.setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
                     break;
 
@@ -336,6 +339,7 @@ public class Manager extends Thread {
                     goReplenishStock();
                     quant = goToSupplier(partNeeded);
                     idCustomer = storePart(partNeeded, quant);
+                    idCustomer = -1;
                     this.setManagerState(ManagerState.CHECKING_WHAT_TO_DO);
                     break;
             }
