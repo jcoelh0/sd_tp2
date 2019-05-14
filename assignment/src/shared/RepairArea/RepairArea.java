@@ -248,25 +248,33 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         for (int i = 0; i < quant; i++) {
             addPieceToStock(part);
         }
-        int n = 0;
+        int n = -1;
         if(part.toString().equals("Brakes")) {
             for(int i = 0; i < quant; i++) {
-                if(!brakesQueue.isEmpty())
-                    readyToRepair.add(brakesQueue.poll());
+                if(!brakesQueue.isEmpty()){
+                    n = brakesQueue.poll();
+                    readyToRepair.add(n);
+                }
             }
         }
         else if(part.toString().equals("Engine")) {
             for(int i = 0; i < quant; i++) {
-                if(!engineQueue.isEmpty())
-                    readyToRepair.add(engineQueue.poll());
+                if(!engineQueue.isEmpty()){
+                    n = engineQueue.poll();
+                    readyToRepair.add(n);
+                }
             }
         }
         else {
             for(int i = 0; i < quant; i++) {
-                if(!wheelsQueue.isEmpty())
+                if(!wheelsQueue.isEmpty()){
+                    n = wheelsQueue.poll();
                     readyToRepair.add(wheelsQueue.poll());
+                    
+                }
             }
         }
+        carsWaitingForPieces.remove(n);
         flagPartMissing[part.getIdTypePiece()] = false;
         flag[part.getIdTypePiece()] = "F";
         //updatePartsMissing(flag);

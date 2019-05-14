@@ -196,8 +196,11 @@ public class Customer extends Thread {
                     break;
 
                 case RECEPTION:
+                    System.out.println("queueIn: "+id);
                     queueIn();
+                    System.out.println("talkwithmanager: "+id);
                     talkWithManager(carRepaired, requiresCar);
+                    System.out.println(id+"acabei de falar com manager");
                     if (!carRepaired) {
                         if (requiresCar) {
                             setCustomerState(CustomerState.WAITING_FOR_REPLACE_CAR);

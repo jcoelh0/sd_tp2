@@ -293,6 +293,7 @@ public class Manager extends Thread {
                     idCustomer = currentCustomer();
                     System.out.println("Manager - Attending customer " + idCustomer);
                     String action = talkWithCustomer();
+                    System.out.println("chega aqui???");
                     if (action.equals("car")) {
                         availableReplacementCar = replacementCarAvailable(idCustomer);
                         if (availableReplacementCar) {
