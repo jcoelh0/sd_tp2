@@ -53,7 +53,7 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
      */
     @Override
     public synchronized boolean decideOnRepair(int id) {
-        //setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR, id);
+        setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR, id);
         Random requires = new Random();
         Random n = new Random();
         int randomNum = 0;
@@ -63,10 +63,10 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
         //boolean req = requires.nextBoolean();
         boolean req = true;
         if(req == true) {
-            //updateRequiresCar("T", id);
+            updateRequiresCar("T", id);
         }
         else {
-            //updateRequiresCar("F", id);
+            updateRequiresCar("F", id);
         }
         return req;
     }
@@ -81,7 +81,7 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
      */
     @Override
     public synchronized boolean backToWorkByBus(boolean carRepaired, int id) {
-        //setCustomerState(CustomerState.NORMAL_LIFE_WITHOUT_CAR, id);
+        setCustomerState(CustomerState.NORMAL_LIFE_WITHOUT_CAR, id);
         //updateVehicleDriven("--", id);
         vehicleDriven[id] = "--";
         if (!carRepaired) {
@@ -113,7 +113,7 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
      */
     @Override
     public synchronized boolean backToWorkByCar(boolean carRepaired, int replacementCar, int id) {
-        //setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR, id);
+        setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR, id);
         if (replacementCar == -1) {
             
             //updateVehicleDriven(Integer.toString(id), id);
