@@ -98,7 +98,7 @@ public class OutsideWorld implements ICustomerOW, IManagerOW {
             System.out.println("----------------- " + id + " AWAKEN FROM OUTSIDE WORLD -------------------");
             return true;
         }
-        return carRepaired;
+        return true;
     }
 
     /**

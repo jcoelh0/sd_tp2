@@ -85,7 +85,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized void talkWithManager(boolean carRepaired, boolean requiresCar, int idCustomer) {
-        if (carRepaired && requiresCar) {
+        if (carRepaired) {
             order.put(nextCustomer, "pay");
         } else {
             if (requiresCar) {
