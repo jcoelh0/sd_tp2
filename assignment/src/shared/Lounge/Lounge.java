@@ -123,7 +123,6 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         String s = order.get(nextCustomer);
         order.remove(nextCustomer);
         //nextCustomer = 0;
-        nextCustomer = -1;
         return s;
 
     }
