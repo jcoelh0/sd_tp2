@@ -219,15 +219,12 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized int currentCustomer() {
-<<<<<<< HEAD
         //setManagerState(ManagerState.ATTENDING_CUSTOMER);
         
         //nextCustomer = customersQueue.poll();
         
-=======
         setManagerState(ManagerState.ATTENDING_CUSTOMER);
         nextCustomer = customersQueue.poll();
->>>>>>> 80382832bdb69c483d90fd2b31f129753148f371
         /*if (replacementQueue.isEmpty()) {
             nextCustomer = customersQueue.poll();
         } else {
@@ -399,13 +396,11 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized boolean alertCustomer(int id) {
-<<<<<<< HEAD
         //carsRepaired.add(id);
         //updateCarsRepaired(carsRepaired.size());
-=======
+
         carsRepaired.add(id);
         updateCarsRepaired(carsRepaired.size());
->>>>>>> 80382832bdb69c483d90fd2b31f129753148f371
         if (replacementQueue.contains(id)) {
             carsRepaired.add(id);
             customersToCallQueue.remove(id);
