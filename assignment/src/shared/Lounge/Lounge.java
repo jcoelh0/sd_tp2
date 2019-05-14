@@ -66,7 +66,8 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         System.out.println(customersQueue.toString());
         setCustomersQueueSize(customersQueue.size());
         notifyAll();
-        while (nextCustomer != id && !managerAvailable) {
+        //while (nextCustomer != id && !managerAvailable) {
+        while(customersQueue.contains(id) && !managerAvailable) {
             try {
                 wait();
             } catch (InterruptedException e) {
@@ -220,25 +221,9 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     @Override
     public synchronized int currentCustomer() {
         //setManagerState(ManagerState.ATTENDING_CUSTOMER);
-        
-        //nextCustomer = customersQueue.poll();
-        
         setManagerState(ManagerState.ATTENDING_CUSTOMER);
         nextCustomer = customersQueue.poll();
         notify();
-        /*if (replacementQueue.isEmpty()) {
-            nextCustomer = customersQueue.poll();
-        } else {
-            nextCustomer = customersQueue.poll();
-        }*/
-
-
-        /*if (customersQueue.isEmpty()) {
-            nextCustomer = replacementQueue.poll();
-        } else {
-            nextCustomer = customersQueue.poll();
-        }*/
-        //if(nextCustomer==)
         System.out.println("NEXT CUSTOMER " + nextCustomer);
         return nextCustomer;
     }
