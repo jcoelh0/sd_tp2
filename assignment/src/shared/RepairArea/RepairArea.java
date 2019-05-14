@@ -45,7 +45,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     private String[] flag;
 
     //static final int nPieces = (int) (Math.random() * 13) + 3; //between 3 and 15 Math.random() * ((max - min) + 1)) + min; //0;
-    static final int nPieces = 0;
+    static final int nPieces = 10;
     
     private static final HashMap<EnumPiece, Integer> stock = new HashMap<>();
 
@@ -252,25 +252,21 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         if(part.toString().equals("Brakes")) {
             for(int i = 0; i < quant; i++) {
                 if(!brakesQueue.isEmpty()){
-                    n = brakesQueue.poll();
-                    readyToRepair.add(n);
+                    readyToRepair.add(brakesQueue.poll());
                 }
             }
         }
         else if(part.toString().equals("Engine")) {
             for(int i = 0; i < quant; i++) {
                 if(!engineQueue.isEmpty()){
-                    n = engineQueue.poll();
-                    readyToRepair.add(n);
+                    readyToRepair.add(engineQueue.poll());
                 }
             }
         }
         else {
             for(int i = 0; i < quant; i++) {
-                if(!wheelsQueue.isEmpty()){
-                    n = wheelsQueue.poll();
-                    readyToRepair.add(wheelsQueue.poll());
-                    
+                if(!wheelsQueue.isEmpty()) {
+                    readyToRepair.add(wheelsQueue.poll());                    
                 }
             }
         }

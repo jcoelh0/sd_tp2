@@ -232,11 +232,11 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         }*/
 
 
-        if (customersQueue.isEmpty()) {
+        /*if (customersQueue.isEmpty()) {
             nextCustomer = replacementQueue.poll();
         } else {
             nextCustomer = customersQueue.poll();
-        }
+        }*/
         //if(nextCustomer==)
         System.out.println("NEXT CUSTOMER " + nextCustomer);
         return nextCustomer;
@@ -253,7 +253,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     @Override
     public synchronized boolean collectKey(int id) {
         setCustomerState(CustomerState.WAITING_FOR_REPLACE_CAR, id);
-        replacementQueue.add(id);
+        //replacementQueue.add(id);
         setReplacementQueueSize(replacementQueue.size());
         notifyAll();
         while (!customersWithRepCar.containsKey(id) && !carsRepaired.contains(id)) { //&& !carsRepaired.contains(id)
@@ -402,7 +402,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         carsRepaired.add(id);
         updateCarsRepaired(carsRepaired.size());
         if (replacementQueue.contains(id)) {
-            carsRepaired.add(id);
+            //carsRepaired.add(id);
             customersToCallQueue.remove(id);
             notifyAll();
             return true;
