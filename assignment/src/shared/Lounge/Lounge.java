@@ -109,6 +109,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized String talkWithCustomer() {
+        nextCustomer = -1;
         // nextCustomer = customersQueue.poll();
         managerAvailable = true;
         notifyAll();
