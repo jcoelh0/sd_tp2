@@ -79,7 +79,7 @@ public class ParkInterface {
                 break;
             
             case ParkMessage.END:
-                System.out.println("End!");
+                System.out.println("Closing park server!");
                 this.status = false;
                 outMsg = new ParkMessage(ParkMessage.SUCCESS);
                 break;

@@ -135,7 +135,7 @@ public class LoungeInterface {
                 break;
                 
             case LoungeMessage.END:
-                System.out.println("End!");
+                System.out.println("Closing lounge server!");
                 this.status = false;
                 outMsg = new LoungeMessage(LoungeMessage.SUCCESS);
                 break;

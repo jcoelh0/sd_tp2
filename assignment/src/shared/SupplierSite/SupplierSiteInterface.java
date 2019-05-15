@@ -50,7 +50,7 @@ public class SupplierSiteInterface {
                 break;
                 
             case SupplierSiteMessage.END:
-                System.out.println("End!");
+                System.out.println("Closing supplier site server!");
                 this.status = false;
                 outMsg = new SupplierSiteMessage(SupplierSiteMessage.SUCCESS);
                 break;

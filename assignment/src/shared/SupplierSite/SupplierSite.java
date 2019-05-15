@@ -42,7 +42,6 @@ public class SupplierSite implements IManagerSS {
      */
     @Override
     public synchronized int goToSupplier(Piece partNeeded) {
-        //int randomNum = 1 + (int) (Math.random() * ((5 - 1) + 1)); //between 1 and 6////
         int randomNum = 2;
         System.out.println("Manager - Bought " + randomNum + " of " + partNeeded);
         this.partNeeded = partNeeded;

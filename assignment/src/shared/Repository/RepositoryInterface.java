@@ -84,7 +84,7 @@ public class RepositoryInterface {
                 break;
             
             case RepositoryMessage.REPAIRED_CAR:
-                repository.setNumCarsRepaired(inMsg.getSize());
+                repository.setVehicleRepaired(inMsg.getState(), inMsg.getId());
                 outMsg = new RepositoryMessage(RepositoryMessage.SUCCESS);
                 break;
             
@@ -122,7 +122,7 @@ public class RepositoryInterface {
                 break;
             
             case RepositoryMessage.END:
-                System.out.println("End!");
+                System.out.println("Closing repository server!");
                 this.status = false;
                 outMsg = new RepositoryMessage(RepositoryMessage.SUCCESS);
                 break;

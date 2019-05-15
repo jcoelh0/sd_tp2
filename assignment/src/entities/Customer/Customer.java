@@ -174,7 +174,6 @@ public class Customer extends Thread {
                     if (haveReplacementCar && carRepaired) {
                         haveReplacementCar = false;
                         returnReplacementCar(replacementCar);
-                        //backToWorkByCar(false, -1);
                         setCustomerState(CustomerState.RECEPTION);
                         break;
                     }
@@ -198,11 +197,8 @@ public class Customer extends Thread {
                     break;
 
                 case RECEPTION:
-                    System.out.println("queueIn: "+id + " REQUIRES CAR : " + this.requiresCar);
                     queueIn();
-                    System.out.println("talkwithmanager: "+id);
                     talkWithManager(carRepaired, requiresCar);
-                    System.out.println(id+"acabei de falar com manager");
                     if (!carRepaired) {
                         if (requiresCar) {
                             setCustomerState(CustomerState.WAITING_FOR_REPLACE_CAR);
@@ -210,15 +206,13 @@ public class Customer extends Thread {
                             setCustomerState(CustomerState.NORMAL_LIFE_WITHOUT_CAR);
                         }
                     } else {
-                        System.out.println(this.id + " GOING TO PAY");
                         payForTheService();
-                        System.out.println(this.id + " HAS CAR REPAIRED AND IS GOING TO DIE");
+                        System.out.println("Customer " + this.id + " has car repaired and is going to die!");
                         setCustomerState(CustomerState.NORMAL_LIFE_WITH_CAR);
                     }
                     break;
 
                 case NORMAL_LIFE_WITHOUT_CAR:
-                    System.out.println("NORMAL LIFE WITHOUT CAR");
                     carRepaired = backToWorkByBus(carRepaired);
                     setCustomerState(CustomerState.RECEPTION);
                     break;

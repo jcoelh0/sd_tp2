@@ -64,7 +64,7 @@ public class OutsideWorldInterface {
                 break;
             
             case OutsideWorldMessage.END:
-                System.out.println("End!");
+                System.out.println("Closing outside world server!");
                 this.status = false;
                 outMsg = new OutsideWorldMessage(OutsideWorldMessage.SUCCESS);
                 break;

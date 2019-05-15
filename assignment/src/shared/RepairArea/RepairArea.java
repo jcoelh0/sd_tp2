@@ -44,8 +44,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
     private final boolean[] flagPartMissing;
     private String[] flag;
 
-    //static final int nPieces = (int) (Math.random() * 13) + 3; //between 3 and 15 Math.random() * ((max - min) + 1)) + min; //0;
-    static final int nPieces = 10;
+    static final int nPieces = (int) (Math.random() * 13) + 3;
     
     private static final HashMap<EnumPiece, Integer> stock = new HashMap<>();
 
@@ -69,7 +68,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
         flag = new String[nTypePieces];
         Arrays.fill(flag, "F");
         this.cc_repository = new ChannelClient(NAME_GENERAL_REPOSITORY, PORT_GENERAL_REPOSITORY);
-        //updateStock(stock);
+        updateStock(stock);
     }
 
     /**
@@ -114,8 +113,7 @@ public class RepairArea implements IMechanicRA, IManagerRA {
             } catch (Exception e) {
 
             }
-        }        
-        System.out.println(readyToRepair.toString() + " " + carsToRepair.toString() + " " + enoughWork);
+        }
         if (enoughWork) {
             return true;
         }

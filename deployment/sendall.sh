@@ -1,2 +1,2 @@
 #!/bin/bash
-expect senddata.exp && expect senddata2.exp && expect senddata3.exp && expect senddata4.exp && expect senddata5.exp && expect senddata6.exp && expect senddata7.exp && expect senddata8.exp && expect senddata10.exp
+expect datasenders/senddata.exp && expect datasenders/senddata2.exp && expect datasenders/senddata3.exp && expect datasenders/senddata4.exp && expect datasenders/senddata5.exp && expect datasenders/senddata6.exp && expect datasenders/senddata7.exp && expect datasenders/senddata8.exp && expect datasenders/senddata10.exp

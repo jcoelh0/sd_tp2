@@ -256,4 +256,14 @@ public class Repository {
         carsDriven[i] = s;
         updateLog();
     }
+    
+    /**
+     * Method that updates the repair of a customer's car.
+     * @param s car driven
+     * @param i id of customer
+     */
+    public synchronized void setVehicleRepaired(String s, int i) {
+        repairedCars[i] = s;
+        updateLog();
+    }
 }

@@ -97,7 +97,7 @@ public class RepairAreaInterface {
                 break;
                 
             case RepairAreaMessage.END:
-                System.out.println("End!");
+                System.out.println("Closing repair area server!");
                 this.status = false;
                 outMsg = new RepairAreaMessage(RepairAreaMessage.SUCCESS);
                 break;

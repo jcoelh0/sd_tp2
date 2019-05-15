@@ -2,15 +2,15 @@
 
 #expect senddata.exp &&
 
-sh repository.sh &
-sh lounge.sh &
-sh outsideworld.sh &
-sh park.sh &
-sh repairarea.sh &
-sh suppliersite.sh &
-sh manager.sh &
-sh mechanic.sh &
-sh customer.sh &
+sh runnables/repository.sh &
+sh runnables/lounge.sh &
+sh runnables/outsideworld.sh &
+sh runnables/park.sh &
+sh runnables/repairarea.sh &
+sh runnables/suppliersite.sh &
+sh runnables/manager.sh &
+sh runnables/mechanic.sh &
+sh runnables/customer.sh &
 
 sleep 60
 

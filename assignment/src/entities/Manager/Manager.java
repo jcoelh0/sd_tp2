@@ -264,7 +264,6 @@ public class Manager extends Thread {
             switch (this.state) {
                 case CHECKING_WHAT_TO_DO:
                     checkWhatToDo();
-                    System.out.println("CARS REPAIRED " + leftCustomers + "    (isto não é cars repaired)");
                     if (leftCustomers == nCustomers) {
                         enoughWork();
                         noMoreTasks = true;
@@ -293,7 +292,6 @@ public class Manager extends Thread {
                     idCustomer = currentCustomer();
                     System.out.println("Manager - Attending customer " + idCustomer);
                     String action = talkWithCustomer();
-                    System.out.println("chega aqui???");
                     if (action.equals("car")) {
                         availableReplacementCar = replacementCarAvailable(idCustomer);
                         if (availableReplacementCar) {

@@ -34,7 +34,6 @@ public class RepairAreaServer {
                 proxyClient = new RepairAreaProxyClient(communicationSocket, repairAreaInterface);
                 
                 Thread.UncaughtExceptionHandler h = (Thread t, Throwable ex) -> {
-                    System.out.println("Quebra aqui!");
                     System.out.println("RepairArea server down!");
                     System.exit(0);
                 };

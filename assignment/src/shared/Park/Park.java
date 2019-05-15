@@ -45,7 +45,7 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
         }
         numrepcars = nReplacementCars;
         this.cc_repository = new ChannelClient(NAME_GENERAL_REPOSITORY, PORT_GENERAL_REPOSITORY);
-        //updateNumRepCars(numrepcars);
+        updateNumRepCars(numrepcars);
     }
 
     /**
@@ -140,10 +140,6 @@ public class Park implements ICustomerP, IMechanicP, IManagerP {
      */
     @Override
     public synchronized boolean replacementCarAvailable(int idCustomer) {
-        /*return ((replacementCars.size()== 0 && reserve.size()==3) ||
-			(replacementCars.size()== 1 && reserve.size()==2) ||
-			(replacementCars.size()== 2 && reserve.size()==1) ||
-			(replacementCars.size()== 3 && reserve.size()==0));*/
         return !replacementCars.isEmpty();
     }
 

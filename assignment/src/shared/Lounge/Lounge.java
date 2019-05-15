@@ -63,15 +63,13 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
     public synchronized void queueIn(int id) {
         setCustomerState(CustomerState.RECEPTION, id);
         customersQueue.add(id);
-        System.out.println(customersQueue.toString());
         setCustomersQueueSize(customersQueue.size());
         notifyAll();
-        //while (nextCustomer != id && !managerAvailable) {
         while(customersQueue.contains(id) && !managerAvailable) {
             try {
                 wait();
             } catch (InterruptedException e) {
-                //Thread.currentThread().interrupt();
+                
             }
         }
     }
@@ -110,7 +108,6 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized String talkWithCustomer() {
-        // nextCustomer = customersQueue.poll();
         managerAvailable = true;
         notifyAll();
         managerAvailable = false;
@@ -123,7 +120,6 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         }
         String s = order.get(nextCustomer);
         order.remove(nextCustomer);
-        //nextCustomer = 0;
         return s;
 
     }
@@ -134,7 +130,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized void addToReplacementQueue(int idCustomer) {
-        //replacementQueue.add(idCustomer);
+        
     }
 
     /**
@@ -154,7 +150,6 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
             }
         }
         customersWithRepCar.put(replacementQueue.peek(), replacementCarId);
-        //replacementQueue.remove(idCustomer);
         requiresReplacementCar[idCustomer] = false;
         notifyAll();
     }
@@ -193,7 +188,8 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
         }
         readyToReceive = false;
         payed = true;
-        notifyAll();
+        notifyAll();        
+        setCustomersQueueSize(customersQueue.size());
     }
 
     /**
@@ -220,11 +216,9 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized int currentCustomer() {
-        //setManagerState(ManagerState.ATTENDING_CUSTOMER);
         setManagerState(ManagerState.ATTENDING_CUSTOMER);
         nextCustomer = customersQueue.poll();
         notify();
-        System.out.println("NEXT CUSTOMER " + nextCustomer);
         return nextCustomer;
     }
 
@@ -250,6 +244,7 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
             }
         }
         replacementQueue.remove(id);
+        setReplacementQueueSize(replacementQueue.size());
         if (carsRepaired.contains(id)) {
             carsRepaired.remove(id);
             requiresReplacementCar[id] = false;
@@ -381,13 +376,9 @@ public class Lounge implements ICustomerL, IManagerL, IMechanicL {
      */
     @Override
     public synchronized boolean alertCustomer(int id) {
-        //carsRepaired.add(id);
-        //updateCarsRepaired(carsRepaired.size());
-
         carsRepaired.add(id);
         updateCarsRepaired(carsRepaired.size());
         if (replacementQueue.contains(id)) {
-            //carsRepaired.add(id);
             customersToCallQueue.remove(id);
             notifyAll();
             return true;
